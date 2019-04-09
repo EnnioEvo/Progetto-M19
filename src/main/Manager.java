@@ -2,8 +2,7 @@ package main;
 
 public class Manager
 {
-    public Manager()
-    {
+    public Manager(){}
 
-    }
+
 }
