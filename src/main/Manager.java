@@ -4,6 +4,6 @@ public class Manager
 {
     public Manager()
     {
-        int prova;
+        int enrico;
     }
 }
