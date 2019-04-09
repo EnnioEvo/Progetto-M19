@@ -7,7 +7,8 @@ public class floor {
     int id;
     int countCarIn;
 
-    public floor(int freeSpace) {
+    public floor(int id,int freeSpace) {
+        this.id = id;
         this.freeSpace = freeSpace;
         this.countCarIn = 0;
     }
@@ -20,7 +21,7 @@ public class floor {
         countCarIn--;
     }
 
-
-
-
+    public void setId(int id) {
+        this.id = id;
+    }
 }
