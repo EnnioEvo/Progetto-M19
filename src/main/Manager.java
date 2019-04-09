@@ -1,5 +1,8 @@
 package main;
 
-public class Manager {
-
+public class Manager
+{
+    public Manager()
+    {
+    }
 }
