@@ -5,7 +5,7 @@ import java.util.ArrayList;
 public class Manager
 {
 
-    private ArrayList<floor> floorsList;
+    private ArrayList<Floor> floorsList;
 
 
     public Manager() {
@@ -17,7 +17,7 @@ public class Manager
     {
         for(int i=0; i<freeSpaces.length; i++)
         {
-            floor floor = new floor(floorsList.size(), freeSpaces[i]);
+            Floor floor = new Floor(floorsList.size(), freeSpaces[i]);
             floorsList.add(floor);
         }
     }

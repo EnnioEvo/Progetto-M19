@@ -1,13 +1,13 @@
 package main;
 
-public class floor {
+public class Floor {
 
 
     int freeSpace;
     int id;
     int countCarIn;
 
-    public floor(int id,int freeSpace) {
+    public Floor(int id, int freeSpace) {
         this.id = id;
         this.freeSpace = freeSpace;
         this.countCarIn = 0;
