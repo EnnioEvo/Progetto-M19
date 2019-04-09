@@ -6,5 +6,7 @@ public class Manager
     {
         int prova2;
         int prova3;
+
+        int prova5;
     }
 }
