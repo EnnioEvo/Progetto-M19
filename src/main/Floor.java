@@ -13,6 +13,7 @@ public class Floor {
         this.countCarIn = 0;
     }
 
+
     public void addCar(){
         countCarIn++;
     }

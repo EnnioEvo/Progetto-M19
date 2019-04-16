@@ -13,6 +13,7 @@ public class Manager
 
     }
 
+
     public void makeFloors(int[] freeSpaces)
     {
         for(int i=0; i<freeSpaces.length; i++)
