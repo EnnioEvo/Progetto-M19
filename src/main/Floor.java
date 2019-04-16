@@ -25,4 +25,9 @@ public class Floor {
     public void setId(int id) {
         this.id = id;
     }
+
+    public int getFreeSpace()
+    {
+        return freeSpace;
+    }
 }
