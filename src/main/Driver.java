@@ -18,4 +18,10 @@ public class Driver
     {
         this.timePaid = timePaid;
     }
+
+    public String getCarId() { return carId; }
+
+    public GregorianCalendar getTimeIn() { return timeIn; }
+
+    public GregorianCalendar getTimePaid() { return timePaid; }
 }
