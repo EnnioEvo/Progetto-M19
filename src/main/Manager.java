@@ -24,6 +24,9 @@ public class Manager
     //aggiungo l'arraylist degli abbonamenti
     private ArrayList<Subscription> sublist;
 
+    //aggiungo deltaTime
+    private final static double DeltaTimePaid = 10.0;
+
 
     public Manager()
     {
@@ -52,7 +55,7 @@ public class Manager
         freeSpacesTot = setFreeSpacesTot();
     }
 
-
+//******************* metodi d'ingresso********************
     public void entryTicket(String carId)
     {
         if (freeSpacesTicketNow + 1 > freeSpacesTicketTot)
@@ -94,7 +97,41 @@ public class Manager
 
         }
     }
-    
+//********************** fine metodi d'ingresso****************************
+
+    //*********************************metodi d'uscita***************************************
+
+    public void exitTicket(String carID)
+    {
+
+        for(Driver d : drivers){
+            if(d.getCarId().equals(carID)){
+                if((checkDeltaTime(d.getTimePaid() ) > DeltaTimePaid) || d.isPaid() == false ){
+                    throw new RuntimeException("ERROR: uscita negata");
+                } else
+                    {
+                    System.out.println("uscita avvenuta con successo        " + d.getCarId());
+                    }
+            }
+            // NB: RIMUOVERE IL DRIVER USCITO DALL'ARRAYLIST DRIVERS, AGGIUNGERE!
+        }
+
+    }
+
+    private double checkDeltaTime(GregorianCalendar dataDriver)
+    {
+        GregorianCalendar dataNow = new GregorianCalendar();
+        GregorianCalendar dataDriverPaid = dataDriver;
+
+        double DeltaTime = dataNow.getTimeInMillis() - dataDriver.getTimeInMillis();
+        DeltaTime = DeltaTime/(1000*60*60); //risalgo ai minuti
+        return DeltaTime;
+    }
+
+
+
+    //********************************* fine metodi d'uscita*********************************
+
     // ho cambiato il metodo da ''private'' a ''public'' perchè non potevo settare dal main il numero dei posti per gli abbonati
     public void setSpacesSubdivision(int sub)
     {
