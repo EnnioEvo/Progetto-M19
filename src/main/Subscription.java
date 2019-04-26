@@ -3,19 +3,20 @@ package main;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class Subscription {
+public class Subscription
+{
 
-    private String carId;
-    private GregorianCalendar dateStart,dateFinish;
-    private boolean paysub;
-    public Subscription(String carId) {
-        this.carId = carId;
-        this.paysub = false;
+    private GregorianCalendar dateStart, dateFinish, datePaidExtra;
+    private boolean paySub;
+    public Subscription()
+    {
+        this.paySub = false;
         this.dateStart = new GregorianCalendar();
         this.dateFinish = makesub();
     }
 
-    private GregorianCalendar makesub(){
+    private GregorianCalendar makesub()
+    {
 
         //creo solo un caso: abbonamento mensile
 
@@ -25,19 +26,37 @@ public class Subscription {
         return d;
     }
 
-
+    @Override
+    public String toString()
+    {
+        return "Abbonamento scade:" + dateFinish.toZonedDateTime().toString();
+    }
 
     //get and set
 
-    public void setPaysub(boolean paysub) {
-        this.paysub = paysub;
+    public void setPaySub(boolean paySub)
+    {
+        this.paySub = paySub;
     }
 
-    public String getCarId() {
-        return carId;
+    public boolean getPaySub()
+    {
+        return paySub;
     }
 
-    public GregorianCalendar getDateFinish() {
+    public GregorianCalendar getDateFinish()
+    {
         return dateFinish;
+    }
+
+    public GregorianCalendar getDatePaidExtra()
+    {
+        return datePaidExtra;
+    }
+
+    public void setDatePaidExtra(GregorianCalendar datePaidExtra)
+    {
+
+        this.datePaidExtra = datePaidExtra;
     }
 }

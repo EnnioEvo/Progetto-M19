@@ -8,6 +8,7 @@ public class Driver
     private GregorianCalendar timeIn;
     private GregorianCalendar timePaid;
     private boolean Paid;
+    private Subscription sub;
 
     public Driver(String carId)
     {
@@ -21,7 +22,46 @@ public class Driver
         this.timePaid = timePaid;
     }
 
-    public void setPaid(boolean paid) { Paid = paid; }
+    public void makeSub()
+    {
+        sub = new Subscription();
+    }
+
+    public String printSub()
+    {
+        return sub.toString();
+    }
+
+    public GregorianCalendar getDateFinishOfSub()
+    {
+        return sub.getDateFinish();
+    }
+
+    public boolean getPaySub()
+    {
+        return sub.getPaySub();
+    }
+
+    public GregorianCalendar getDatePaidExtraOfSub()
+    {
+        return sub.getDatePaidExtra();
+    }
+
+    public void setDatePaidExtraOfSub(GregorianCalendar c)
+    {
+        sub.setDatePaidExtra(c);
+    }
+
+    public void setPaid(boolean paid)
+    {
+        Paid = paid;
+    }
+
+    public void setPaidSub(boolean paid)
+    {
+        sub.setPaySub(paid);
+    }
+
 
     public String getCarId() { return carId; }
 

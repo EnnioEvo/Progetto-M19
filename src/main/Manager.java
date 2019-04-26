@@ -1,10 +1,11 @@
 package main;
 
 import main.Peripherals.Column;
-import java.lang.Math.*;
+
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 //CHANGED METHODS: FIRST TEST: positive
@@ -22,10 +23,10 @@ public class Manager
     private double DAYS=365, MONTH=12;
 
     //aggiungo l'arraylist degli abbonamenti
-    private ArrayList<Subscription> sublist;
+    //private ArrayList<Subscription> sublist;  Ora sono in subDrivers
 
     //aggiungo deltaTime
-    private final static double DeltaTimePaid = 10.0;
+    private final static int deltaTimePaid = 10;  //In minuti
 
 
     public Manager()
@@ -41,7 +42,7 @@ public class Manager
         this.entryToT = 0;
 
         //arraylist abbonamenti
-        this.sublist = new ArrayList<>();
+        //this.sublist = new ArrayList<>();
     }
 
     // ho cambiato il metodo perchè non settava il numero di posti liberi dei piani
@@ -56,17 +57,18 @@ public class Manager
     }
 
 //******************* metodi d'ingresso********************
+
     public void entryTicket(String carId)
     {
         if (freeSpacesTicketNow + 1 > freeSpacesTicketTot)
         {
 
-            throw new RuntimeException("posti ticket finiti");
+            throw new RuntimeException("Posti ticket finiti");
         }
         else
         {
             freeSpacesTicketNow++;
-            entryToT++;
+            entryToT++;   //Perche non viene incrementata all'ingresso degli abbonati?
             drivers.add(new Driver(carId));
 
             //stampa fittizia della tessera
@@ -74,58 +76,106 @@ public class Manager
         }
     }
 
-    public void entrySub(String carId) {
-        if (freeSpacesSubNow + 1 > freeSpacesSubTot) {
-            throw new RuntimeException("abbonamenti  finiti");
-        } else if (checkSub(carId) == false) {
+    public void entrySub(String carId)
+    {
+        if (freeSpacesSubNow + 1 > freeSpacesSubTot)
+        {
+            throw new RuntimeException("Abbonamenti  finiti");
+        }
+        else if(checkSub(carId) == false)
+        {
             // aggiungo qui l'acquisto dell'abbonamento che va impletato nella gui
-            Subscription s = new Subscription(carId);
-            System.out.println("abbonamento acquistato");
-            sublist.add(s);
-            System.out.println(s);
+            Driver d = new Driver(carId);
+            d.makeSub();
+            System.out.println("Abbonamento acquistato");
+            System.out.println(d.printSub());
             freeSpacesSubNow++;
-            subDrivers.add(new Driver(carId));
-        } else {
+            subDrivers.add(d);
+        }
+        else
+        {
             //controllo sulla validità dell'abbonamento per effettuare l'ingresso
-            if(checkdateSub(carId) == false) {
-                throw new RuntimeException("abbonamento scaduto");
-            }else
-                {
-                    System.out.println("ingresso abbonato avvenuto con successo");
-
+            if(checkDateSub(carId) == false)
+            {
+                throw new RuntimeException("Abbonamento scaduto");
+            }
+            else
+            {
+                System.out.println("Ingresso abbonato avvenuto con successo");
             }
 
         }
     }
+
 //********************** fine metodi d'ingresso****************************
 
-    //*********************************metodi d'uscita***************************************
+//*********************************metodi d'uscita***************************************
 
-    public void exitTicket(String carID)
+    public void exit(String carID)
     {
-
-        for(Driver d : drivers){
-            if(d.getCarId().equals(carID)){
-                if((checkDeltaTime(d.getTimePaid() ) > DeltaTimePaid) || d.isPaid() == false ){
-                    throw new RuntimeException("ERROR: uscita negata");
-                } else
+        boolean check = false;
+        Driver toBeRemoved = new Driver("");
+        //Da fare: thread che ogni ora elimina abbonamneti scaduti NON presenti in quel momento nel parcheggio
+        for(Driver d : subDrivers)
+        {
+            if(d.getCarId().equals(carID))
+            {
+                check = true;
+                if(GregorianCalendar.getInstance().after(d.getDateFinishOfSub()) || !d.getPaySub())
+                {
+                    //Controlla se ha pagato la tariffa extra dopo la scadenza dell'abbonamneto
+                    if(checkDeltaTime(d.getDatePaidExtraOfSub()) && d.getPaySub())
                     {
-                    System.out.println("uscita avvenuta con successo        " + d.getCarId());
+                        System.out.println("Uscita abbonamento avvenuta con successo        " + d.getCarId());
                     }
+                    else
+                    {
+                        throw new RuntimeException("ERROR: uscita abbonamento negata");
+                    }
+                }
+                else
+                {
+                    System.out.println("Uscita abbonamento avvenuta con successo        " + d.getCarId());
+                }
             }
-            // NB: RIMUOVERE IL DRIVER USCITO DALL'ARRAYLIST DRIVERS, AGGIUNGERE!
         }
-
+        for(Driver d : drivers)
+        {
+            if(d.getCarId().equals(carID))
+            {
+                check = true;
+                if((!checkDeltaTime(d.getTimePaid())) || !d.isPaid())
+                {
+                    throw new RuntimeException("ERROR: uscita negata");
+                }
+                else
+                {
+                    //NB mai rimuovere oggetti in un foreach
+                    toBeRemoved = d;
+                    System.out.println("Uscita avvenuta con successo        " + d.getCarId());
+                }
+            }
+        }
+        drivers.remove(toBeRemoved);
+        //Caso in cui la tessera non è riconosciuta per un qualsiasi motivo
+        if(!check)
+        {
+            throw new RuntimeException("Tessera non riconosciuta");
+        }
     }
 
-    private double checkDeltaTime(GregorianCalendar dataDriver)
+    private boolean checkDeltaTime(GregorianCalendar dataDriverPaid)
     {
         GregorianCalendar dataNow = new GregorianCalendar();
-        GregorianCalendar dataDriverPaid = dataDriver;
+        if(dataDriverPaid != null)
+        {
+            dataDriverPaid.add(Calendar.MINUTE, deltaTimePaid);
+        }
+        return dataNow.before(dataDriverPaid);
 
-        double DeltaTime = dataNow.getTimeInMillis() - dataDriver.getTimeInMillis();
+        /*double DeltaTime = dataNow.getTimeInMillis() - dataDriver.getTimeInMillis();
         DeltaTime = DeltaTime/(1000*60*60); //risalgo ai minuti
-        return DeltaTime;
+        return DeltaTime;*/
     }
 
 
@@ -177,37 +227,45 @@ public class Manager
     private String printTickt(String carId)
     {
         String s = "";
-        s += "IDTicket:   " + carId + "   ";
+        s += "IDTicket:   " + carId + "\n";
         for(Driver d : drivers)
         {
             if (d.getCarId().equals(carId)){
-                s+= "Ora Ingresso:  " + d.getTimeIn(); // non riesco a stampare data e ora d'ingresso
+                s+= "Ora Ingresso:  " + d.getTimeIn().toZonedDateTime().toString(); // toZonedDateTime converte nel nuovo formato di tempo di java 1.8
             }
         }
         return s;
     }
 
     //*********************************** metodi 'check' per abbonamento****************************
-    private boolean checkdateSub(String carID)
+    private boolean checkDateSub(String carID)
     {
         GregorianCalendar dataNow = new GregorianCalendar();
         boolean check = false;
-        for(Subscription s : sublist){
-            if(s.getCarId().equals(carID)){
-                if(dataNow.after(s.getDateFinish())){
+        for(Driver d : subDrivers)
+        {
+            if(d.getCarId().equals(carID))
+            {
+                if(dataNow.after(d.getDateFinishOfSub()))  //Pattern protected variations
+                {
                     check = false;
-                } else {
+                }
+                else
+                {
                     check = true;
                 }
             }
         }
         return  check;
     }
+
     private boolean checkSub(String carID)
     {
         boolean check = false;
-        for(Subscription s : sublist){
-            if(s.getCarId().equals(carID)){
+        for(Driver d : subDrivers)
+        {
+            if(d.getCarId().equals(carID))
+            {
                 check = true;
             }
         }
@@ -219,6 +277,25 @@ public class Manager
     public void setTariff(int tariff)
     {
         this.tariff = tariff;
+    }
+
+    public Driver getDriver(String carId)
+    {
+        for (Driver d : drivers)
+        {
+            if(d.getCarId().equals(carId))
+            {
+                return d;
+            }
+        }
+        for (Driver d : subDrivers)
+        {
+            if(d.getCarId().equals(carId))
+            {
+                return d;
+            }
+        }
+        return null;
     }
 
 
