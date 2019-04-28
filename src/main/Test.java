@@ -1,5 +1,8 @@
 package main;
 
+import GUIs.ManagerGUI;
+
+import java.awt.*;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -31,6 +34,16 @@ public class Test
         d2.setDatePaidExtraOfSub(time);
         m.exit("IT3456GT");
        // m.Analytics();
+
+        EventQueue.invokeLater(new Runnable()
+        {
+
+            @Override
+            public void run()
+            {
+                new ManagerGUI(m);
+            }
+        });
 
     }
 }

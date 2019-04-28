@@ -56,11 +56,26 @@ public class Manager
         freeSpacesTot = setFreeSpacesTot();
     }
 
+    public void removeFloor(int rm)
+    {
+        Floor toBeRemoved = new Floor(-1, -1);
+        for (Floor f : floorsList)
+        {
+            if(f.getId() == rm)
+            {
+                //NB mai rimuovere oggetti in un foreach
+                toBeRemoved = f;
+            }
+        }
+        floorsList.remove(toBeRemoved);
+        changeFloorId();
+    }
+
 //******************* metodi d'ingresso********************
 
     public void entryTicket(String carId)
     {
-        if (freeSpacesTicketNow + 1 > freeSpacesTicketTot)
+        if(freeSpacesTicketNow + 1 > freeSpacesTicketTot)
         {
 
             throw new RuntimeException("Posti ticket finiti");
@@ -78,7 +93,7 @@ public class Manager
 
     public void entrySub(String carId)
     {
-        if (freeSpacesSubNow + 1 > freeSpacesSubTot)
+        if(freeSpacesSubNow + 1 > freeSpacesSubTot)
         {
             throw new RuntimeException("Abbonamenti  finiti");
         }
@@ -185,7 +200,7 @@ public class Manager
     // ho cambiato il metodo da ''private'' a ''public'' perchè non potevo settare dal main il numero dei posti per gli abbonati
     public void setSpacesSubdivision(int sub)
     {
-        if (sub <= freeSpacesTot)
+        if(sub <= freeSpacesTot)
         {
             freeSpacesSubTot = sub;
             freeSpacesTicketTot = freeSpacesTot - sub;
@@ -196,14 +211,22 @@ public class Manager
         }
     }
 
-    private int setFreeSpacesTot()
+    private int setFreeSpacesTot()  //Modificare non dovrebbe restituire nulla
     {
         int i = 0;
-        for (Floor f : floorsList)
+        for(Floor f : floorsList)
         {
             i += f.getFreeSpace();
         }
         return i;
+    }
+
+    private void changeFloorId()
+    {
+        for(int i=0;i<floorsList.size();i++)
+        {
+            floorsList.get(i).setId(i);
+        }
     }
 
 
@@ -230,7 +253,7 @@ public class Manager
         s += "IDTicket:   " + carId + "\n";
         for(Driver d : drivers)
         {
-            if (d.getCarId().equals(carId)){
+            if(d.getCarId().equals(carId)){
                 s+= "Ora Ingresso:  " + d.getTimeIn().toZonedDateTime().toString(); // toZonedDateTime converte nel nuovo formato di tempo di java 1.8
             }
         }
@@ -273,7 +296,7 @@ public class Manager
     }
 // ************** fine metodi check abbonamento ************************************
 
-    // get and set
+    //Get and set
     public void setTariff(int tariff)
     {
         this.tariff = tariff;
@@ -281,7 +304,7 @@ public class Manager
 
     public Driver getDriver(String carId)
     {
-        for (Driver d : drivers)
+        for(Driver d : drivers)
         {
             if(d.getCarId().equals(carId))
             {
@@ -298,5 +321,13 @@ public class Manager
         return null;
     }
 
+    public ArrayList<Floor> getFloorsList()
+    {
+        return floorsList;
+    }
 
+    public int getTariff()
+    {
+        return tariff;
+    }
 }

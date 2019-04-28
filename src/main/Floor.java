@@ -14,20 +14,28 @@ public class Floor {
     }
 
 
-    public void addCar(){
+    public void addCar()
+    {
         countCarIn++;
     }
 
-    public void deleteCar(){
+    public void deleteCar()
+    {
         countCarIn--;
     }
 
-    public void setId(int id) {
+    public void setId(int id)
+    {
         this.id = id;
     }
 
     public int getFreeSpace()
     {
         return freeSpace;
+    }
+
+    public int getId()
+    {
+        return id;
     }
 }
