@@ -29,7 +29,7 @@ public class Driver
 
     public String printSub()
     {
-        return sub.toString();
+        return (sub==null?null:sub.toString());
     }
 
     public GregorianCalendar getDateFinishOfSub()

@@ -26,7 +26,7 @@ public class Test
         GregorianCalendar time = new GregorianCalendar();
         time.add(Calendar.MINUTE, -9);
         d.setTimePaid(time);
-        m.exit("IT4560JV");
+        //m.exit("IT4560JV");
 
         Driver d2 = m.getDriver("IT3456GT");
         d2.setPaidSub(true);

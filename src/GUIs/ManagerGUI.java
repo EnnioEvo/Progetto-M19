@@ -1,21 +1,24 @@
 package GUIs;
 
+import Exceptions.SubdivisionException;
+import main.Driver;
 import main.Floor;
 import main.Manager;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
-import java.text.ParseException;
 import java.util.ArrayList;
 
 public class ManagerGUI implements ItemListener
 {
     private Manager man;
-    JPanel cards;  //Pannello che usa CardLayout
-    final static String MAKEFLOORS = "Crea piani";
-    final static String TARRIFF = "Scegli tariffa";
-    final static String REMOVEFLOOR = "Rimuovi piano";
+    private JPanel cards;  //Pannello che usa CardLayout
+    final private static String MAKEFLOORS = "Crea piani";
+    final private static String TARRIFF = "Scegli tariffa";
+    final private static String REMOVEFLOOR = "Rimuovi piano";
+    final private static String SUBDIVISION = "Scegli suddivisione posti";
+    final private static String DRIVERINFO = "Visualizza informazioni clienti";
 
     public ManagerGUI(Manager man)
     {
@@ -35,12 +38,12 @@ public class ManagerGUI implements ItemListener
         f.setVisible(true);
     }
 
-    public void initComponents(JFrame f)
+    private void initComponents(JFrame f)
     {
         //Metto JComboBox in un JPanel per un look migliore
         JPanel comboBoxPane = new JPanel();
         comboBoxPane.setLayout(new GridLayout(1,2));
-        String comboBoxItems[] = {MAKEFLOORS, REMOVEFLOOR, TARRIFF};
+        String comboBoxItems[] = {MAKEFLOORS, REMOVEFLOOR, TARRIFF, SUBDIVISION, DRIVERINFO};
         JComboBox<String> cb = new JComboBox<>(comboBoxItems);
         cb.setEditable(false);
         cb.addItemListener(this);
@@ -57,12 +60,18 @@ public class ManagerGUI implements ItemListener
         JPanel card2 = removeFloorCard();
         //Schermata 3: tariffa
         JPanel card3 = chooseTariffCard();
+        //Schermata 4: divisione posti standard/in abbonamento
+        JPanel card4 = chooseSubdivisionCard();
+        //Schermata 5: visualizza informazioni sui clienti nel parcheggio
+        JPanel card5 = showDriversInfo();
 
         //Creo il pannello che contiene le "cards".
         cards = new JPanel(new CardLayout());
         cards.add(card1, MAKEFLOORS);
         cards.add(card2, REMOVEFLOOR);
         cards.add(card3, TARRIFF);
+        cards.add(card4, SUBDIVISION);
+        cards.add(card5, DRIVERINFO);
 
         f.add(comboBoxPane, BorderLayout.NORTH);
         f.add(cards, BorderLayout.CENTER);
@@ -70,7 +79,7 @@ public class ManagerGUI implements ItemListener
 
     //***********Creo le schermate del manager*********************
 
-    public JPanel makeFloorsCard()
+    private JPanel makeFloorsCard()
     {
         JPanel card = new JPanel();
         card.setLayout(new BorderLayout());
@@ -131,7 +140,7 @@ public class ManagerGUI implements ItemListener
         return card;
     }
 
-    public JPanel removeFloorCard()
+    private JPanel removeFloorCard()
     {
         JPanel card = new JPanel();
         card.setLayout(new BorderLayout());
@@ -189,7 +198,7 @@ public class ManagerGUI implements ItemListener
         return card;
     }
 
-    public JPanel chooseTariffCard()
+    private JPanel chooseTariffCard()
     {
         JPanel card = new JPanel();
         card.setLayout(new BorderLayout());
@@ -244,6 +253,152 @@ public class ManagerGUI implements ItemListener
         return card;
     }
 
+    private JPanel chooseSubdivisionCard()
+    {
+        JPanel card = new JPanel();
+        card.setLayout(new BorderLayout());
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new GridLayout(1, 2));
+        JTextField jf1 = new JTextField("Posti riservati abbonamento: ");
+        jf1.setEditable(false);
+        JTextField sub = new JTextField();
+        JTextArea info = new JTextArea();
+        info.setEditable(false);
+        info.setLineWrap(true);
+        //Reinizializzo JTextArea quando cambio card
+        card.addComponentListener(new ComponentAdapter()
+        {
+            @Override
+            public void componentHidden(ComponentEvent e)
+            {
+                super.componentHidden(e);
+                info.setText("");
+            }
+        });
+        topPanel.add(jf1); topPanel.add(sub);
+        topPanel.setPreferredSize(new Dimension(500,50));
+        JButton create = new JButton("Scegli");
+        create.setPreferredSize(new Dimension(200,100));
+        create.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                try
+                {
+                    man.setSpacesSubdivision(Integer.parseInt(sub.getText()));
+                    String st = "Posti totali: " + man.getFreeSpacesTot() + "\n" + "Posti abbonati: " + man.getFreeSpacesSubTot() + ", posti ticket: " + man.getFreeSpacesTicketTot();
+                    info.setText(st);
+                }
+                catch(NumberFormatException ex)
+                {
+                    info.setText("Numeri inseriti errati");
+                }
+                catch(SubdivisionException ex)
+                {
+                    info.setText(ex.getMessage());
+                }
+            }
+        });
+        JPanel bottomPanel = new JPanel(new GridLayout(1,3));
+        bottomPanel.add(new JPanel()); bottomPanel.add(create); bottomPanel.add(new JPanel());
+        setFont(topPanel, new Font("Helvetica", Font.PLAIN, 30));
+        setFont(info, new Font("Helvetica", Font.PLAIN, 40));
+        setFont(bottomPanel, new Font("Helvetica", Font.PLAIN, 30));
+        card.add(topPanel, BorderLayout.NORTH);
+        card.add(info, BorderLayout.CENTER);
+        card.add(bottomPanel, BorderLayout.SOUTH);
+
+        return card;
+    }
+
+    private JPanel showDriversInfo()
+    {
+        JPanel card = new JPanel();
+        card.setLayout(new BorderLayout());
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new GridLayout(1, 2));
+        JTextField jf1 = new JTextField("Scegli categoria clienti: ");
+        jf1.setEditable(false);
+        String comboBoxItems[] = {"Solo clienti normali", "Solo abbonati", "Tutti"};
+        JComboBox<String> cb = new JComboBox<>(comboBoxItems);
+        cb.setEditable(false);
+        JTextArea info = new JTextArea();
+        info.setEditable(false);
+        info.setLineWrap(true);
+        //Reinizializzo JTextArea quando cambio card
+        card.addComponentListener(new ComponentAdapter()
+        {
+            @Override
+            public void componentHidden(ComponentEvent e)
+            {
+                super.componentHidden(e);
+                info.setText("");
+            }
+        });
+        topPanel.add(jf1); topPanel.add(cb);
+        topPanel.setPreferredSize(new Dimension(500,50));
+        JButton create = new JButton("Scegli");
+        create.setPreferredSize(new Dimension(200,100));
+        create.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                ArrayList<Driver> drivers = man.getDrivers();
+                ArrayList<Driver> subs = man.getSubDrivers();
+                String sw = (String)cb.getSelectedItem();
+                switch(sw)
+                {
+                    case "Solo clienti normali":
+                        StringBuilder sb = new StringBuilder();
+                        for (Driver d : drivers)
+                        {
+                            sb.append(getDriverInfo(d));
+                            sb.append("\n");
+                        }
+                        info.setText(sb.toString());
+                        break;
+                    case "Solo abbonati":
+                        StringBuilder sb2 = new StringBuilder();
+                        for (Driver d : subs)
+                        {
+                            sb2.append(getDriverInfo(d));
+                            sb2.append("\n");
+                        }
+                        info.setText(sb2.toString());
+                        break;
+                    case "Tutti":
+                        StringBuilder sb3 = new StringBuilder();
+                        for (Driver d : drivers)
+                        {
+                            sb3.append(getDriverInfo(d));
+                            sb3.append("\n");
+                        }
+                        for (Driver d : subs)
+                        {
+                            sb3.append(getDriverInfo(d));
+                            sb3.append("\n");
+                        }
+                        info.setText(sb3.toString());
+                        break;
+                }
+            }
+        });
+        JScrollPane scroll = new JScrollPane(info);
+        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        JPanel bottomPanel = new JPanel(new GridLayout(1,3));
+        bottomPanel.add(new JPanel()); bottomPanel.add(create); bottomPanel.add(new JPanel());
+        setFont(topPanel, new Font("Helvetica", Font.PLAIN, 30));
+        setFont(info, new Font("Helvetica", Font.PLAIN, 20));
+        setFont(bottomPanel, new Font("Helvetica", Font.PLAIN, 30));
+        card.add(topPanel, BorderLayout.NORTH);
+        card.add(scroll, BorderLayout.CENTER);
+        card.add(bottomPanel, BorderLayout.SOUTH);
+
+        return card;
+    }
+
     //******************************************************
 
     public void itemStateChanged(ItemEvent evt)
@@ -252,7 +407,7 @@ public class ManagerGUI implements ItemListener
         cl.show(cards, (String)evt.getItem());
     }
 
-    public StringBuilder getFloorsInfo(ArrayList<Floor> fl)
+    private StringBuilder getFloorsInfo(ArrayList<Floor> fl)
     {
         StringBuilder sb = new StringBuilder();
         for(int i=0; i<fl.size();i++)
@@ -264,6 +419,12 @@ public class ManagerGUI implements ItemListener
             sb.append("\n");
         }
         return sb;
+    }
+
+    private String getDriverInfo(Driver d)
+    {
+        String s = "Cliente: " + d.getCarId() + ", ingresso: " + d.getTimeIn().toZonedDateTime().toString() + ", pagato: " + (d.getTimePaid()==null?"No":d.getTimePaid().toZonedDateTime().toString()) + ", abbonamento: " + (d.printSub()==null?"No":d.printSub());
+        return s;
     }
 
     private void setFont(Component comp, Font font)

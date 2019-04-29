@@ -1,5 +1,6 @@
 package main;
 
+import Exceptions.SubdivisionException;
 import main.Peripherals.Column;
 
 import java.text.DecimalFormat;
@@ -69,6 +70,7 @@ public class Manager
         }
         floorsList.remove(toBeRemoved);
         changeFloorId();
+        freeSpacesTot = setFreeSpacesTot();
     }
 
 //******************* metodi d'ingresso********************
@@ -207,7 +209,7 @@ public class Manager
         }
         else
         {
-            throw new RuntimeException("Troppi sub");
+            throw new SubdivisionException("Non ci sono abbastanza posti");
         }
     }
 
@@ -329,5 +331,30 @@ public class Manager
     public int getTariff()
     {
         return tariff;
+    }
+
+    public int getFreeSpacesTot()
+    {
+        return freeSpacesTot;
+    }
+
+    public int getFreeSpacesSubTot()
+    {
+        return freeSpacesSubTot;
+    }
+
+    public int getFreeSpacesTicketTot()
+    {
+        return freeSpacesTicketTot;
+    }
+
+    public ArrayList<Driver> getDrivers()
+    {
+        return drivers;
+    }
+
+    public ArrayList<Driver> getSubDrivers()
+    {
+        return subDrivers;
     }
 }
