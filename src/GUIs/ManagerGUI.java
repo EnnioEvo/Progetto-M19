@@ -5,10 +5,7 @@ import main.Manager;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ItemEvent;
-import java.awt.event.ItemListener;
+import java.awt.event.*;
 import java.text.ParseException;
 import java.util.ArrayList;
 
@@ -88,6 +85,16 @@ public class ManagerGUI implements ItemListener
         JTextArea info = new JTextArea();
         info.setEditable(false);
         info.setLineWrap(true);
+        //Reinizializzo JTextArea quando cambio card
+        card.addComponentListener(new ComponentAdapter()
+        {
+            @Override
+            public void componentHidden(ComponentEvent e)
+            {
+                super.componentHidden(e);
+                info.setText("");
+            }
+        });
         JScrollPane scroll = new JScrollPane(info);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         topPanel.add(jf1); topPanel.add(floors); topPanel.add(jf2); topPanel.add(spaces);
@@ -103,15 +110,7 @@ public class ManagerGUI implements ItemListener
                 {
                     man.makeFloors(Integer.parseInt(floors.getText()), Integer.parseInt(spaces.getText()));
                     ArrayList<Floor> fl = man.getFloorsList();
-                    StringBuilder sb = new StringBuilder();
-                    for(int i=0; i<fl.size();i++)
-                    {
-                        sb.append("Piano ");
-                        sb.append(fl.get(i).getId());
-                        sb.append(", posti ");
-                        sb.append(fl.get(i).getFreeSpace());
-                        sb.append("\n");
-                    }
+                    StringBuilder sb = getFloorsInfo(fl);
                     info.setText(sb.toString());
                 }
                 catch(NumberFormatException ex)
@@ -144,6 +143,16 @@ public class ManagerGUI implements ItemListener
         JTextArea info = new JTextArea();
         info.setEditable(false);
         info.setLineWrap(true);
+        //Reinizializzo JTextArea quando cambio card
+        card.addComponentListener(new ComponentAdapter()
+        {
+            @Override
+            public void componentHidden(ComponentEvent e)
+            {
+                super.componentHidden(e);
+                info.setText("");
+            }
+        });
         JScrollPane scroll = new JScrollPane(info);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         topPanel.add(jf1); topPanel.add(floor);
@@ -159,15 +168,7 @@ public class ManagerGUI implements ItemListener
                 {
                     man.removeFloor(Integer.parseInt(floor.getText()));
                     ArrayList<Floor> fl = man.getFloorsList();
-                    StringBuilder sb = new StringBuilder();
-                    for(int i=0; i<fl.size();i++)
-                    {
-                        sb.append("Piano ");
-                        sb.append(fl.get(i).getId());
-                        sb.append(", posti ");
-                        sb.append(fl.get(i).getFreeSpace());
-                        sb.append("\n");
-                    }
+                    StringBuilder sb = getFloorsInfo(fl);
                     info.setText(sb.toString());
                 }
                 catch(NumberFormatException ex)
@@ -200,6 +201,16 @@ public class ManagerGUI implements ItemListener
         JTextArea info = new JTextArea();
         info.setEditable(false);
         info.setLineWrap(true);
+        //Reinizializzo JTextArea quando cambio card
+        card.addComponentListener(new ComponentAdapter()
+        {
+            @Override
+            public void componentHidden(ComponentEvent e)
+            {
+                super.componentHidden(e);
+                info.setText("");
+            }
+        });
         topPanel.add(jf1); topPanel.add(tariff);
         topPanel.setPreferredSize(new Dimension(500,50));
         JButton create = new JButton("Scegli");
@@ -239,6 +250,20 @@ public class ManagerGUI implements ItemListener
     {
         CardLayout cl = (CardLayout)(cards.getLayout());
         cl.show(cards, (String)evt.getItem());
+    }
+
+    public StringBuilder getFloorsInfo(ArrayList<Floor> fl)
+    {
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i<fl.size();i++)
+        {
+            sb.append("Piano ");
+            sb.append(fl.get(i).getId());
+            sb.append(", posti ");
+            sb.append(fl.get(i).getFreeSpace());
+            sb.append("\n");
+        }
+        return sb;
     }
 
     private void setFont(Component comp, Font font)
