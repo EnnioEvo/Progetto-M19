@@ -20,6 +20,7 @@ public class ManagerGUI implements ItemListener
     final private static String SUBDIVISION = "Scegli suddivisione posti";
     final private static String DRIVERINFO = "Visualizza informazioni clienti";
 
+
     public ManagerGUI(Manager man)
     {
         this.man = man;

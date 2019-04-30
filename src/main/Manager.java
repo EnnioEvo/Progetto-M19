@@ -86,6 +86,7 @@ public class Manager
         {
             freeSpacesTicketNow++;
             entryToT++;   //Perche non viene incrementata all'ingresso degli abbonati?
+
             drivers.add(new Driver(carId));
 
             //stampa fittizia della tessera
@@ -106,7 +107,8 @@ public class Manager
             d.makeSub();
             System.out.println("Abbonamento acquistato");
             System.out.println(d.printSub());
-            freeSpacesSubNow++;
+            freeSpacesSubNow++; //NB: secondo me potremmo anche decrementarlo , e quando arriva a Zero il metodo non va piu,
+            //ovviamente è la stessa cosa, dimmi cosa secondo te è più corretto
             subDrivers.add(d);
         }
         else
@@ -192,7 +194,7 @@ public class Manager
 
         /*double DeltaTime = dataNow.getTimeInMillis() - dataDriver.getTimeInMillis();
         DeltaTime = DeltaTime/(1000*60*60); //risalgo ai minuti
-        return DeltaTime;*/
+        return DeltaTime;*/ //VISTO: POSSIAMO ANCHE ELIMINARE IL DeltaTime se sei d'accordo
     }
 
 
