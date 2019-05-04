@@ -1,13 +1,13 @@
 package main.Peripherals;
 
+import main.Manager;
+
 public abstract class Column {
     protected String id;
-    protected static int count = 0;
-    protected int countSub;
+    protected Manager man;
 
-    public Column(String id, int count, int countSub) {
+    public Column(String id, Manager man) {
         this.id = id;
-        this.count = count;
-        this.countSub = countSub;
+        this.man = man;
     }
 }

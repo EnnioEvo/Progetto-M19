@@ -130,7 +130,7 @@ public class Manager
 
 //*********************************metodi d'uscita***************************************
 
-    public void exit(String carID)
+    public boolean exit(String carID)   //messo boolean per recuperare il check
     {
         boolean check = false;
         Driver toBeRemoved = new Driver("");
@@ -181,6 +181,7 @@ public class Manager
         {
             throw new RuntimeException("Tessera non riconosciuta");
         }
+        return check;   //con il check vedo se aprire la sbarra o tenerla chiusa
     }
 
     private boolean checkDeltaTime(GregorianCalendar dataDriverPaid)

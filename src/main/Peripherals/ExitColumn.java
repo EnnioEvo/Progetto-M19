@@ -1,16 +1,22 @@
 package main.Peripherals;
 
+import main.Manager;
+
 public class ExitColumn extends Column {
 
-    public ExitColumn(String id, int count, int countSub) {
-        super(id, count, countSub);
+    private Bar bar;
+
+    public ExitColumn(String id, Manager man) {
+        super(id, man);
+        this.bar = bar;
     }
 
-    public void exitTicket(String carId){
-        count --;
-    }
-
-    public void exitSub(String carId){
-        countSub --;
+    public void exit(String carId){
+        if (man.exit(carId) == true) {
+            bar.open();
+        }
+        else{
+            bar.close();
+        }
     }
 }
