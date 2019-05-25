@@ -35,7 +35,7 @@ public class Manager
         this.floorsList = new ArrayList<>();
         this.freeSpacesTot = 0;
         this.freeSpacesSubTot = 0;
-        this.freeSpacesTicketTot = 0;
+        this.freeSpacesTicketTot = 10;
         this.freeSpacesSubNow = 0;
         this.freeSpacesTicketNow = 0;
         this.drivers = new ArrayList<>();

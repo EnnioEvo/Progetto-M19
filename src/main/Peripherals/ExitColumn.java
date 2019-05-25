@@ -6,13 +6,14 @@ public class ExitColumn extends Column {
 
     private Bar bar;
 
-    public ExitColumn(String id, Manager man) {
-        super(id, man);
+    public ExitColumn(String id) {
+        super(id);
         this.bar = bar;
     }
 
     public void exit(String carId){
-        if (man.exit(carId) == true) {
+        Manager m = new Manager();
+        if (m.exit(carId) == true) {
             bar.open();
         }
         else{

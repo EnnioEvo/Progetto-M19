@@ -4,10 +4,8 @@ import main.Manager;
 
 public abstract class Column {
     protected String id;
-    protected Manager man;
 
-    public Column(String id, Manager man) {
+    public Column(String id) {
         this.id = id;
-        this.man = man;
     }
 }

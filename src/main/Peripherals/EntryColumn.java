@@ -1,22 +1,19 @@
 package main.Peripherals;
 
-import main.Floor;
 import main.Manager;
 
-import java.util.ArrayList;
-
 public class EntryColumn extends Column {
-
-    public EntryColumn(String id, Manager man) {
-        super(id, man);
-        this.man = man;
+    public EntryColumn(String id) {
+        super(id);
     }
 
-    public void entryTicket(String carId){
-        man.entryTicket(carId);
+    public void entryTicket(String id){
+        Manager m = new Manager();
+        m.entryTicket(id);
     }
 
-    public void entrySub(String carId){
-        man.entrySub(carId);
+    public void entrySub(String id){
+        Manager m = new Manager();
+        m.entrySub(id);
     }
 }
