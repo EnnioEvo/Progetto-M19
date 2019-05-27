@@ -80,6 +80,12 @@ public class Manager
 
     public boolean entryTicket(String carId)
     {
+        if(!checkCarId(carId))
+        {
+            System.out.println("Targa non valida");
+            return false;
+        }
+
         boolean entry = false;
         if(freeSpacesTicketNow + 1 > freeSpacesTicketTot)
         {
@@ -103,6 +109,12 @@ public class Manager
 
     public boolean entrySub(String carId)
     {
+        if(!checkCarId(carId))
+        {
+            System.out.println("Targa non valida");
+            return false;
+        }
+
         boolean entry = false;
         if(freeSpacesSubNow + 1 > freeSpacesSubTot)
         {
@@ -165,6 +177,7 @@ public class Manager
                     {
                         exit = true;
                         System.out.println("Uscita abbonamento avvenuta con successo        " + d.getCarId());
+                        d.setInPark(false);
                     }
                     else
                     {
@@ -175,6 +188,7 @@ public class Manager
                 {
                     exit = true;
                     System.out.println("Uscita abbonamento avvenuta con successo        " + d.getCarId());
+                    d.setInPark(false);
                 }
             }
         }
@@ -334,6 +348,18 @@ public class Manager
             }
         }
         return check;
+    }
+
+    private boolean checkCarId(String carId)
+    {
+        if(carId.length() == 8)
+        {
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 // ************** fine metodi check abbonamento ************************************
 

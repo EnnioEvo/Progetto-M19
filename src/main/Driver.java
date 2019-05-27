@@ -25,7 +25,7 @@ public class Driver
 
     public void makeSub()
     {
-        sub = new Subscription();
+        sub = new MonthlySubscription();
     }
 
     public String printSub()
@@ -75,7 +75,7 @@ public class Driver
     public boolean isPaid() { return Paid;  }
 
     // get and set ''inpark''
-    public boolean getInPark(){return sub.isInPark();}
+    public boolean getInPark(){return sub.getInPark();}
 
     public void setInPark(boolean inPark) {sub.setInPark(inPark);}
 }

@@ -10,7 +10,7 @@ public class ExitColumnGUI implements ItemListener {
     private JPanel cards;  //Pannello che usa CardLayout
     final private static String EXIT = "Uscita";
 
-    public ExitColumnGUI(ExitColumn entry)
+    public ExitColumnGUI(ExitColumn exit)
     {
         this.exit = exit;
         JFrame f = new JFrame();
@@ -89,14 +89,7 @@ public class ExitColumnGUI implements ItemListener {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                try
-                {
-                    exit.exit(exit.id);
-                }
-                catch(NumberFormatException ex)
-                {
-                    info.setText("Targa non valida");
-                }
+                exit.exit(targa.getText());
             }
         });
         JPanel bottomPanel = new JPanel(new GridLayout(1,3));

@@ -7,7 +7,6 @@ public abstract class Subscription
 {
     private GregorianCalendar dateStart, dateFinish, datePaidExtra;
     private boolean paySub, inPark;
-    private boolean paySub;
     protected double cost;
     public Subscription()
     {
@@ -53,5 +52,15 @@ public abstract class Subscription
     {
 
         this.datePaidExtra = datePaidExtra;
+    }
+
+    public boolean getInPark()
+    {
+        return inPark;
+    }
+
+    public void setInPark(boolean inPark)
+    {
+        this.inPark = inPark;
     }
 }
