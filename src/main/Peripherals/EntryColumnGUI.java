@@ -100,14 +100,12 @@ public class EntryColumnGUI implements ItemListener {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                try
-                {
-                    entry.entryTicket(targa.getText());
-                }
-                catch(NumberFormatException ex)
-                {
-                    info.setText("Targa non valida");
-                }
+
+                    if(targa.getText().length() == 6) {
+                        entry.entryTicket(targa.getText());
+                    }else {
+                        info.setText("Targa non valida");
+                    }
             }
         });
         JPanel bottomPanel = new JPanel(new GridLayout(1,3));
@@ -165,12 +163,9 @@ public class EntryColumnGUI implements ItemListener {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                try
-                {
+                if(targa.getText().length() == 6) {
                     entry.entrySub(targa.getText());
-                }
-                catch(NumberFormatException ex)
-                {
+                }else {
                     info.setText("Targa non valida");
                 }
             }

@@ -7,12 +7,13 @@ public class Subscription
 {
 
     private GregorianCalendar dateStart, dateFinish, datePaidExtra;
-    private boolean paySub;
+    private boolean paySub, inPark;
     public Subscription()
     {
         this.paySub = false;
         this.dateStart = new GregorianCalendar();
         this.dateFinish = makesub();
+        this.inPark = false;
     }
 
     private GregorianCalendar makesub()
@@ -58,5 +59,13 @@ public class Subscription
     {
 
         this.datePaidExtra = datePaidExtra;
+    }
+
+    public boolean isInPark() {
+        return inPark;
+    }
+
+    public void setInPark(boolean inPark) {
+        this.inPark = inPark;
     }
 }

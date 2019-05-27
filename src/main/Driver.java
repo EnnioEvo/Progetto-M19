@@ -10,6 +10,7 @@ public class Driver
     private boolean Paid;
     private Subscription sub;
 
+
     public Driver(String carId)
     {
         this.carId = carId;
@@ -36,6 +37,8 @@ public class Driver
     {
         return sub.getDateFinish();
     }
+
+
 
     public boolean getPaySub()
     {
@@ -70,4 +73,9 @@ public class Driver
     public GregorianCalendar getTimePaid() { return timePaid; }
 
     public boolean isPaid() { return Paid;  }
+
+    // get and set ''inpark''
+    public boolean getInPark(){return sub.isInPark();}
+
+    public void setInPark(boolean inPark) {sub.setInPark(inPark);}
 }

@@ -81,8 +81,10 @@ public class Manager
         if(freeSpacesTicketNow + 1 > freeSpacesTicketTot)
         {
             System.out.println("Posti ticket finiti");
-        }
-        else
+        } else if (checkTicket(carId)){
+            entry = false;
+            System.out.println("ERROR: targa: "+ carId + "  già presente all'interno del parcheggio");
+        } else
         {
             freeSpacesTicketNow++;
             entryToT++;   //Perche non viene incrementata all'ingresso degli abbonati?
@@ -113,6 +115,7 @@ public class Manager
             freeSpacesSubNow++; //NB: secondo me potremmo anche decrementarlo , e quando arriva a Zero il metodo non va piu,
             //ovviamente è la stessa cosa, dimmi cosa secondo te è più corretto
             subDrivers.add(d);
+            d.setInPark(true);
             entry = true;
         }
         else
@@ -122,8 +125,13 @@ public class Manager
             {
                 System.out.println("Abbonamento scaduto");
             }
-            else
+            else if (checkInPark(carId)){
+
+                entry = false;
+                System.out.println("ERROR: targa: " +carId + "  già all'interno del parcheggio");
+            }else
             {
+
                 System.out.println("Ingresso abbonato avvenuto con successo");
                 entry = true;
             }
@@ -181,7 +189,9 @@ public class Manager
                     exit = true;
                     //NB mai rimuovere oggetti in un foreach
                     toBeRemoved = d;
+                    freeSpacesTicketNow--;
                     System.out.println("Uscita avvenuta con successo        " + d.getCarId());
+
                 }
             }
         }
@@ -309,7 +319,36 @@ public class Manager
         }
         return check;
     }
+
+    private boolean checkInPark(String cardID)
+    {
+        boolean check = false;
+        for (Driver d : subDrivers){
+            if(d.getCarId().equals(cardID)){
+                if(d.getInPark()){
+                    check = true;
+                }
+            }
+        }
+        return check;
+    }
 // ************** fine metodi check abbonamento ************************************
+
+//****************** metodo check in park per tickets *******************************
+
+    private boolean checkTicket(String cardID)
+    {
+        boolean check = false;
+        for (Driver d : drivers){
+            if(d.getCarId().equals(cardID)){
+                check = true;
+            }
+        }
+        return  check;
+
+    }
+
+    //****************** fine metodo check in park per tickets *******************************
 
     //Get and set
     public void setTariff(int tariff)
