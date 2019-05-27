@@ -1,6 +1,8 @@
 package main;
 
 import GUIs.ManagerGUI;
+import main.Peripherals.EntryColumn;
+import main.Peripherals.EntryColumnGUI;
 
 import java.awt.*;
 import java.util.Calendar;
@@ -42,6 +44,16 @@ public class Test
             public void run()
             {
                 new ManagerGUI(m);
+            }
+        });
+
+        EntryColumn entry = new EntryColumn("IT1224LK", m);
+        EventQueue.invokeLater(new Runnable()
+        {
+
+            @Override
+            public void run() {
+                new EntryColumnGUI(entry);
             }
         });
 

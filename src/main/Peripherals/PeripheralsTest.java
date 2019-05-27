@@ -16,7 +16,8 @@ public class PeripheralsTest {
             }
         });*/
 
-        EntryColumn entry = new EntryColumn("IT1224LK");
+        Manager man = new Manager();
+        EntryColumn entry = new EntryColumn("IT1224LK", man);
         EventQueue.invokeLater(new Runnable()
         {
 

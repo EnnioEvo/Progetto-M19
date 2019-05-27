@@ -75,12 +75,12 @@ public class Manager
 
 //******************* metodi d'ingresso********************
 
-    public void entryTicket(String carId)
+    public boolean entryTicket(String carId)
     {
+        boolean entry = false;
         if(freeSpacesTicketNow + 1 > freeSpacesTicketTot)
         {
-
-            throw new RuntimeException("Posti ticket finiti");
+            System.out.println("Posti ticket finiti");
         }
         else
         {
@@ -91,14 +91,17 @@ public class Manager
 
             //stampa fittizia della tessera
             System.out.println(printTickt(carId));
+            entry = true;
         }
+        return entry;
     }
 
-    public void entrySub(String carId)
+    public boolean entrySub(String carId)
     {
+        boolean entry = false;
         if(freeSpacesSubNow + 1 > freeSpacesSubTot)
         {
-            throw new RuntimeException("Abbonamenti  finiti");
+            System.out.println("Abbonamenti  finiti");
         }
         else if(checkSub(carId) == false)
         {
@@ -110,20 +113,23 @@ public class Manager
             freeSpacesSubNow++; //NB: secondo me potremmo anche decrementarlo , e quando arriva a Zero il metodo non va piu,
             //ovviamente è la stessa cosa, dimmi cosa secondo te è più corretto
             subDrivers.add(d);
+            entry = true;
         }
         else
         {
             //controllo sulla validità dell'abbonamento per effettuare l'ingresso
             if(checkDateSub(carId) == false)
             {
-                throw new RuntimeException("Abbonamento scaduto");
+                System.out.println("Abbonamento scaduto");
             }
             else
             {
                 System.out.println("Ingresso abbonato avvenuto con successo");
+                entry = true;
             }
 
         }
+        return entry;
     }
 
 //********************** fine metodi d'ingresso****************************
@@ -133,6 +139,7 @@ public class Manager
     public boolean exit(String carID)   //messo boolean per recuperare il check
     {
         boolean check = false;
+        boolean exit = false;
         Driver toBeRemoved = new Driver("");
         //Da fare: thread che ogni ora elimina abbonamneti scaduti NON presenti in quel momento nel parcheggio
         for(Driver d : subDrivers)
@@ -145,15 +152,17 @@ public class Manager
                     //Controlla se ha pagato la tariffa extra dopo la scadenza dell'abbonamneto
                     if(checkDeltaTime(d.getDatePaidExtraOfSub()) && d.getPaySub())
                     {
+                        exit = true;
                         System.out.println("Uscita abbonamento avvenuta con successo        " + d.getCarId());
                     }
                     else
                     {
-                        throw new RuntimeException("ERROR: uscita abbonamento negata");
+                        System.out.println("ERROR: uscita abbonamento negata");
                     }
                 }
                 else
                 {
+                    exit = true;
                     System.out.println("Uscita abbonamento avvenuta con successo        " + d.getCarId());
                 }
             }
@@ -165,10 +174,11 @@ public class Manager
                 check = true;
                 if((!checkDeltaTime(d.getTimePaid())) || !d.isPaid())
                 {
-                    throw new RuntimeException("ERROR: uscita negata");
+                    System.out.println("ERROR: uscita negata");
                 }
                 else
                 {
+                    exit = true;
                     //NB mai rimuovere oggetti in un foreach
                     toBeRemoved = d;
                     System.out.println("Uscita avvenuta con successo        " + d.getCarId());
@@ -179,9 +189,9 @@ public class Manager
         //Caso in cui la tessera non è riconosciuta per un qualsiasi motivo
         if(!check)
         {
-            throw new RuntimeException("Tessera non riconosciuta");
+            System.out.println("Tessera non riconosciuta");
         }
-        return check;   //con il check vedo se aprire la sbarra o tenerla chiusa
+        return exit;   //con il check vedo se aprire la sbarra o tenerla chiusa
     }
 
     private boolean checkDeltaTime(GregorianCalendar dataDriverPaid)
