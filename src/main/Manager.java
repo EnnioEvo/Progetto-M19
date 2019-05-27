@@ -12,6 +12,9 @@ import java.util.GregorianCalendar;
 //CHANGED METHODS: FIRST TEST: positive
 public class Manager
 {
+    public static double monthlyCost;
+
+
     private ArrayList<Floor> floorsList;
     private int freeSpacesTot, freeSpacesSubTot, freeSpacesTicketTot;
     private int freeSpacesSubNow, freeSpacesTicketNow;
