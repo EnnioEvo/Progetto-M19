@@ -6,10 +6,8 @@ public abstract class Column {
     protected String id;
     protected Manager man;
 
-    public Column(String id, Manager man)
+    public Column()
     {
-        this.id = id;
-        this.man = man;
     }
 
     public double getTariffofMan()

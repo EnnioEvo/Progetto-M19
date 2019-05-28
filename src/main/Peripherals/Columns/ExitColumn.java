@@ -8,10 +8,8 @@ public class ExitColumn extends Column {
     private Bar bar;
     private Observer obs;
 
-    public ExitColumn(String id, Manager man)
+    public ExitColumn()
     {
-        super(id, man);
-        bar = new Bar();
     }
 
     public void exit(String carId)
