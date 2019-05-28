@@ -5,16 +5,19 @@ import java.awt.*;
 import java.awt.event.*;
 
 
-public class EntryColumnGUI implements ItemListener {
+public class EntryColumnGUI implements ItemListener, Observer
+{
     private EntryColumn entry;
     private JPanel cards;  //Pannello che usa CardLayout
     final private static String TICKET = "Ticket";
     final private static String SUB = "Abbonamento";
+    private JFrame f;
+    private JTextField tariff;
 
     public EntryColumnGUI(EntryColumn entry)
     {
         this.entry = entry;
-        JFrame f = new JFrame();
+        f = new JFrame();
 
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension screenSize = toolkit.getScreenSize();
@@ -69,9 +72,9 @@ public class EntryColumnGUI implements ItemListener {
         card.setLayout(new BorderLayout());
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new GridLayout(1, 1));
-        JTextField jf1 = new JTextField("Tariffa : " + entry.getTariffofMan());
+        tariff = new JTextField("Tariffa : " + entry.getTariffofMan());
         JTextField jf2 = new JTextField("Inserire Targa: ");
-        jf1.setEditable(false);
+        tariff.setEditable(false);
         jf2.setEditable(false);
         JTextField targa = new JTextField();
         JTextArea info = new JTextArea();
@@ -89,7 +92,7 @@ public class EntryColumnGUI implements ItemListener {
         });
         JScrollPane scroll = new JScrollPane(info);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        topPanel.add(jf1);
+        topPanel.add(tariff);
         topPanel.add(jf2);
         topPanel.add(targa);
         topPanel.setPreferredSize(new Dimension(500,100));
@@ -183,6 +186,13 @@ public class EntryColumnGUI implements ItemListener {
     {
         CardLayout cl = (CardLayout)(cards.getLayout());
         cl.show(cards, (String)evt.getItem());
+    }
+
+    @Override
+    public void update()
+    {
+        tariff.setText("Tariffa : "  + entry.getTariffofMan());
+        System.out.println("update");
     }
 
     private void setFont(Component comp, Font font)

@@ -2,18 +2,23 @@ package main;
 
 import Exceptions.SubdivisionException;
 import main.Peripherals.Column;
+import main.Peripherals.EntryColumn;
+import main.Peripherals.ExitColumn;
+import main.Peripherals.Observer;
 
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.List;
 
 //CHANGED METHODS: FIRST TEST: positive
 public class Manager
 {
     public static double monthlyCost;
 
+    private int peripheralId = 0;
 
     private ArrayList<Floor> floorsList;
     private int freeSpacesTot, freeSpacesSubTot, freeSpacesTicketTot;
@@ -44,6 +49,8 @@ public class Manager
         this.drivers = new ArrayList<>();
         this.subDrivers = new ArrayList<>();
         this.entryToT = 0;
+
+        this.columnList = new ArrayList<>();
 
         //arraylist abbonamenti
         //this.sublist = new ArrayList<>();
@@ -379,10 +386,45 @@ public class Manager
 
     //****************** fine metodo check in park per tickets *******************************
 
+    private void addObserver(List<Observer> list, Observer obs)
+    {
+        list.add(obs);
+    }
+
+    private void notifyColumns()
+    {
+        for (Column c : columnList)
+        {
+               c.notifyObs();
+        }
+    }
+
+    public EntryColumn createEntryColumn()
+    {
+        EntryColumn col = new EntryColumn(peripheralId(), this);
+        columnList.add(col);
+        return col;
+    }
+
+    public ExitColumn createExitColumn()
+    {
+        ExitColumn col = new ExitColumn(peripheralId(), this);
+        columnList.add(col);
+        return col;
+    }
+
+    private String peripheralId()
+    {
+        peripheralId++;
+        return "ID_" + peripheralId;
+    }
+
+
     //Get and set
     public void setTariff(int tariff)
     {
         this.tariff = tariff;
+        notifyColumns();
     }
 
     public Driver getDriver(String carId)

@@ -5,6 +5,7 @@ import main.Manager;
 public class EntryColumn extends Column
 {
     private Bar bar;
+    private Observer obs;
 
     public EntryColumn(String id, Manager man)
     {
@@ -28,5 +29,14 @@ public class EntryColumn extends Column
         }
     }
 
+    @Override
+    public void notifyObs()
+    {
+        obs.update();
+    }
 
+    public void setObs(Observer obs)
+    {
+        this.obs = obs;
+    }
 }

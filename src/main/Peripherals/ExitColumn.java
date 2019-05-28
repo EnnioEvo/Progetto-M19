@@ -5,6 +5,7 @@ import main.Manager;
 public class ExitColumn extends Column {
 
     private Bar bar;
+    private Observer obs;
 
     public ExitColumn(String id, Manager man)
     {
@@ -18,5 +19,16 @@ public class ExitColumn extends Column {
         {
             bar.open();
         }
+    }
+
+    @Override
+    public void notifyObs()
+    {
+        obs.update();
+    }
+
+    public void setObs(Observer obs)
+    {
+        this.obs = obs;
     }
 }

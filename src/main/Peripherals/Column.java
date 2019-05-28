@@ -16,4 +16,6 @@ public abstract class Column {
     {
         return man.getTariff();
     }
+
+    public abstract void notifyObs();
 }

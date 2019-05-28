@@ -47,13 +47,14 @@ public class Test
             }
         });
 
-        EntryColumn entry = new EntryColumn("IT1224LK", m);
+        EntryColumn entry = m.createEntryColumn();
         EventQueue.invokeLater(new Runnable()
         {
 
             @Override
             public void run() {
-                new EntryColumnGUI(entry);
+                EntryColumnGUI g = new EntryColumnGUI(entry);
+                entry.setObs(g);
             }
         });
 
