@@ -1,6 +1,8 @@
-package main.Peripherals;
+package Tests;
 
-import main.Manager;
+import main.Manager.Manager;
+import main.Peripherals.Columns.EntryColumn;
+import main.Peripherals.Columns.EntryColumnGUI;
 
 import java.awt.*;
 

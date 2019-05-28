@@ -1,6 +1,7 @@
-package main.Peripherals;
+package main.Peripherals.Columns;
 
-import main.Manager;
+import main.Manager.Manager;
+import main.Peripherals.Observer;
 
 public class EntryColumn extends Column
 {

@@ -1,4 +1,4 @@
-package main;
+package main.Manager;
 
 public class Floor {
 

@@ -1,9 +1,10 @@
-package main;
+package main.Manager;
 
 import Exceptions.SubdivisionException;
-import main.Peripherals.Column;
-import main.Peripherals.EntryColumn;
-import main.Peripherals.ExitColumn;
+import main.Peripherals.Cash.Cash;
+import main.Peripherals.Columns.Column;
+import main.Peripherals.Columns.EntryColumn;
+import main.Peripherals.Columns.ExitColumn;
 import main.Peripherals.Observer;
 
 import java.text.DecimalFormat;

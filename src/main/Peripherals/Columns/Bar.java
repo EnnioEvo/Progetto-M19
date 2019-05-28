@@ -1,4 +1,4 @@
-package main.Peripherals;
+package main.Peripherals.Columns;
 
 public class Bar {
     private boolean isOpen;

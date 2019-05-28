@@ -1,4 +1,4 @@
-package main;
+package main.Peripherals.Cash;
 
 public class BancomatAdapter implements PaymentAdapter {
     @Override

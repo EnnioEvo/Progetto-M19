@@ -1,9 +1,9 @@
 package GUIs;
 
 import Exceptions.SubdivisionException;
-import main.Driver;
-import main.Floor;
-import main.Manager;
+import main.Manager.Driver;
+import main.Manager.Floor;
+import main.Manager.Manager;
 
 import javax.swing.*;
 import java.awt.*;

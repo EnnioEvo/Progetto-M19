@@ -1,4 +1,7 @@
-package main;
+package main.Manager;
+
+import main.Manager.Subscriptions.MonthlySubscription;
+import main.Manager.Subscriptions.Subscription;
 
 import java.util.GregorianCalendar;
 

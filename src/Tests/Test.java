@@ -1,8 +1,10 @@
-package main;
+package Tests;
 
 import GUIs.ManagerGUI;
-import main.Peripherals.EntryColumn;
-import main.Peripherals.EntryColumnGUI;
+import main.Manager.Driver;
+import main.Manager.Manager;
+import main.Peripherals.Columns.EntryColumn;
+import main.Peripherals.Columns.EntryColumnGUI;
 
 import java.awt.*;
 import java.util.Calendar;
