@@ -1,5 +1,7 @@
-package main.Peripherals.Columns;
+package GUIs;
 
+
+import main.Peripherals.Columns.ExitColumn;
 
 import javax.swing.*;
 import java.awt.*;

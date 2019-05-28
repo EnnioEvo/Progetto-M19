@@ -4,7 +4,7 @@ import GUIs.ManagerGUI;
 import main.Manager.Driver;
 import main.Manager.Manager;
 import main.Peripherals.Columns.EntryColumn;
-import main.Peripherals.Columns.EntryColumnGUI;
+import GUIs.EntryColumnGUI;
 
 import java.awt.*;
 import java.util.Calendar;

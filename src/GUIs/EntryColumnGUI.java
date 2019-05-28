@@ -1,5 +1,6 @@
-package main.Peripherals.Columns;
+package GUIs;
 
+import main.Peripherals.Columns.EntryColumn;
 import main.Peripherals.Observer;
 
 import javax.swing.*;
