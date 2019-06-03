@@ -1,12 +1,15 @@
 package main.Manager;
 
 import Exceptions.SubdivisionException;
+import GUIs.ManagerGUI;
 import main.Peripherals.Cash.Cash;
 import main.Peripherals.Columns.Column;
 import main.Peripherals.Columns.EntryColumn;
 import main.Peripherals.Columns.ExitColumn;
 import main.Peripherals.Observer;
+import net.Server;
 
+import java.awt.*;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
@@ -21,10 +24,12 @@ public class Manager
 
     private int peripheralId = 0;
 
+    private Server server;
+
     private ArrayList<Floor> floorsList;
     private int freeSpacesTot, freeSpacesSubTot, freeSpacesTicketTot;
     private int freeSpacesSubNow, freeSpacesTicketNow;
-    private int tariff;
+    private double tariff;
     private ArrayList<Driver> drivers, subDrivers;
     private ArrayList<Cash> cashList;
     private ArrayList<Column> columnList;
@@ -39,22 +44,41 @@ public class Manager
     private final static int deltaTimePaid = 10;  //In minuti
 
 
-    public Manager()
+    public Manager(int port)
     {
         this.floorsList = new ArrayList<>();
         this.freeSpacesTot = 0;
         this.freeSpacesSubTot = 0;
-        this.freeSpacesTicketTot = 10;
+        this.freeSpacesTicketTot = 0;
         this.freeSpacesSubNow = 0;
         this.freeSpacesTicketNow = 0;
         this.drivers = new ArrayList<>();
         this.subDrivers = new ArrayList<>();
         this.entryToT = 0;
-
         this.columnList = new ArrayList<>();
+
+        Manager m = this;
+        EventQueue.invokeLater(new Runnable()
+        {
+
+            @Override
+            public void run()
+            {
+                new ManagerGUI(m);
+            }
+        });
+
+        this.server = new Server(port, this);
+        this.server.startServer();
 
         //arraylist abbonamenti
         //this.sublist = new ArrayList<>();
+    }
+
+    public static void main(String[] args)
+    {
+        if (args.length < 1) return;
+        new Manager(Integer.parseInt(args[0]));
     }
 
     // ho cambiato il metodo perchè non settava il numero di posti liberi dei piani
@@ -65,7 +89,7 @@ public class Manager
             Floor floor = new Floor(floorsList.size(), numSpaces);
             floorsList.add(floor);
         }
-        freeSpacesTot = setFreeSpacesTot();
+        setFreeSpacesTot();
     }
 
     public void removeFloor(int rm)
@@ -81,60 +105,76 @@ public class Manager
         }
         floorsList.remove(toBeRemoved);
         changeFloorId();
-        freeSpacesTot = setFreeSpacesTot();
+        setFreeSpacesTot();
     }
 
 //******************* metodi d'ingresso********************
 
-    public boolean entryTicket(String carId)
+    public String entryTicket(String carId)
     {
-        if(!checkCarId(carId))
+        boolean entry = false;
+        String info;
+        if (!checkCarId(carId))
         {
-            System.out.println("Targa non valida");
-            return false;
+            info = "Targa non valida";
+            System.out.println(info);
+            return "entryNo-" + info;
         }
 
-        boolean entry = false;
-        if(freeSpacesTicketNow + 1 > freeSpacesTicketTot)
+        if (freeSpacesTicketNow + 1 > freeSpacesTicketTot)
         {
-            System.out.println("Posti ticket finiti");
-        } else if (checkTicket(carId)){
-            entry = false;
-            System.out.println("ERROR: targa: "+ carId + "  già presente all'interno del parcheggio");
-        } else
+            info = "Posti ticket finiti";
+            System.out.println(info);
+        }
+        else if (checkTicket(carId))
+        {
+            info = "Ingreso fallito: targa: " + carId + " già presente all'interno del parcheggio";
+            System.out.println(info);
+        }
+        else
         {
             freeSpacesTicketNow++;
             entryToT++;   //Perche non viene incrementata all'ingresso degli abbonati?
-
             drivers.add(new Driver(carId));
 
             //stampa fittizia della tessera
-            System.out.println(printTickt(carId));
+            info = "Ingresso riuscito, " + printTickt(carId);
+            System.out.println(info);
             entry = true;
         }
-        return entry;
+        if (entry)
+        {
+            return "entryOk-" + info;
+        }
+        else
+        {
+            return "entryNo-" + info;
+        }
     }
 
-    public boolean entrySub(String carId)
+    public String entrySub(String carId)
     {
+        String info;
         if(!checkCarId(carId))
         {
-            System.out.println("Targa non valida");
-            return false;
+            info = "Targa non valida";
+            System.out.println(info);
+            return "entryNo-" + info;
         }
 
         boolean entry = false;
         if(freeSpacesSubNow + 1 > freeSpacesSubTot)
         {
-            System.out.println("Abbonamenti  finiti");
+            info = "Abbonamenti  finiti";
+            System.out.println(info);
         }
         else if(checkSub(carId) == false)
         {
             // aggiungo qui l'acquisto dell'abbonamento che va impletato nella gui
             Driver d = new Driver(carId);
             d.makeSub();
-            System.out.println("Abbonamento acquistato");
-            System.out.println(d.printSub());
+            info = "Abbonamento acquistato, " + d.printSub();
+            System.out.println(info);
             freeSpacesSubNow++; //NB: secondo me potremmo anche decrementarlo , e quando arriva a Zero il metodo non va piu,
             //ovviamente è la stessa cosa, dimmi cosa secondo te è più corretto
             subDrivers.add(d);
@@ -146,36 +186,48 @@ public class Manager
             //controllo sulla validità dell'abbonamento per effettuare l'ingresso
             if(checkDateSub(carId) == false)
             {
-                System.out.println("Abbonamento scaduto");
+                info = "Abbonamento scaduto, ora è possibile riacquistarlo.";
+                System.out.println(info);
+                removeSub(carId);
             }
-            else if (checkInPark(carId)){
-
-                entry = false;
-                System.out.println("ERROR: targa: " +carId + "  già all'interno del parcheggio");
-            }else
+            else if (checkInPark(carId))
             {
-
-                System.out.println("Ingresso abbonato avvenuto con successo");
+                info = "Ingresso non riuscito, targa: " + carId + " già all'interno del parcheggio";
+                System.out.println(info);
+            }
+            else
+            {
+                info = "Ingresso abbonato avvenuto con successo";
+                System.out.println(info);
+                Driver d = getDriver(carId);
+                d.setInPark(true);
                 entry = true;
             }
-
         }
-        return entry;
+        if (entry)
+        {
+            return "entryOk-" + info;
+        }
+        else
+        {
+            return "entryNo-" + info;
+        }
     }
 
 //********************** fine metodi d'ingresso****************************
 
 //*********************************metodi d'uscita***************************************
 
-    public boolean exit(String carID)   //messo boolean per recuperare il check
+    public String exit(String carID)   //messo boolean per recuperare il check
     {
         boolean check = false;
         boolean exit = false;
+        String info = "";
         Driver toBeRemoved = new Driver("");
         //Da fare: thread che ogni ora elimina abbonamneti scaduti NON presenti in quel momento nel parcheggio
         for(Driver d : subDrivers)
         {
-            if(d.getCarId().equals(carID))
+            if(d.getCarId().equals(carID) && d.getInPark())
             {
                 check = true;
                 if(GregorianCalendar.getInstance().after(d.getDateFinishOfSub()) || !d.getPaySub())
@@ -184,20 +236,29 @@ public class Manager
                     if(checkDeltaTime(d.getDatePaidExtraOfSub()) && d.getPaySub())
                     {
                         exit = true;
-                        System.out.println("Uscita abbonamento avvenuta con successo        " + d.getCarId());
+                        info = "Uscita abbonamento avvenuta con successo " + d.getCarId();
+                        System.out.println(info);
                         d.setInPark(false);
                     }
                     else
                     {
-                        System.out.println("ERROR: uscita abbonamento negata");
+                        info = "L'abbonamento non è pagato o è scaduto, si prega di tornare alle casse.";
+                        System.out.println(info);
                     }
                 }
                 else
                 {
                     exit = true;
-                    System.out.println("Uscita abbonamento avvenuta con successo        " + d.getCarId());
+                    info = "Uscita abbonamento avvenuta con successo " + d.getCarId();
+                    System.out.println(info);
                     d.setInPark(false);
                 }
+            }
+            else if (d.getCarId().equals(carID))
+            {
+                check = true;
+                info = "Uscita fallita, l'abbonato non è nel parcheggio " + d.getCarId();
+                System.out.println(info);
             }
         }
         for(Driver d : drivers)
@@ -207,7 +268,8 @@ public class Manager
                 check = true;
                 if((!checkDeltaTime(d.getTimePaid())) || !d.isPaid())
                 {
-                    System.out.println("ERROR: uscita negata");
+                    info = "Il ticket non è pagato o è passato troppo tempo dal pagamento, si prega di tornare alle casse.";
+                    System.out.println(info);
                 }
                 else
                 {
@@ -215,7 +277,8 @@ public class Manager
                     //NB mai rimuovere oggetti in un foreach
                     toBeRemoved = d;
                     freeSpacesTicketNow--;
-                    System.out.println("Uscita avvenuta con successo        " + d.getCarId());
+                    info = "Uscita avvenuta con successo " + d.getCarId();
+                    System.out.println(info);
 
                 }
             }
@@ -224,9 +287,17 @@ public class Manager
         //Caso in cui la tessera non è riconosciuta per un qualsiasi motivo
         if(!check)
         {
-            System.out.println("Tessera non riconosciuta");
+            info = "Tessera non riconosciuta";
+            System.out.println(info);
         }
-        return exit;   //con il check vedo se aprire la sbarra o tenerla chiusa
+        if (exit)
+        {
+            return "exitOk-" + info;
+        }
+        else
+        {
+            return "exitNo-" + info;
+        }
     }
 
     private boolean checkDeltaTime(GregorianCalendar dataDriverPaid)
@@ -261,14 +332,21 @@ public class Manager
         }
     }
 
-    private int setFreeSpacesTot()  //Modificare non dovrebbe restituire nulla
+    private void setFreeSpacesTot()  //Modificare non dovrebbe restituire nulla
     {
         int i = 0;
         for(Floor f : floorsList)
         {
             i += f.getFreeSpace();
         }
-        return i;
+        freeSpacesTot = i;
+        freeSpacesTicketTot = freeSpacesTot - freeSpacesSubTot;
+        //Gestico caso in cui eliminando i piani ho piu posti in abbonamneto che posti liberi
+        if (freeSpacesTicketTot < 0)
+        {
+            freeSpacesSubTot = freeSpacesTicketTot;
+            freeSpacesTicketTot = 0;
+        }
     }
 
     private void changeFloorId()
@@ -300,11 +378,11 @@ public class Manager
     private String printTickt(String carId)
     {
         String s = "";
-        s += "IDTicket:   " + carId + "\n";
+        s += "IDTicket:   " + carId;
         for(Driver d : drivers)
         {
             if(d.getCarId().equals(carId)){
-                s+= "Ora Ingresso:  " + d.getTimeIn().toZonedDateTime().toString(); // toZonedDateTime converte nel nuovo formato di tempo di java 1.8
+                s+= ", ora Ingresso:  " + d.getTimeIn().toZonedDateTime().toString(); // toZonedDateTime converte nel nuovo formato di tempo di java 1.8
             }
         }
         return s;
@@ -349,8 +427,10 @@ public class Manager
     {
         boolean check = false;
         for (Driver d : subDrivers){
-            if(d.getCarId().equals(cardID)){
-                if(d.getInPark()){
+            if(d.getCarId().equals(cardID))
+            {
+                if(d.getInPark())
+                {
                     check = true;
                 }
             }
@@ -387,6 +467,19 @@ public class Manager
 
     //****************** fine metodo check in park per tickets *******************************
 
+    private void removeSub(String carID)
+    {
+        Driver toBeRemoved = new Driver("");
+        for(Driver d : subDrivers)
+        {
+            if(d.getCarId().equals(carID))
+            {
+                toBeRemoved = d;
+            }
+        }
+        subDrivers.remove(toBeRemoved);
+    }
+
     private void addObserver(List<Observer> list, Observer obs)
     {
         list.add(obs);
@@ -400,19 +493,19 @@ public class Manager
         }
     }
 
-    public EntryColumn createEntryColumn()
+    /*public EntryColumn createEntryColumn()
     {
         EntryColumn col = new EntryColumn(peripheralId(), this);
         columnList.add(col);
         return col;
-    }
+    }*/
 
-    public ExitColumn createExitColumn()
+    /*public ExitColumn createExitColumn()
     {
         ExitColumn col = new ExitColumn(peripheralId(), this);
         columnList.add(col);
         return col;
-    }
+    }*/
 
     private String peripheralId()
     {
@@ -425,7 +518,7 @@ public class Manager
     public void setTariff(int tariff)
     {
         this.tariff = tariff;
-        notifyColumns();
+        server.updatePeripherals("getTariff");
     }
 
     public Driver getDriver(String carId)
@@ -447,12 +540,45 @@ public class Manager
         return null;
     }
 
+    public String getFloorsInfo()
+    {
+        StringBuilder sb = new StringBuilder();
+        for (Floor f : floorsList)
+        {
+            sb.append(f.getFloorInfo());
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+
+    public String getDriversInfo()
+    {
+        StringBuilder sb = new StringBuilder();
+        for (Driver d : drivers)
+        {
+            sb.append(d.getDriverInfo());
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+
+    public String getSubDriversInfo()
+    {
+        StringBuilder sb = new StringBuilder();
+        for (Driver d : subDrivers)
+        {
+            sb.append(d.getDriverInfo());
+            sb.append("\n");
+        }
+        return sb.toString();
+    }
+
     public ArrayList<Floor> getFloorsList()
     {
         return floorsList;
     }
 
-    public int getTariff()
+    public double getTariff()
     {
         return tariff;
     }

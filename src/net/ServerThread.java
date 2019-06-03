@@ -1,11 +1,14 @@
 package net;
 
 
+import main.Manager.Manager;
+
 import java.io.*;
 import java.net.*;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * This thread is responsible to handle client connection.
@@ -15,13 +18,16 @@ import java.util.ArrayList;
 public class ServerThread extends Thread
 {
     private Socket socket;
-    private Server server;
     private PrintWriter writer;
+    private Manager man;
+    private boolean isRunning = true;
+    private final ConcurrentLinkedQueue<String> messages;
 
-    public ServerThread(Socket socket, Server server)
+    public ServerThread(Socket socket, ConcurrentLinkedQueue<String> messages, Manager man)
     {
         this.socket = socket;
-        this.server = server;
+        this.man = man;
+        this.messages = messages;
     }
 
     public void run()
@@ -37,25 +43,30 @@ public class ServerThread extends Thread
             System.out.println("start");
 
             String line;
+            String split[];
             do
             {
-                writer.println("Cosa vuoi fare? (info) (gioca)");
                 line = reader.readLine();
-                switch(line)
+                split = line.split("-");
+                switch (split[0])
                 {
-                    case "info":
-                        ArrayList<Integer> data = server.getInfo(socket.getRemoteSocketAddress().toString());
-                        writer.println("Partite perse: " + data.get(0) + "\nPartite vinte: " + data.get(1));
+                    case "entry":
+                        writer.println(man.entryTicket(split[1]));
                         break;
-                    case "gioca":
-                        ArrayList<Integer> dat = server.getInfo(socket.getRemoteSocketAddress().toString());
-                        writer.println("Partite perse: " + dat.get(0) + "\nPartite vinte: " + dat.get(1));
+                    case "entrySub":
+                        writer.println(man.entrySub(split[1]));
+                        break;
+                    case "getTariff":
+                        writer.println("tariff-" + man.getTariff());
+                        break;
+                    case "exit":
+                        writer.println(man.exit(split[1]));
                         break;
                     default:
-                        writer.println("Comando errato");
+                        System.out.println("Comando errato");
                         break;
                 }
-            }while(!line.equals("gioca"));
+            }while (isRunning);
 
             System.out.println("finish");
             socket.close();
@@ -64,6 +75,15 @@ public class ServerThread extends Thread
         {
             System.out.println("Server exception: " + ex.getMessage());
             ex.printStackTrace();
+        }
+    }
+
+    public void stopThread()
+    {
+        isRunning = false;
+        if (!isRunning)
+        {
+            interrupt();
         }
     }
 

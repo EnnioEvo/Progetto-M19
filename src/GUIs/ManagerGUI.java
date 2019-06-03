@@ -119,9 +119,7 @@ public class ManagerGUI implements ItemListener
                 try
                 {
                     man.makeFloors(Integer.parseInt(floors.getText()), Integer.parseInt(spaces.getText()));
-                    ArrayList<Floor> fl = man.getFloorsList();
-                    StringBuilder sb = getFloorsInfo(fl);
-                    info.setText(sb.toString());
+                    info.setText(man.getFloorsInfo());
                 }
                 catch(NumberFormatException ex)
                 {
@@ -177,9 +175,7 @@ public class ManagerGUI implements ItemListener
                 try
                 {
                     man.removeFloor(Integer.parseInt(floor.getText()));
-                    ArrayList<Floor> fl = man.getFloorsList();
-                    StringBuilder sb = getFloorsInfo(fl);
-                    info.setText(sb.toString());
+                    info.setText(man.getFloorsInfo());
                 }
                 catch(NumberFormatException ex)
                 {
@@ -346,42 +342,17 @@ public class ManagerGUI implements ItemListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                ArrayList<Driver> drivers = man.getDrivers();
-                ArrayList<Driver> subs = man.getSubDrivers();
                 String sw = (String)cb.getSelectedItem();
                 switch(sw)
                 {
                     case "Solo clienti normali":
-                        StringBuilder sb = new StringBuilder();
-                        for (Driver d : drivers)
-                        {
-                            sb.append(getDriverInfo(d));
-                            sb.append("\n");
-                        }
-                        info.setText(sb.toString());
+                        info.setText(man.getDriversInfo());
                         break;
                     case "Solo abbonati":
-                        StringBuilder sb2 = new StringBuilder();
-                        for (Driver d : subs)
-                        {
-                            sb2.append(getDriverInfo(d));
-                            sb2.append("\n");
-                        }
-                        info.setText(sb2.toString());
+                        info.setText(man.getSubDriversInfo());
                         break;
                     case "Tutti":
-                        StringBuilder sb3 = new StringBuilder();
-                        for (Driver d : drivers)
-                        {
-                            sb3.append(getDriverInfo(d));
-                            sb3.append("\n");
-                        }
-                        for (Driver d : subs)
-                        {
-                            sb3.append(getDriverInfo(d));
-                            sb3.append("\n");
-                        }
-                        info.setText(sb3.toString());
+                        info.setText(man.getDriversInfo() + man.getSubDriversInfo());
                         break;
                 }
             }
@@ -406,26 +377,6 @@ public class ManagerGUI implements ItemListener
     {
         CardLayout cl = (CardLayout)(cards.getLayout());
         cl.show(cards, (String)evt.getItem());
-    }
-
-    private StringBuilder getFloorsInfo(ArrayList<Floor> fl)
-    {
-        StringBuilder sb = new StringBuilder();
-        for(int i=0; i<fl.size();i++)
-        {
-            sb.append("Piano ");
-            sb.append(fl.get(i).getId());
-            sb.append(", posti ");
-            sb.append(fl.get(i).getFreeSpace());
-            sb.append("\n");
-        }
-        return sb;
-    }
-
-    private String getDriverInfo(Driver d)
-    {
-        String s = "Cliente: " + d.getCarId() + ", ingresso: " + d.getTimeIn().toZonedDateTime().toString() + ", pagato: " + (d.getTimePaid()==null?"No":d.getTimePaid().toZonedDateTime().toString()) + ", abbonamento: " + (d.printSub()==null?"No":d.printSub());
-        return s;
     }
 
     private void setFont(Component comp, Font font)

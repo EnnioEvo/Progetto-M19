@@ -1,12 +1,11 @@
 package net;
 
+import main.Manager.Manager;
+
 import java.io.*;
-import java.lang.reflect.Array;
 import java.net.*;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * This server is multi-threaded.
@@ -16,19 +15,16 @@ import java.util.Map;
 public class Server
 {
     private int port;
-    private Map<String, ArrayList<Integer>> info;
+    private Manager man;
+    private ArrayList<Socket> socketList;
+    private final ConcurrentLinkedQueue<String> messages;
 
-    public Server(int port)
+    public Server(int port, Manager man)
     {
         this.port = port;
-        this.info = new HashMap<>();
-    }
-
-    public static void main(String[] args)
-    {
-        if (args.length < 1) return;
-        Server server = new Server(Integer.parseInt(args[0]));
-        server.startServer();
+        this.man = man;
+        this.socketList = new ArrayList<>();
+        this.messages = new ConcurrentLinkedQueue<>();
     }
 
     public void startServer()
@@ -40,18 +36,10 @@ public class Server
             while (true)
             {
                 Socket socket = serverSocket.accept();
+                socketList.add(socket);
                 System.out.println("New client connected");
-                ArrayList<Integer> data = new ArrayList<>();
-                data = getInfo(socket.getRemoteSocketAddress().toString());
-                if(data == null)
-                {
-                    data = new ArrayList<>();
-                    data.add(0);
-                    data.add(0);
-                }
-                info.put(socket.getRemoteSocketAddress().toString(), data);
 
-                ServerThread t = new ServerThread(socket, this);
+                ServerThread t = new ServerThread(socket, messages, man);
                 t.start();
             }
 
@@ -63,9 +51,22 @@ public class Server
         }
     }
 
-    public ArrayList<Integer> getInfo(String ip)
+    public void updatePeripherals(String command)
     {
-        return info.get(ip);
+        for (Socket s : socketList)
+        {
+            System.out.println("Update " + command);
+            try
+            {
+                OutputStream output = s.getOutputStream();
+                PrintWriter writer = new PrintWriter(output, true);
+                writer.println(command);
+            }
+            catch (IOException ex)
+            {
+                System.out.println("Server exception: " + ex.getMessage());
+                ex.printStackTrace();
+            }
+        }
     }
-
 }

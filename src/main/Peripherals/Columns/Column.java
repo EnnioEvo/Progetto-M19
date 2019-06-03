@@ -10,10 +10,12 @@ public abstract class Column {
     {
     }
 
-    public double getTariffofMan()
+    /*public double getTariffofMan()
     {
         return man.getTariff();
-    }
+    }*/
+
+    public abstract void receiveInfo(String info);
 
     public abstract void notifyObs();
 }
