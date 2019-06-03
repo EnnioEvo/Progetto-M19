@@ -14,8 +14,6 @@ public class MonthlySubscription extends Subscription
 
     public GregorianCalendar makesub()
     {
-
-
         GregorianCalendar d = new GregorianCalendar();
         d.add(Calendar.MONTH, 1); // funzione corretta, mi aggiunge un mese alla data odierna, ma stesso problema
         // della classe manager, non riesco a stampare il formato Gregorian

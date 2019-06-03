@@ -1,5 +1,6 @@
-package main.Peripherals.Columns;
+package GUIs;
 
+import main.Peripherals.Columns.EntryColumn;
 import main.Peripherals.Observer;
 
 import javax.swing.*;
@@ -14,7 +15,10 @@ public class EntryColumnGUI implements ItemListener, Observer
     final private static String TICKET = "Ticket";
     final private static String SUB = "Abbonamento";
     private JFrame f;
-    private JTextField tariff;
+    private JTextField tariffT;
+    private JTextField tariffS;
+    private JTextArea infoT;
+    private JTextArea infoS;
 
     public EntryColumnGUI(EntryColumn entry)
     {
@@ -74,14 +78,14 @@ public class EntryColumnGUI implements ItemListener, Observer
         card.setLayout(new BorderLayout());
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new GridLayout(1, 1));
-        tariff = new JTextField("Tariffa : " + entry.getTariffofMan());
+        tariffT = new JTextField("Tariffa : " + entry.getTariff());
         JTextField jf2 = new JTextField("Inserire Targa: ");
-        tariff.setEditable(false);
+        tariffT.setEditable(false);
         jf2.setEditable(false);
         JTextField targa = new JTextField();
-        JTextArea info = new JTextArea();
-        info.setEditable(false);
-        info.setLineWrap(true);
+        infoT = new JTextArea();
+        infoT.setEditable(false);
+        infoT.setLineWrap(true);
         //Reinizializzo JTextArea quando cambio card
         card.addComponentListener(new ComponentAdapter()
         {
@@ -89,12 +93,13 @@ public class EntryColumnGUI implements ItemListener, Observer
             public void componentHidden(ComponentEvent e)
             {
                 super.componentHidden(e);
-                info.setText("");
+                infoT.setText("");
+                infoS.setText("");
             }
         });
-        JScrollPane scroll = new JScrollPane(info);
+        JScrollPane scroll = new JScrollPane(infoT);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        topPanel.add(tariff);
+        topPanel.add(tariffT);
         topPanel.add(jf2);
         topPanel.add(targa);
         topPanel.setPreferredSize(new Dimension(500,100));
@@ -113,7 +118,7 @@ public class EntryColumnGUI implements ItemListener, Observer
         bottomPanel.add(create);
         bottomPanel.add(new JPanel());
         setFont(topPanel, new Font("Helvetica", Font.PLAIN, 30));
-        setFont(info, new Font("Helvetica", Font.PLAIN, 40));
+        setFont(infoT, new Font("Helvetica", Font.PLAIN, 40));
         setFont(bottomPanel, new Font("Helvetica", Font.PLAIN, 30));
         card.add(topPanel, BorderLayout.NORTH);
         card.add(scroll, BorderLayout.CENTER);
@@ -132,14 +137,14 @@ public class EntryColumnGUI implements ItemListener, Observer
         card.setLayout(new BorderLayout());
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new GridLayout(1, 1));
-        JTextField jf1 = new JTextField("Tariffa : "  + entry.getTariffofMan());
+        tariffS = new JTextField("Tariffa : "  + entry.getTariff());
         JTextField jf2 = new JTextField("Inserire Targa: ");
-        jf1.setEditable(false);
+        tariffS.setEditable(false);
         jf2.setEditable(false);
         JTextField targa = new JTextField();
-        JTextArea info = new JTextArea();
-        info.setEditable(false);
-        info.setLineWrap(true);
+        infoS = new JTextArea();
+        infoS.setEditable(false);
+        infoS.setLineWrap(true);
         //Reinizializzo JTextArea quando cambio card
         card.addComponentListener(new ComponentAdapter()
         {
@@ -147,12 +152,13 @@ public class EntryColumnGUI implements ItemListener, Observer
             public void componentHidden(ComponentEvent e)
             {
                 super.componentHidden(e);
-                info.setText("");
+                infoS.setText("");
+                infoT.setText("");
             }
         });
-        JScrollPane scroll = new JScrollPane(info);
+        JScrollPane scroll = new JScrollPane(infoS);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        topPanel.add(jf1);
+        topPanel.add(tariffS);
         topPanel.add(jf2);
         topPanel.add(targa);
         topPanel.setPreferredSize(new Dimension(500,100));
@@ -171,7 +177,7 @@ public class EntryColumnGUI implements ItemListener, Observer
         bottomPanel.add(create);
         bottomPanel.add(new JPanel());
         setFont(topPanel, new Font("Helvetica", Font.PLAIN, 30));
-        setFont(info, new Font("Helvetica", Font.PLAIN, 40));
+        setFont(infoS, new Font("Helvetica", Font.PLAIN, 40));
         setFont(bottomPanel, new Font("Helvetica", Font.PLAIN, 30));
         card.add(topPanel, BorderLayout.NORTH);
         card.add(scroll, BorderLayout.CENTER);
@@ -193,8 +199,11 @@ public class EntryColumnGUI implements ItemListener, Observer
     @Override
     public void update()
     {
-        tariff.setText("Tariffa : "  + entry.getTariffofMan());
         System.out.println("update");
+        tariffT.setText("Tariffa : " + entry.getTariff());
+        tariffS.setText("Tariffa : " + entry.getTariff());
+        infoT.setText(entry.getInfoBox());
+        infoS.setText(entry.getInfoBox());
     }
 
     private void setFont(Component comp, Font font)
