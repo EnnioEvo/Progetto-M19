@@ -3,9 +3,9 @@ package main.Manager;
 public class Floor {
 
 
-    int freeSpace;
-    int id;
-    int countCarIn;
+    private int freeSpace;
+    private int id;
+    private int countCarIn;
 
     public Floor(int id, int freeSpace)
     {

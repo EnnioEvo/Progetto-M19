@@ -1,5 +1,6 @@
 package GUIs;
 
+import Exceptions.NotEmptyFloorException;
 import Exceptions.SubdivisionException;
 import main.Manager.Driver;
 import main.Manager.Floor;
@@ -180,6 +181,10 @@ public class ManagerGUI implements ItemListener
                 catch(NumberFormatException ex)
                 {
                     info.setText("Numeri inseriti errati");
+                }
+                catch(NotEmptyFloorException ex)
+                {
+                    info.setText(ex.getMessage());
                 }
             }
         });

@@ -1,5 +1,6 @@
 package main.Manager;
 
+import Exceptions.NotEmptyFloorException;
 import Exceptions.SubdivisionException;
 import GUIs.ManagerGUI;
 import main.Peripherals.Cash.Cash;
@@ -12,9 +13,7 @@ import net.Server;
 import java.awt.*;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.GregorianCalendar;
+import java.util.*;
 import java.util.List;
 
 //CHANGED METHODS: FIRST TEST: positive
@@ -99,6 +98,10 @@ public class Manager
         {
             if(f.getId() == rm)
             {
+                if (f.getCountCarIn() != 0)
+                {
+                    throw new NotEmptyFloorException("Non puoi rimuovere un piano non vuoto.");
+                }
                 //NB mai rimuovere oggetti in un foreach
                 toBeRemoved = f;
             }
@@ -116,19 +119,19 @@ public class Manager
         String info;
         if (!checkCarId(carId))
         {
-            info = "Targa non valida";
+            info = "Targa non valida.";
             System.out.println(info);
             return "entryNo-" + info;
         }
 
         if (freeSpacesTicketNow + 1 > freeSpacesTicketTot)
         {
-            info = "Posti ticket finiti";
+            info = "Posti ticket finiti.";
             System.out.println(info);
         }
-        else if (checkTicket(carId))
+        else if (checkSubOrTicket(carId))
         {
-            info = "Ingreso fallito: targa: " + carId + " già presente all'interno del parcheggio";
+            info = "Ingreso fallito: targa: " + carId + " già presente all'interno del parcheggio.";
             System.out.println(info);
         }
         else
@@ -144,6 +147,7 @@ public class Manager
         }
         if (entry)
         {
+            randomEntry();
             return "entryOk-" + info;
         }
         else
@@ -163,32 +167,41 @@ public class Manager
         }
 
         boolean entry = false;
-        if(freeSpacesSubNow + 1 > freeSpacesSubTot)
+        if(checkSubOrTicket(carId) == false)
         {
-            info = "Abbonamenti  finiti";
-            System.out.println(info);
-        }
-        else if(checkSub(carId) == false)
-        {
-            // aggiungo qui l'acquisto dell'abbonamento che va impletato nella gui
-            Driver d = new Driver(carId);
-            d.makeSub();
-            info = "Abbonamento acquistato, " + d.printSub();
-            System.out.println(info);
-            freeSpacesSubNow++; //NB: secondo me potremmo anche decrementarlo , e quando arriva a Zero il metodo non va piu,
-            //ovviamente è la stessa cosa, dimmi cosa secondo te è più corretto
-            subDrivers.add(d);
-            d.setInPark(true);
-            entry = true;
+            if(freeSpacesSubNow + 1 > freeSpacesSubTot)
+            {
+                info = "Abbonamenti  finiti";
+                System.out.println(info);
+            }
+            else
+            {
+                // aggiungo qui l'acquisto dell'abbonamento che va impletato nella gui
+                Driver d = new Driver(carId);
+                d.makeSub();
+                info = "Abbonamento acquistato, " + d.printSub();
+                System.out.println(info);
+                freeSpacesSubNow++; //NB: secondo me potremmo anche decrementarlo , e quando arriva a Zero il metodo non va piu,
+                //ovviamente è la stessa cosa, dimmi cosa secondo te è più corretto
+                subDrivers.add(d);
+                d.setInPark(true);
+                entry = true;
+            }
         }
         else
         {
             //controllo sulla validità dell'abbonamento per effettuare l'ingresso
-            if(checkDateSub(carId) == false)
+            if (checkTicket(carId))
+            {
+                info = "Ingresso non riuscito, la targa risulta già all'interno con un ticket.";
+                System.out.println(info);
+            }
+            else if (checkDateSub(carId) == false)
             {
                 info = "Abbonamento scaduto, ora è possibile riacquistarlo.";
                 System.out.println(info);
                 removeSub(carId);
+                freeSpacesSubNow--;
             }
             else if (checkInPark(carId))
             {
@@ -206,6 +219,7 @@ public class Manager
         }
         if (entry)
         {
+            randomEntry();
             return "entryOk-" + info;
         }
         else
@@ -292,6 +306,7 @@ public class Manager
         }
         if (exit)
         {
+            randomExit();
             return "exitOk-" + info;
         }
         else
@@ -410,7 +425,7 @@ public class Manager
         return  check;
     }
 
-    private boolean checkSub(String carID)
+    private boolean checkSubOrTicket(String carID)
     {
         boolean check = false;
         for(Driver d : subDrivers)
@@ -420,6 +435,16 @@ public class Manager
                 check = true;
             }
         }
+        for (Driver d : drivers)
+        {
+            if(d.getCarId().equals(carID))
+            {
+                check = true;
+            }
+        }
+
+
+
         return check;
     }
 
@@ -453,14 +478,17 @@ public class Manager
 
 //****************** metodo check in park per tickets *******************************
 
-    private boolean checkTicket(String cardID)
+    private boolean checkTicket(String carID)
     {
         boolean check = false;
-        for (Driver d : drivers){
-            if(d.getCarId().equals(cardID)){
+        for (Driver d : drivers)
+        {
+            if(d.getCarId().equals(carID))
+            {
                 check = true;
             }
         }
+
         return  check;
 
     }
@@ -478,6 +506,20 @@ public class Manager
             }
         }
         subDrivers.remove(toBeRemoved);
+    }
+
+    private void randomEntry()
+    {
+        Random r = new Random();
+        int i = r.nextInt(floorsList.size());
+        floorsList.get(i).addCar();
+    }
+
+    private void randomExit()
+    {
+        Random r = new Random();
+        int i = r.nextInt(floorsList.size());
+        floorsList.get(i).deleteCar();
     }
 
     private void addObserver(List<Observer> list, Observer obs)
