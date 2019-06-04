@@ -129,7 +129,7 @@ public class Manager
             info = "Posti ticket finiti.";
             System.out.println(info);
         }
-        else if (checkTicket(carId))
+        else if (checkSubOrTicket(carId))
         {
             info = "Ingreso fallito: targa: " + carId + " già presente all'interno del parcheggio.";
             System.out.println(info);
@@ -167,32 +167,41 @@ public class Manager
         }
 
         boolean entry = false;
-        if(freeSpacesSubNow + 1 > freeSpacesSubTot)
+        if(checkSubOrTicket(carId) == false)
         {
-            info = "Abbonamenti  finiti";
-            System.out.println(info);
-        }
-        else if(checkSub(carId) == false)
-        {
-            // aggiungo qui l'acquisto dell'abbonamento che va impletato nella gui
-            Driver d = new Driver(carId);
-            d.makeSub();
-            info = "Abbonamento acquistato, " + d.printSub();
-            System.out.println(info);
-            freeSpacesSubNow++; //NB: secondo me potremmo anche decrementarlo , e quando arriva a Zero il metodo non va piu,
-            //ovviamente è la stessa cosa, dimmi cosa secondo te è più corretto
-            subDrivers.add(d);
-            d.setInPark(true);
-            entry = true;
+            if(freeSpacesSubNow + 1 > freeSpacesSubTot)
+            {
+                info = "Abbonamenti  finiti";
+                System.out.println(info);
+            }
+            else
+            {
+                // aggiungo qui l'acquisto dell'abbonamento che va impletato nella gui
+                Driver d = new Driver(carId);
+                d.makeSub();
+                info = "Abbonamento acquistato, " + d.printSub();
+                System.out.println(info);
+                freeSpacesSubNow++; //NB: secondo me potremmo anche decrementarlo , e quando arriva a Zero il metodo non va piu,
+                //ovviamente è la stessa cosa, dimmi cosa secondo te è più corretto
+                subDrivers.add(d);
+                d.setInPark(true);
+                entry = true;
+            }
         }
         else
         {
             //controllo sulla validità dell'abbonamento per effettuare l'ingresso
-            if(checkDateSub(carId) == false)
+            if (checkTicket(carId))
+            {
+                info = "Ingresso non riuscito, la targa risulta già all'interno con un ticket.";
+                System.out.println(info);
+            }
+            else if (checkDateSub(carId) == false)
             {
                 info = "Abbonamento scaduto, ora è possibile riacquistarlo.";
                 System.out.println(info);
                 removeSub(carId);
+                freeSpacesSubNow--;
             }
             else if (checkInPark(carId))
             {
@@ -416,7 +425,7 @@ public class Manager
         return  check;
     }
 
-    private boolean checkSub(String carID)
+    private boolean checkSubOrTicket(String carID)
     {
         boolean check = false;
         for(Driver d : subDrivers)
@@ -426,10 +435,15 @@ public class Manager
                 check = true;
             }
         }
-
-        if(checkTicket(carID)){
-            check = false;
+        for (Driver d : drivers)
+        {
+            if(d.getCarId().equals(carID))
+            {
+                check = true;
+            }
         }
+
+
 
         return check;
     }
@@ -464,17 +478,15 @@ public class Manager
 
 //****************** metodo check in park per tickets *******************************
 
-    private boolean checkTicket(String cardID)
+    private boolean checkTicket(String carID)
     {
         boolean check = false;
-        for (Driver d : drivers){
-            if(d.getCarId().equals(cardID)){
+        for (Driver d : drivers)
+        {
+            if(d.getCarId().equals(carID))
+            {
                 check = true;
             }
-        }
-
-        if(checkSub(cardID)){
-            check = false;
         }
 
         return  check;
