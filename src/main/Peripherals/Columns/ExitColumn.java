@@ -36,13 +36,13 @@ public class ExitColumn extends Column {
 
     public void exit(String carId)
     {
-        messages.add("exit-" + carId);
+        messages.add("exit--" + carId);
     }
 
     @Override
     public void receiveInfo(String info)
     {
-        String split[] = info.split("-");
+        String split[] = info.split("--");
         switch (split[0])
         {
             case "exitOk":

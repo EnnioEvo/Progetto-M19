@@ -17,14 +17,12 @@ public class Server
     private int port;
     private Manager man;
     private ArrayList<Socket> socketList;
-    private final ConcurrentLinkedQueue<String> messages;
 
     public Server(int port, Manager man)
     {
         this.port = port;
         this.man = man;
         this.socketList = new ArrayList<>();
-        this.messages = new ConcurrentLinkedQueue<>();
     }
 
     public void startServer()
@@ -39,7 +37,7 @@ public class Server
                 socketList.add(socket);
                 System.out.println("New client connected");
 
-                ServerThread t = new ServerThread(socket, messages, man);
+                ServerThread t = new ServerThread(socket, man);
                 t.start();
             }
 

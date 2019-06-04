@@ -21,13 +21,11 @@ public class ServerThread extends Thread
     private PrintWriter writer;
     private Manager man;
     private boolean isRunning = true;
-    private final ConcurrentLinkedQueue<String> messages;
 
-    public ServerThread(Socket socket, ConcurrentLinkedQueue<String> messages, Manager man)
+    public ServerThread(Socket socket, Manager man)
     {
         this.socket = socket;
         this.man = man;
-        this.messages = messages;
     }
 
     public void run()
@@ -47,24 +45,31 @@ public class ServerThread extends Thread
             do
             {
                 line = reader.readLine();
-                split = line.split("-");
-                switch (split[0])
+                split = line.split("--");
+                if (split.length < 2)
                 {
-                    case "entry":
-                        writer.println(man.entryTicket(split[1]));
-                        break;
-                    case "entrySub":
-                        writer.println(man.entrySub(split[1]));
-                        break;
-                    case "getTariff":
-                        writer.println("tariff-" + man.getTariff());
-                        break;
-                    case "exit":
-                        writer.println(man.exit(split[1]));
-                        break;
-                    default:
-                        System.out.println("Comando errato");
-                        break;
+                    System.out.println("Comando con argomenti errati");
+                }
+                else
+                {
+                    switch (split[0])
+                    {
+                        case "entry":
+                            writer.println(man.entryTicket(split[1]));
+                            break;
+                        case "entrySub":
+                            writer.println(man.entrySub(split[1]));
+                            break;
+                        case "getTariff":
+                            writer.println("tariff--" + man.getTariff());
+                            break;
+                        case "exit":
+                            writer.println(man.exit(split[1]));
+                            break;
+                        default:
+                            System.out.println("Comando errato");
+                            break;
+                    }
                 }
             }while (isRunning);
 

@@ -39,33 +39,28 @@ public class EntryColumn extends Column
 
     public void entryTicket(String id)
     {
-        messages.add("entry-" + id);
+        messages.add("entry--" + id);
     }
 
     public void entrySub(String id)
     {
-        messages.add("entrySub-" + id);
+        messages.add("entrySub--" + id);
     }
 
     public void getTariffofMan()
     {
-        messages.add("getTariff");
+        messages.add("getTariff--XX");
     }
 
     @Override
     public void receiveInfo(String info)
     {
-        String split[] = info.split("-");
+        String split[] = info.split("--");
         switch (split[0])
         {
             case "entryOk":
                 System.out.println("entryOk");
-                //NB simbolo - nell'orario
                 infoBox = split[1];
-                if (split.length > 2)
-                {
-                    infoBox += "/" + split[2] + "/" + split[3];
-                }
                 notifyObs();
                 bar.open();
                 break;

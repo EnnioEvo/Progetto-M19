@@ -121,7 +121,7 @@ public class Manager
         {
             info = "Targa non valida.";
             System.out.println(info);
-            return "entryNo-" + info;
+            return "entryNo--" + info;
         }
 
         if (freeSpacesTicketNow + 1 > freeSpacesTicketTot)
@@ -148,11 +148,11 @@ public class Manager
         if (entry)
         {
             randomEntry();
-            return "entryOk-" + info;
+            return "entryOk--" + info;
         }
         else
         {
-            return "entryNo-" + info;
+            return "entryNo--" + info;
         }
     }
 
@@ -163,7 +163,7 @@ public class Manager
         {
             info = "Targa non valida";
             System.out.println(info);
-            return "entryNo-" + info;
+            return "entryNo--" + info;
         }
 
         boolean entry = false;
@@ -220,11 +220,11 @@ public class Manager
         if (entry)
         {
             randomEntry();
-            return "entryOk-" + info;
+            return "entryOk--" + info;
         }
         else
         {
-            return "entryNo-" + info;
+            return "entryNo--" + info;
         }
     }
 
@@ -307,11 +307,11 @@ public class Manager
         if (exit)
         {
             randomExit();
-            return "exitOk-" + info;
+            return "exitOk--" + info;
         }
         else
         {
-            return "exitNo-" + info;
+            return "exitNo--" + info;
         }
     }
 
