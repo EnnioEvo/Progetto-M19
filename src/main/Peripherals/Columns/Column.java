@@ -1,8 +1,10 @@
 package main.Peripherals.Columns;
 
 import main.Manager.Manager;
+import main.Peripherals.Peripheral;
 
-public abstract class Column {
+public abstract class Column implements Peripheral
+{
     protected String id;
     protected Manager man;
 
