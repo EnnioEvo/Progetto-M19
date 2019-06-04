@@ -1,6 +1,7 @@
 package net;
 
 import main.Peripherals.Columns.Column;
+import main.Peripherals.Peripheral;
 
 import java.net.*;
 import java.io.*;
@@ -16,17 +17,15 @@ public class Client
 {
     private String hostName;
     private int port;
-    private BufferedReader console;
-    private Column col;
+    private Peripheral per;
     private final ConcurrentLinkedQueue<String> messages;
 
-    public Client(String hostName, int port, ConcurrentLinkedQueue messages, Column col)
+    public Client(String hostName, int port, ConcurrentLinkedQueue<String> messages, Peripheral per)
     {
         this.hostName = hostName;
         this.port = port;
         this.messages = messages;
-        this.col = col;
-        console = new BufferedReader(new InputStreamReader(System.in));
+        this.per = per;
         startClient();
     }
 
@@ -34,7 +33,7 @@ public class Client
     {
         try (Socket socket = new Socket(hostName, port))
         {
-            BackgroundThread th = new BackgroundThread(socket, col);
+            BackgroundThread th = new BackgroundThread(socket, per);
             th.start();
 
             OutputStream output = socket.getOutputStream();
@@ -68,13 +67,13 @@ public class Client
 class BackgroundThread extends Thread
 {
     private Socket socket;
-    private Column col;
+    private Peripheral per;
     private boolean isRunning = true;
 
-    BackgroundThread(Socket socket, Column col)
+    BackgroundThread(Socket socket, Peripheral per)
     {
         this.socket = socket;
-        this.col = col;
+        this.per = per;
     }
 
     @Override
@@ -92,7 +91,7 @@ class BackgroundThread extends Thread
                 {
                     while((line = reader.readLine()) != null)
                     {
-                        col.receiveInfo(line);
+                        per.receiveInfo(line);
                     }
                 }
             }
