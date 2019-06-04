@@ -426,6 +426,11 @@ public class Manager
                 check = true;
             }
         }
+
+        if(checkTicket(carID)){
+            check = false;
+        }
+
         return check;
     }
 
@@ -467,6 +472,11 @@ public class Manager
                 check = true;
             }
         }
+
+        if(checkSub(cardID)){
+            check = false;
+        }
+
         return  check;
 
     }
