@@ -16,7 +16,7 @@ public class Test
     public static void main(String[] args)
     {
 
-        int posti[] = new int[10];
+        /*int posti[] = new int[10];
         Manager m = new Manager();
         m.makeFloors(7, 50);
         m.setTariff(5);
@@ -49,7 +49,7 @@ public class Test
             }
         });
 
-        EntryColumn entry = m.createEntryColumn();
+        /*EntryColumn entry = m.createEntryColumn();
         EventQueue.invokeLater(new Runnable()
         {
 
@@ -58,7 +58,7 @@ public class Test
                 EntryColumnGUI g = new EntryColumnGUI(entry);
                 entry.setObs(g);
             }
-        });
+        });*/
 
     }
 }

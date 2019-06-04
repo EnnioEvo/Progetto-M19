@@ -18,8 +18,8 @@ public class PeripheralsTest {
             }
         });*/
 
-        Manager man = new Manager();
-        EntryColumn entry = new EntryColumn("IT1224LK", man);
+        //Manager man = new Manager();
+        /*EntryColumn entry = new EntryColumn("IT1224LK", man);
         EventQueue.invokeLater(new Runnable()
         {
 
@@ -27,6 +27,6 @@ public class PeripheralsTest {
             public void run() {
                 new EntryColumnGUI(entry);
             }
-        });
+        });*/
     }
 }
