@@ -20,6 +20,7 @@ public class ManagerGUI implements ItemListener
     final private static String REMOVEFLOOR = "Rimuovi piano";
     final private static String SUBDIVISION = "Scegli suddivisione posti";
     final private static String DRIVERINFO = "Visualizza informazioni clienti";
+    final private static String DELTATIME = "Scegli deltaTime";
 
 
     public ManagerGUI(Manager man)
@@ -45,7 +46,7 @@ public class ManagerGUI implements ItemListener
         //Metto JComboBox in un JPanel per un look migliore
         JPanel comboBoxPane = new JPanel();
         comboBoxPane.setLayout(new GridLayout(1,2));
-        String comboBoxItems[] = {MAKEFLOORS, REMOVEFLOOR, TARRIFF, SUBDIVISION, DRIVERINFO};
+        String comboBoxItems[] = {MAKEFLOORS, REMOVEFLOOR, TARRIFF, SUBDIVISION, DRIVERINFO, DELTATIME};
         JComboBox<String> cb = new JComboBox<>(comboBoxItems);
         cb.setEditable(false);
         cb.addItemListener(this);
@@ -66,6 +67,8 @@ public class ManagerGUI implements ItemListener
         JPanel card4 = chooseSubdivisionCard();
         //Schermata 5: visualizza informazioni sui clienti nel parcheggio
         JPanel card5 = showDriversInfo();
+        //Schermata 6: scelta deltatime
+        JPanel card6 = chooseDeltaTime();
 
         //Creo il pannello che contiene le "cards".
         cards = new JPanel(new CardLayout());
@@ -74,6 +77,7 @@ public class ManagerGUI implements ItemListener
         cards.add(card3, TARRIFF);
         cards.add(card4, SUBDIVISION);
         cards.add(card5, DRIVERINFO);
+        cards.add(card6, DELTATIME);
 
         f.add(comboBoxPane, BorderLayout.NORTH);
         f.add(cards, BorderLayout.CENTER);
@@ -254,6 +258,59 @@ public class ManagerGUI implements ItemListener
 
         return card;
     }
+    private JPanel chooseDeltaTime()
+    {
+        JPanel card = new JPanel();
+        card.setLayout(new BorderLayout());
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new GridLayout(1, 2));
+        JTextField jf1 = new JTextField("Tempo d'uscita: ");
+        jf1.setEditable(false);
+        JTextField tempo = new JTextField();
+        JTextArea info = new JTextArea();
+        info.setEditable(false);
+        info.setLineWrap(true);
+        //Reinizializzo JTextArea quando cambio card
+        card.addComponentListener(new ComponentAdapter(){
+            @Override
+            public void componentHidden(ComponentEvent e)
+            {
+                super.componentHidden(e);
+                info.setText("");
+            }
+        });
+        topPanel.add(jf1); topPanel.add(tempo);
+        topPanel.setPreferredSize(new Dimension(500,50));
+        JButton create = new JButton("Scegli");
+        create.setPreferredSize(new Dimension(200,100));
+        create.addActionListener(new ActionListener(){
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                try
+                {
+                    man.setTariff(Integer.parseInt(tempo.getText()));
+                    String st = "DeltaTime attuale: " + man.getDeltaTimePaid();
+                    info.setText(st);
+                }
+                catch(NumberFormatException ex)
+                {
+                    info.setText("Numeri inseriti errati");
+                }
+            }
+        });
+        JPanel bottomPanel = new JPanel(new GridLayout(1,3));
+        bottomPanel.add(new JPanel()); bottomPanel.add(create); bottomPanel.add(new JPanel());
+        setFont(topPanel, new Font("Helvetica", Font.PLAIN, 30));
+        setFont(info, new Font("Helvetica", Font.PLAIN, 40));
+        setFont(bottomPanel, new Font("Helvetica", Font.PLAIN, 30));
+        card.add(topPanel, BorderLayout.NORTH);
+        card.add(info, BorderLayout.CENTER);
+        card.add(bottomPanel, BorderLayout.SOUTH);
+
+        return card;
+
+        }
 
     private JPanel chooseSubdivisionCard()
     {

@@ -40,7 +40,7 @@ public class Manager
     //private ArrayList<Subscription> sublist;  Ora sono in subDrivers
 
     //aggiungo deltaTime
-    private final static int deltaTimePaid = 10;  //In minuti
+    private int deltaTimePaid;  //In minuti
 
 
     public Manager(int port)
@@ -615,6 +615,8 @@ public class Manager
         return sb.toString();
     }
 
+
+
     public ArrayList<Floor> getFloorsList()
     {
         return floorsList;
@@ -648,5 +650,9 @@ public class Manager
     public ArrayList<Driver> getSubDrivers()
     {
         return subDrivers;
+    }
+
+    public int getDeltaTimePaid() {
+        return deltaTimePaid;
     }
 }
