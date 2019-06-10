@@ -1,5 +1,5 @@
 package GUIs;
-import main.Cash;
+import main.Peripherals.Cash.Cash;
 
 import javax.swing.*;
 import java.awt.*;
@@ -62,7 +62,6 @@ public class CashGUI{
 
         f.add(cards, BorderLayout.CENTER);
         cardLayout.show(cards,START);
-        cardLayout.show(cards,ELECTRONICPAYMENT);
     }
 
     public JPanel startCard(){

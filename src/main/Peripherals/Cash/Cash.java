@@ -2,6 +2,8 @@ package main.Peripherals.Cash;
 
 import java.util.GregorianCalendar;
 import java.util.Locale;
+import main.Manager.Manager;
+import main.Manager.Driver;
 
 public class Cash{
     private int id;
