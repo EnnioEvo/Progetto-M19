@@ -35,8 +35,7 @@ public class Test
         m.exit("IT3456GT");
        // m.Analytics();
 
-        EventQueue.invokeLater(new Runnable()
-        {
+        EventQueue.invokeLater(new Runnable(){
 
             @Override
             public void run()
