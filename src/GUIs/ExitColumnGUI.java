@@ -1,16 +1,21 @@
-package main.Peripherals;
+package GUIs;
 
+
+import main.Peripherals.Columns.ExitColumn;
+import main.Peripherals.Observer;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
-public class ExitColumnGUI implements ItemListener {
+public class ExitColumnGUI implements ItemListener, Observer
+{
     private ExitColumn exit;
     private JPanel cards;  //Pannello che usa CardLayout
     final private static String EXIT = "Uscita";
+    private JTextArea info;
 
-    public ExitColumnGUI(ExitColumn entry)
+    public ExitColumnGUI(ExitColumn exit)
     {
         this.exit = exit;
         JFrame f = new JFrame();
@@ -64,7 +69,7 @@ public class ExitColumnGUI implements ItemListener {
         JTextField jf1 = new JTextField("Inserire Targa: ");
         jf1.setEditable(false);
         JTextField targa = new JTextField();
-        JTextArea info = new JTextArea();
+        info = new JTextArea();
         info.setEditable(false);
         info.setLineWrap(true);
         //Reinizializzo JTextArea quando cambio card
@@ -82,21 +87,14 @@ public class ExitColumnGUI implements ItemListener {
         topPanel.add(jf1);
         topPanel.add(targa);
         topPanel.setPreferredSize(new Dimension(500,100));
-        JButton create = new JButton("Acquista");
+        JButton create = new JButton("Esci");
         create.setPreferredSize(new Dimension(200,100));
         create.addActionListener(new ActionListener()
         {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                try
-                {
-                    exit.exit(exit.id);
-                }
-                catch(NumberFormatException ex)
-                {
-                    info.setText("Targa non valida");
-                }
+                exit.exit(targa.getText());
             }
         });
         JPanel bottomPanel = new JPanel(new GridLayout(1,3));
@@ -117,6 +115,12 @@ public class ExitColumnGUI implements ItemListener {
     {
         CardLayout cl = (CardLayout)(cards.getLayout());
         cl.show(cards, (String)evt.getItem());
+    }
+
+    @Override
+    public void update()
+    {
+        info.setText(exit.getInfoBox());
     }
 
     private void setFont(Component comp, Font font)

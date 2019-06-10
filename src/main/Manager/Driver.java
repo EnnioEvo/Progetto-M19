@@ -1,4 +1,7 @@
-package main;
+package main.Manager;
+
+import main.Manager.Subscriptions.MonthlySubscription;
+import main.Manager.Subscriptions.Subscription;
 
 import java.util.GregorianCalendar;
 
@@ -7,14 +10,21 @@ public class Driver
     private String carId;
     private GregorianCalendar timeIn;
     private GregorianCalendar timePaid;
-    private boolean Paid;
+    private boolean paid;
     private Subscription sub;
+
 
     public Driver(String carId)
     {
         this.carId = carId;
         this.timeIn = new GregorianCalendar();
-        this.Paid = false;
+        this.paid = false;
+        //Per testing
+        if (carId.equals("test0001"))
+        {
+            timePaid = new GregorianCalendar();
+            paid = true;
+        }
     }
 
     public void setTimePaid(GregorianCalendar timePaid)
@@ -24,7 +34,16 @@ public class Driver
 
     public void makeSub()
     {
-        sub = new Subscription();
+        sub = new MonthlySubscription();
+        if (carId.equals("test0002"))
+        {
+            setPaidSub(true);
+        }
+    }
+
+    public String getDriverInfo()
+    {
+        return "Cliente: " + getCarId() + ", ingresso: " + getTimeIn().toZonedDateTime().toString() + ", pagato: " + (getTimePaid()==null?"No":getTimePaid().toZonedDateTime().toString()) + ", abbonamento: " + (printSub()==null?"No":printSub());
     }
 
     public String printSub()
@@ -54,7 +73,7 @@ public class Driver
 
     public void setPaid(boolean paid)
     {
-        Paid = paid;
+        this.paid = paid;
     }
 
     public void setPaidSub(boolean paid)
@@ -69,5 +88,10 @@ public class Driver
 
     public GregorianCalendar getTimePaid() { return timePaid; }
 
-    public boolean isPaid() { return Paid;  }
+    public boolean isPaid() { return paid;  }
+
+    // get and set ''inpark''
+    public boolean getInPark(){return sub.getInPark();}
+
+    public void setInPark(boolean inPark) {sub.setInPark(inPark);}
 }

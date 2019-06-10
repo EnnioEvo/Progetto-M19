@@ -1,4 +1,4 @@
-package main;
+package main.Peripherals.Cash;
 
 public class VisaAdapter implements PaymentAdapter {
     @Override

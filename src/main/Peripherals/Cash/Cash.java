@@ -1,4 +1,4 @@
-package main;
+package main.Peripherals.Cash;
 
 import java.util.GregorianCalendar;
 import java.util.Locale;

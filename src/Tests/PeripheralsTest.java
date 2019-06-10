@@ -1,6 +1,8 @@
-package main.Peripherals;
+package Tests;
 
-import main.Manager;
+import main.Manager.Manager;
+import main.Peripherals.Columns.EntryColumn;
+import GUIs.EntryColumnGUI;
 
 import java.awt.*;
 
@@ -16,7 +18,8 @@ public class PeripheralsTest {
             }
         });*/
 
-        EntryColumn entry = new EntryColumn("IT1224LK");
+        //Manager man = new Manager();
+        /*EntryColumn entry = new EntryColumn("IT1224LK", man);
         EventQueue.invokeLater(new Runnable()
         {
 
@@ -24,6 +27,6 @@ public class PeripheralsTest {
             public void run() {
                 new EntryColumnGUI(entry);
             }
-        });
+        });*/
     }
 }

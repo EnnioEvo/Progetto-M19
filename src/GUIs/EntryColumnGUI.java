@@ -1,21 +1,29 @@
-package main.Peripherals;
+package GUIs;
+
+import main.Peripherals.Columns.EntryColumn;
+import main.Peripherals.Observer;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
 
 
-public class EntryColumnGUI implements ItemListener {
+public class EntryColumnGUI implements ItemListener, Observer
+{
     private EntryColumn entry;
     private JPanel cards;  //Pannello che usa CardLayout
     final private static String TICKET = "Ticket";
-    final private static String NEWSUB = "Nuovo abbonamento";
-    final private static String EXISTINGSUB = "Abbonamento esistente";
+    final private static String SUB = "Abbonamento";
+    private JFrame f;
+    private JTextField tariffT;
+    private JTextField tariffS;
+    private JTextArea infoT;
+    private JTextArea infoS;
 
     public EntryColumnGUI(EntryColumn entry)
     {
         this.entry = entry;
-        JFrame f = new JFrame();
+        f = new JFrame();
 
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension screenSize = toolkit.getScreenSize();
@@ -35,7 +43,7 @@ public class EntryColumnGUI implements ItemListener {
         //Metto JComboBox in un JPanel per un look migliore
         JPanel comboBoxPane = new JPanel();
         comboBoxPane.setLayout(new GridLayout(1,2));
-        String comboBoxItems[] = {TICKET, NEWSUB, EXISTINGSUB};
+        String comboBoxItems[] = {TICKET, SUB};
         JComboBox<String> cb = new JComboBox<>(comboBoxItems);
         cb.setEditable(false);
         cb.addItemListener(this);
@@ -49,16 +57,13 @@ public class EntryColumnGUI implements ItemListener {
         //Schermata 1: crea il ticket
         JPanel card1 = ticket();
         //Schermata 2: crea nuovo abbonamento
-        JPanel card2 = newSub();
-        //Schermata 3: abbonamento esistente
-        JPanel card3 = existentSub();
+        JPanel card2 = Sub();
 
 
         //Creo il pannello che contiene le "cards".
         cards = new JPanel(new CardLayout());
         cards.add(card1, TICKET);
-        cards.add(card2, NEWSUB);
-        cards.add(card3, EXISTINGSUB);
+        cards.add(card2, SUB);
 
         f.add(comboBoxPane, BorderLayout.NORTH);
         f.add(cards, BorderLayout.CENTER);
@@ -73,14 +78,14 @@ public class EntryColumnGUI implements ItemListener {
         card.setLayout(new BorderLayout());
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new GridLayout(1, 1));
-        JTextField jf1 = new JTextField("Tariffa : 10");
+        tariffT = new JTextField("Tariffa : " + entry.getTariff());
         JTextField jf2 = new JTextField("Inserire Targa: ");
-        jf1.setEditable(false);
+        tariffT.setEditable(false);
         jf2.setEditable(false);
         JTextField targa = new JTextField();
-        JTextArea info = new JTextArea();
-        info.setEditable(false);
-        info.setLineWrap(true);
+        infoT = new JTextArea();
+        infoT.setEditable(false);
+        infoT.setLineWrap(true);
         //Reinizializzo JTextArea quando cambio card
         card.addComponentListener(new ComponentAdapter()
         {
@@ -88,12 +93,13 @@ public class EntryColumnGUI implements ItemListener {
             public void componentHidden(ComponentEvent e)
             {
                 super.componentHidden(e);
-                info.setText("");
+                infoT.setText("");
+                infoS.setText("");
             }
         });
-        JScrollPane scroll = new JScrollPane(info);
+        JScrollPane scroll = new JScrollPane(infoT);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        topPanel.add(jf1);
+        topPanel.add(tariffT);
         topPanel.add(jf2);
         topPanel.add(targa);
         topPanel.setPreferredSize(new Dimension(500,100));
@@ -104,14 +110,7 @@ public class EntryColumnGUI implements ItemListener {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                try
-                {
-                    entry.entryTicket(entry.id);
-                }
-                catch(NumberFormatException ex)
-                {
-                    info.setText("Targa non valida");
-                }
+                entry.entryTicket(targa.getText());
             }
         });
         JPanel bottomPanel = new JPanel(new GridLayout(1,3));
@@ -119,7 +118,7 @@ public class EntryColumnGUI implements ItemListener {
         bottomPanel.add(create);
         bottomPanel.add(new JPanel());
         setFont(topPanel, new Font("Helvetica", Font.PLAIN, 30));
-        setFont(info, new Font("Helvetica", Font.PLAIN, 40));
+        setFont(infoT, new Font("Helvetica", Font.PLAIN, 40));
         setFont(bottomPanel, new Font("Helvetica", Font.PLAIN, 30));
         card.add(topPanel, BorderLayout.NORTH);
         card.add(scroll, BorderLayout.CENTER);
@@ -132,20 +131,20 @@ public class EntryColumnGUI implements ItemListener {
     //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
-    private JPanel newSub()
+    private JPanel Sub()
     {
         JPanel card = new JPanel();
         card.setLayout(new BorderLayout());
         JPanel topPanel = new JPanel();
         topPanel.setLayout(new GridLayout(1, 1));
-        JTextField jf1 = new JTextField("Tariffa : 10");
+        tariffS = new JTextField("Tariffa : "  + entry.getTariff());
         JTextField jf2 = new JTextField("Inserire Targa: ");
-        jf1.setEditable(false);
+        tariffS.setEditable(false);
         jf2.setEditable(false);
         JTextField targa = new JTextField();
-        JTextArea info = new JTextArea();
-        info.setEditable(false);
-        info.setLineWrap(true);
+        infoS = new JTextArea();
+        infoS.setEditable(false);
+        infoS.setLineWrap(true);
         //Reinizializzo JTextArea quando cambio card
         card.addComponentListener(new ComponentAdapter()
         {
@@ -153,12 +152,13 @@ public class EntryColumnGUI implements ItemListener {
             public void componentHidden(ComponentEvent e)
             {
                 super.componentHidden(e);
-                info.setText("");
+                infoS.setText("");
+                infoT.setText("");
             }
         });
-        JScrollPane scroll = new JScrollPane(info);
+        JScrollPane scroll = new JScrollPane(infoS);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        topPanel.add(jf1);
+        topPanel.add(tariffS);
         topPanel.add(jf2);
         topPanel.add(targa);
         topPanel.setPreferredSize(new Dimension(500,100));
@@ -169,14 +169,7 @@ public class EntryColumnGUI implements ItemListener {
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                try
-                {
-                    entry.entrySub(entry.id);
-                }
-                catch(NumberFormatException ex)
-                {
-                    info.setText("Targa non valida");
-                }
+                entry.entrySub(targa.getText());
             }
         });
         JPanel bottomPanel = new JPanel(new GridLayout(1,3));
@@ -184,7 +177,7 @@ public class EntryColumnGUI implements ItemListener {
         bottomPanel.add(create);
         bottomPanel.add(new JPanel());
         setFont(topPanel, new Font("Helvetica", Font.PLAIN, 30));
-        setFont(info, new Font("Helvetica", Font.PLAIN, 40));
+        setFont(infoS, new Font("Helvetica", Font.PLAIN, 40));
         setFont(bottomPanel, new Font("Helvetica", Font.PLAIN, 30));
         card.add(topPanel, BorderLayout.NORTH);
         card.add(scroll, BorderLayout.CENTER);
@@ -197,68 +190,20 @@ public class EntryColumnGUI implements ItemListener {
     //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
-    private JPanel existentSub()
-    {
-        JPanel card = new JPanel();
-        card.setLayout(new BorderLayout());
-        JPanel topPanel = new JPanel();
-        topPanel.setLayout(new GridLayout(1, 1));
-        JTextField jf1 = new JTextField("Inserire Targa: ");
-        jf1.setEditable(false);
-        JTextField targa = new JTextField();
-        JTextArea info = new JTextArea();
-        info.setEditable(false);
-        info.setLineWrap(true);
-        //Reinizializzo JTextArea quando cambio card
-        card.addComponentListener(new ComponentAdapter()
-        {
-            @Override
-            public void componentHidden(ComponentEvent e)
-            {
-                super.componentHidden(e);
-                info.setText("");
-            }
-        });
-        JScrollPane scroll = new JScrollPane(info);
-        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        topPanel.add(jf1);
-        topPanel.add(targa);
-        topPanel.setPreferredSize(new Dimension(500,100));
-        JButton create = new JButton("Fatto");
-        create.setPreferredSize(new Dimension(200,100));
-        create.addActionListener(new ActionListener()
-        {
-            @Override
-            public void actionPerformed(ActionEvent e)
-            {
-                try
-                {
-                    entry.entrySub(entry.id);
-                }
-                catch(NumberFormatException ex)
-                {
-                    info.setText("Targa non valida");
-                }
-            }
-        });
-        JPanel bottomPanel = new JPanel(new GridLayout(1,3));
-        bottomPanel.add(new JPanel());
-        bottomPanel.add(create);
-        bottomPanel.add(new JPanel());
-        setFont(topPanel, new Font("Helvetica", Font.PLAIN, 30));
-        setFont(info, new Font("Helvetica", Font.PLAIN, 40));
-        setFont(bottomPanel, new Font("Helvetica", Font.PLAIN, 30));
-        card.add(topPanel, BorderLayout.NORTH);
-        card.add(scroll, BorderLayout.CENTER);
-        card.add(bottomPanel, BorderLayout.SOUTH);
-
-        return card;
-    }
-
     public void itemStateChanged(ItemEvent evt)
     {
         CardLayout cl = (CardLayout)(cards.getLayout());
         cl.show(cards, (String)evt.getItem());
+    }
+
+    @Override
+    public void update()
+    {
+        System.out.println("update");
+        tariffT.setText("Tariffa : " + entry.getTariff());
+        tariffS.setText("Tariffa : " + entry.getTariff());
+        infoT.setText(entry.getInfoBox());
+        infoS.setText(entry.getInfoBox());
     }
 
     private void setFont(Component comp, Font font)

@@ -1,6 +1,10 @@
-package main;
+package Tests;
 
 import GUIs.ManagerGUI;
+import main.Manager.Driver;
+import main.Manager.Manager;
+import main.Peripherals.Columns.EntryColumn;
+import GUIs.EntryColumnGUI;
 
 import java.awt.*;
 import java.util.Calendar;
@@ -12,7 +16,7 @@ public class Test
     public static void main(String[] args)
     {
 
-        int posti[] = new int[10];
+        /*int posti[] = new int[10];
         Manager m = new Manager();
         m.makeFloors(7, 50);
         m.setTariff(5);
@@ -43,6 +47,17 @@ public class Test
                 new ManagerGUI(m);
             }
         });
+
+        /*EntryColumn entry = m.createEntryColumn();
+        EventQueue.invokeLater(new Runnable()
+        {
+
+            @Override
+            public void run() {
+                EntryColumnGUI g = new EntryColumnGUI(entry);
+                entry.setObs(g);
+            }
+        });*/
 
     }
 }
