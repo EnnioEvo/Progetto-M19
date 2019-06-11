@@ -8,4 +8,9 @@ public class BancomatAdapter implements PaymentAdapter {
         }
         return notPaid;
     }
+
+    @Override
+    public String getName() {
+        return "Bancomat";
+    }
 }

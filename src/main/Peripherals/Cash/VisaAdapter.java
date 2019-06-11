@@ -8,4 +8,9 @@ public class VisaAdapter implements PaymentAdapter {
         }
         return notPaid;
     }
+
+    @Override
+    public String getName() {
+        return "Visa";
+    }
 }

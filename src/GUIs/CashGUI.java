@@ -1,5 +1,6 @@
 package GUIs;
 import main.Peripherals.Cash.Cash;
+import main.Peripherals.Cash.Payment;
 
 import javax.swing.*;
 import java.awt.*;
@@ -11,7 +12,9 @@ import java.util.Random;
 public class CashGUI{
 
     private Cash cash;
+    String electronicMethod;
     private JPanel cards;  //Pannello che usa CardLayout
+
 
     final private static String START = "Inserisci la targa";
     final private static String CHOOSEMETHOD = "Scegli il metodo";
@@ -21,6 +24,7 @@ public class CashGUI{
 
     public CashGUI(Cash cash){
         this.cash = cash;
+        this.electronicMethod = cash.getPaymentAdapter().getName();
         JFrame f = new JFrame();
         setUIFont (new javax.swing.plaf.FontUIResource("Dialog",Font.PLAIN,32));
 
@@ -92,9 +96,9 @@ public class CashGUI{
         JPanel card = new JPanel();
         card.setLayout(new GridLayout(2,1));
         JButton cashButton = new JButton("Paga in contanti");
-        JButton bancomatButton = new JButton("Paga col bancomat");
+        JButton electronicButton = new JButton("Paga con " + electronicMethod);
         card.add(cashButton);
-        card.add(bancomatButton);
+        card.add(electronicButton);
 
         cashButton.addActionListener(new ActionListener() {
             @Override
@@ -102,7 +106,7 @@ public class CashGUI{
                 ((CardLayout)cards.getLayout()).show(cards,PAYWITHCASH);
             }
         });
-        bancomatButton.addActionListener(new ActionListener() {
+        electronicButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 ((CardLayout)cards.getLayout()).show(cards,ELECTRONICPAYMENT);
@@ -150,16 +154,17 @@ public class CashGUI{
         JPanel card = new JPanel();
         card.setLayout(new BorderLayout());
         JPanel bottomPanel = new JPanel(new BorderLayout());
-        JLabel remainingLabel = new JLabel("Inserire bancomat");
+        JLabel remainingLabel = new JLabel("Inserire " + electronicMethod);
         remainingLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        JButton bancomatButton = new JButton("Inserisci bancomat");
-        bottomPanel.add(bancomatButton,BorderLayout.CENTER);
+        JButton electronicButton = new JButton("Inserisci "  + electronicMethod);
+        bottomPanel.add(electronicButton,BorderLayout.CENTER);
         card.add(remainingLabel,BorderLayout.CENTER);
         card.add(bottomPanel,BorderLayout.SOUTH);
 
-        bancomatButton.addActionListener(new ActionListener() {
+        electronicButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+
                 ((CardLayout)cards.getLayout()).show(cards,RESULT);
             }
         });
@@ -181,6 +186,7 @@ public class CashGUI{
         restartButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
+
                 ((CardLayout)cards.getLayout()).show(cards,CHOOSEMETHOD);
             }
         });

@@ -56,6 +56,10 @@ public class Driver
         return sub.getDateFinish();
     }
 
+    public Subscription getSub() {
+        return sub;
+    }
+
     public boolean getPaySub()
     {
         return sub.getPaySub();
@@ -80,7 +84,6 @@ public class Driver
     {
         sub.setPaySub(paid);
     }
-
 
     public String getCarId() { return carId; }
 
