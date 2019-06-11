@@ -1,12 +1,11 @@
 package main.Manager.Subscriptions;
 
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 
 public abstract class Subscription
 {
-    private GregorianCalendar dateStart, dateFinish, datePaidExtra;
-    private boolean paySub, inPark;
+    private GregorianCalendar dateStart, dateFinish;
+    private boolean paySub, inPark, subPayementExpired;
     protected double cost;
     public Subscription()
     {
@@ -15,6 +14,7 @@ public abstract class Subscription
 
         this.dateFinish = makesub();
         this.inPark = false;
+        this.subPayementExpired = false;
     }
 
     public abstract GregorianCalendar makesub();
@@ -24,6 +24,11 @@ public abstract class Subscription
     public String toString()
     {
         return "Abbonamento scade:" + dateFinish.toZonedDateTime().toString();
+    }
+
+    public String infoClient()
+    {
+        return "--$dateFinish=" + dateFinish + "$paySub=" + paySub + "$subPayementExpired=" + subPayementExpired + "$cost=" + cost;
     }
 
     //get and set
@@ -43,16 +48,6 @@ public abstract class Subscription
         return dateFinish;
     }
 
-    public GregorianCalendar getDatePaidExtra()
-    {
-        return datePaidExtra;
-    }
-
-    public void setDatePaidExtra(GregorianCalendar datePaidExtra)
-    {
-
-        this.datePaidExtra = datePaidExtra;
-    }
 
     public boolean getInPark()
     {
@@ -62,5 +57,15 @@ public abstract class Subscription
     public void setInPark(boolean inPark)
     {
         this.inPark = inPark;
+    }
+
+    public boolean getSubPayementExpired()
+    {
+        return subPayementExpired;
+    }
+
+    public void setSubPayementExpired(boolean subPayementExpired)
+    {
+        this.subPayementExpired = subPayementExpired;
     }
 }

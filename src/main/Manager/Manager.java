@@ -247,7 +247,7 @@ public class Manager
                 if(GregorianCalendar.getInstance().after(d.getDateFinishOfSub()) || !d.getPaySub())
                 {
                     //Controlla se ha pagato la tariffa extra dopo la scadenza dell'abbonamneto
-                    if(checkDeltaTime(d.getDatePaidExtraOfSub()) && d.getPaySub())
+                    if(checkDeltaTime(d.getDateFinishOfSub()) && d.getPaySub())
                     {
                         exit = true;
                         info = "Uscita abbonamento avvenuta con successo " + d.getCarId();
@@ -256,7 +256,16 @@ public class Manager
                     }
                     else
                     {
-                        info = "L'abbonamento non è pagato o è scaduto, si prega di tornare alle casse.";
+                        // Se è pagato, allora è scaduto
+                        if(!d.getPaySub())
+                        {
+                            info = "L'abbonamento è scaduto, si prega di tornare alle casse.";
+                            d.setSubPayementExpiredOfSub(true);
+                        }
+                        else
+                        {
+                            info = "L'abbonamento non è pagato, si prega di tornare alle casse.";
+                        }
                         System.out.println(info);
                     }
                 }
@@ -282,7 +291,16 @@ public class Manager
                 check = true;
                 if((!checkDeltaTime(d.getTimePaid())) || !d.isPaid())
                 {
-                    info = "Il ticket non è pagato o è passato troppo tempo dal pagamento, si prega di tornare alle casse.";
+                    // Se è pagato, vuol dire che è scaduto
+                    if(d.isPaid())
+                    {
+                        info = "E' passato troppo tempo dal pagamento, si prega di tornare alle casse.";
+                        d.setTicketPayementExpired(true);
+                    }
+                    else
+                    {
+                        info = "Ticket non pagato, torna in cassa!";
+                    }
                     System.out.println(info);
                 }
                 else
@@ -490,8 +508,41 @@ public class Manager
         }
 
         return  check;
-
     }
+
+    //*******************************************
+
+    public String getDriverClientInfo(String carID)
+    {
+        StringBuilder sb = new StringBuilder();
+        boolean check = false;
+        for(Driver d : subDrivers)
+        {
+            if(d.getCarId().equals(carID))
+            {
+                sb.append(d.infoClient());
+                check = true;
+            }
+        }
+        for (Driver d : drivers)
+        {
+            if(d.getCarId().equals(carID))
+            {
+                sb.append(d.infoClient());
+                check = true;
+            }
+        }
+        if(check)
+        {
+            return sb.toString();
+        }
+        else
+        {
+            return "info--0";
+        }
+    }
+
+
 
     //****************** fine metodo check in park per tickets *******************************
 
@@ -531,7 +582,7 @@ public class Manager
     {
         for (Column c : columnList)
         {
-               c.notifyObs();
+            c.notifyObs();
         }
     }
 
@@ -560,6 +611,12 @@ public class Manager
     public void setTariff(int tariff)
     {
         this.tariff = tariff;
+        server.updatePeripherals("getTariff");
+    }
+
+    public void setDeltaTimePaid(int deltaTimePaid)
+    {
+        this.deltaTimePaid = deltaTimePaid;
         server.updatePeripherals("getTariff");
     }
 
@@ -626,6 +683,8 @@ public class Manager
     {
         return tariff;
     }
+
+
 
     public int getFreeSpacesTot()
     {

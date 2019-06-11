@@ -66,6 +66,9 @@ public class ServerThread extends Thread
                         case "exit":
                             writer.println(man.exit(split[1]));
                             break;
+                        case "driverInfo":
+                            writer.println(man.getDriverClientInfo(split[1]));
+                            break;
                         default:
                             System.out.println("Comando errato");
                             break;

@@ -289,7 +289,7 @@ public class ManagerGUI implements ItemListener
             {
                 try
                 {
-                    man.setTariff(Integer.parseInt(tempo.getText()));
+                    man.setDeltaTimePaid(Integer.parseInt(tempo.getText()));
                     String st = "DeltaTime attuale: " + man.getDeltaTimePaid();
                     info.setText(st);
                 }
@@ -310,7 +310,7 @@ public class ManagerGUI implements ItemListener
 
         return card;
 
-        }
+    }
 
     private JPanel chooseSubdivisionCard()
     {

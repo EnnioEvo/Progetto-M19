@@ -11,6 +11,7 @@ public class Driver
     private GregorianCalendar timeIn;
     private GregorianCalendar timePaid;
     private boolean paid;
+    private boolean ticketPayementExpired;
     private Subscription sub;
 
 
@@ -19,6 +20,7 @@ public class Driver
         this.carId = carId;
         this.timeIn = new GregorianCalendar();
         this.paid = false;
+        this.ticketPayementExpired = false;
         //Per testing
         if (carId.equals("test0001"))
         {
@@ -46,6 +48,31 @@ public class Driver
         return "Cliente: " + getCarId() + ", ingresso: " + getTimeIn().toZonedDateTime().toString() + ", pagato: " + (getTimePaid()==null?"No":getTimePaid().toZonedDateTime().toString()) + ", abbonamento: " + (printSub()==null?"No":printSub());
     }
 
+    public String infoClient()
+    {
+        StringBuilder sb = new StringBuilder();
+        sb.append("info--$timeIn=" + timeIn.toZonedDateTime().toString());
+        if(timePaid == null)
+        {
+            sb.append("$timepaid=0");
+        }
+        else
+        {
+            sb.append("$timepaid=" + timePaid.toZonedDateTime().toString());
+        }
+        sb.append("$paid=" + paid + "$ticketPayementExpired=" + ticketPayementExpired);
+        if(sub == null)
+        {
+            sb.append("--0");
+        }
+        else
+        {
+            sb.append(sub.infoClient());
+        }
+
+        return sb.toString();
+    }
+
     public String printSub()
     {
         return (sub==null?null:sub.toString());
@@ -63,16 +90,6 @@ public class Driver
     public boolean getPaySub()
     {
         return sub.getPaySub();
-    }
-
-    public GregorianCalendar getDatePaidExtraOfSub()
-    {
-        return sub.getDatePaidExtra();
-    }
-
-    public void setDatePaidExtraOfSub(GregorianCalendar c)
-    {
-        sub.setDatePaidExtra(c);
     }
 
     public void setPaid(boolean paid)
@@ -97,4 +114,22 @@ public class Driver
     public boolean getInPark(){return sub.getInPark();}
 
     public void setInPark(boolean inPark) {sub.setInPark(inPark);}
+
+    public boolean isTicketPayementExpired() {
+        return ticketPayementExpired;
+    }
+
+    public void setTicketPayementExpired(boolean ticketpayementExpired) {
+        this.ticketPayementExpired = ticketpayementExpired;
+    }
+
+    public boolean getSubPayementExpiredOfSub()
+    {
+        return sub.getSubPayementExpired();
+    }
+
+    public void setSubPayementExpiredOfSub(boolean b)
+    {
+        sub.setSubPayementExpired(b);
+    }
 }
