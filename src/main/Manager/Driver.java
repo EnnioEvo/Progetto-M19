@@ -1,6 +1,8 @@
 package main.Manager;
 
+import main.Manager.Subscriptions.AnnualSub;
 import main.Manager.Subscriptions.MonthlySubscription;
+import main.Manager.Subscriptions.SemestralSub;
 import main.Manager.Subscriptions.Subscription;
 
 import java.util.GregorianCalendar;
@@ -36,12 +38,30 @@ public class Driver
 
     public void makeSub()
     {
+        // DA ELIMINARE ALLA FINE
         sub = new MonthlySubscription(80.0);
         if (carId.equals("test0002"))
         {
             setPaidSub(true);
         }
     }
+
+    public void makeMonthlySub(double cost)
+    {
+        sub = new MonthlySubscription(cost);
+    }
+
+    public void makeSemestralSub(double cost)
+    {
+        sub = new SemestralSub(cost);
+    }
+
+    public void makeAnnualMonthly(double cost)
+    {
+        sub = new AnnualSub(cost);
+    }
+
+
 
     public String getDriverInfo()
     {

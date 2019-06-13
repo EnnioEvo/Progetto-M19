@@ -15,6 +15,7 @@ public abstract class Subscription
         this.dateFinish = makesub();
         this.inPark = false;
         this.subPayementExpired = false;
+
     }
 
     public abstract GregorianCalendar makesub();

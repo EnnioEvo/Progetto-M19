@@ -156,7 +156,8 @@ public class Manager
         }
     }
 
-    public String entrySub(String carId)
+    public String entrySub(String carId, String typeSub)
+            // codice sub MM = mensile, SM= semestrale, AN=annuale.
     {
         String info;
         if(!checkCarId(carId))
@@ -178,7 +179,21 @@ public class Manager
             {
                 // aggiungo qui l'acquisto dell'abbonamento che va impletato nella gui
                 Driver d = new Driver(carId);
-                d.makeSub();
+                 switch (typeSub){
+                     case "MM":
+                         d.makeSub();  // DA ELIMINARE, ABBONAMETO DI TEST
+                         d.makeMonthlySub(monthlyCost);
+                         break;
+
+                     case "SM":
+                         d.makeSemestralSub(semestralCost);
+                         break;
+
+                     case "AN":
+                         d.makeAnnualMonthly(annualCost);
+                         break;
+                 }
+
                 info = "Abbonamento acquistato, " + d.printSub();
                 System.out.println(info);
                 freeSpacesSubNow++; //NB: secondo me potremmo anche decrementarlo , e quando arriva a Zero il metodo non va piu,

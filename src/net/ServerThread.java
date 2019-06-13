@@ -58,7 +58,7 @@ public class ServerThread extends Thread
                             writer.println(man.entryTicket(split[1]));
                             break;
                         case "entrySub":
-                            writer.println(man.entrySub(split[1]));
+                            writer.println(man.entrySub(split[1], split[2]));
                             break;
                         case "getTariff":
                             writer.println("tariff--" + man.getTariff());
