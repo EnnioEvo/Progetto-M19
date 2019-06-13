@@ -19,7 +19,7 @@ import java.util.List;
 //CHANGED METHODS: FIRST TEST: positive
 public class Manager
 {
-    public static double monthlyCost;
+    private double monthlyCost, semestralCost, annualCost,extraCost;
 
     private int peripheralId = 0;
 
@@ -713,5 +713,37 @@ public class Manager
 
     public int getDeltaTimePaid() {
         return deltaTimePaid;
+    }
+
+    public double getMonthlyCost() {
+        return monthlyCost;
+    }
+
+    public void setMonthlyCost(double monthlyCost) {
+        this.monthlyCost = monthlyCost;
+    }
+
+    public double getSemestralCost() {
+        return semestralCost;
+    }
+
+    public void setSemestralCost(double semestralCost) {
+        this.semestralCost = semestralCost;
+    }
+
+    public double getAnnualCost() {
+        return annualCost;
+    }
+
+    public void setAnnualCost(double annualCost) {
+        this.annualCost = annualCost;
+    }
+
+    public double getExtraCost() {
+        return extraCost;
+    }
+
+    public void setExtraCost(double extraCost) {
+        this.extraCost = extraCost;
     }
 }

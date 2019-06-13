@@ -21,6 +21,8 @@ public class ManagerGUI implements ItemListener
     final private static String SUBDIVISION = "Scegli suddivisione posti";
     final private static String DRIVERINFO = "Visualizza informazioni clienti";
     final private static String DELTATIME = "Scegli deltaTime";
+    final private static String SUBCOST = "Scegli costi abbonamenti";
+
 
 
     public ManagerGUI(Manager man)
@@ -46,7 +48,7 @@ public class ManagerGUI implements ItemListener
         //Metto JComboBox in un JPanel per un look migliore
         JPanel comboBoxPane = new JPanel();
         comboBoxPane.setLayout(new GridLayout(1,2));
-        String comboBoxItems[] = {MAKEFLOORS, REMOVEFLOOR, TARRIFF, SUBDIVISION, DRIVERINFO, DELTATIME};
+        String comboBoxItems[] = {MAKEFLOORS, REMOVEFLOOR, TARRIFF, SUBDIVISION, DRIVERINFO, DELTATIME,SUBCOST};
         JComboBox<String> cb = new JComboBox<>(comboBoxItems);
         cb.setEditable(false);
         cb.addItemListener(this);
@@ -69,6 +71,9 @@ public class ManagerGUI implements ItemListener
         JPanel card5 = showDriversInfo();
         //Schermata 6: scelta deltatime
         JPanel card6 = chooseDeltaTime();
+        //Schermata 7: scelta costo abbonamento
+        JPanel card7 = chooseCostSub();
+
 
         //Creo il pannello che contiene le "cards".
         cards = new JPanel(new CardLayout());
@@ -78,6 +83,8 @@ public class ManagerGUI implements ItemListener
         cards.add(card4, SUBDIVISION);
         cards.add(card5, DRIVERINFO);
         cards.add(card6, DELTATIME);
+        cards.add(card7, SUBCOST);
+
 
         f.add(comboBoxPane, BorderLayout.NORTH);
         f.add(cards, BorderLayout.CENTER);
@@ -371,6 +378,83 @@ public class ManagerGUI implements ItemListener
         return card;
     }
 
+    private JPanel chooseCostSub()
+    {
+        JPanel card = new JPanel();
+        card.setLayout(new BorderLayout());
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new GridLayout(2, 2));
+        JTextField jf2 = new JTextField("Extra Costo: ");
+        jf2.setEditable(false);
+        String comboBoxItems[] = {"Mensile", "Semestrale", "Annuale"};
+        JComboBox<String> cb = new JComboBox<>(comboBoxItems);
+        cb.setEditable(false);
+        JTextField costo = new JTextField();
+        JTextField extra = new JTextField();
+        JTextArea info = new JTextArea();
+        info.setEditable(false);
+        info.setLineWrap(true);
+        //Reinizializzo JTextArea quando cambio card
+        card.addComponentListener(new ComponentAdapter()
+        {
+            @Override
+            public void componentHidden(ComponentEvent e)
+            {
+                super.componentHidden(e);
+                info.setText("");
+            }
+        });
+        topPanel.add(cb); topPanel.add(costo);topPanel.add(jf2); topPanel.add(extra);
+        topPanel.setPreferredSize(new Dimension(500,100));
+        JButton create = new JButton("Scegli");
+        create.setPreferredSize(new Dimension(200,100));
+        create.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                try {
+                    String sw = (String) cb.getSelectedItem();
+                    switch (sw) {
+                        case "Mensile":
+                            man.setMonthlyCost(Double.parseDouble(costo.getText()));
+                            break;
+                        case "Semestrale":
+                            man.setSemestralCost(Double.parseDouble(costo.getText()));
+
+                            break;
+                        case "Annuale":
+                            man.setAnnualCost(Double.parseDouble(costo.getText()));
+
+                            break;
+                    }
+
+                    man.setExtraCost(Double.parseDouble(extra.getText()));
+
+                    info.setText("Costo mensile:" + man.getMonthlyCost() + "\n" +
+                            "Costo semestrale:" + man.getSemestralCost() + "\n" +
+                            "Costo annuale:" + man.getAnnualCost() + "\n" +
+                            "Costro extra:  " + man.getExtraCost());
+
+                } catch (NumberFormatException ex ){
+                    info.setText("numeri inserito errato");
+                }
+            }
+        });
+        JScrollPane scroll = new JScrollPane(info);
+        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        JPanel bottomPanel = new JPanel(new GridLayout(1,3));
+        bottomPanel.add(new JPanel()); bottomPanel.add(create); bottomPanel.add(new JPanel());
+        setFont(topPanel, new Font("Helvetica", Font.PLAIN, 30));
+        setFont(info, new Font("Helvetica", Font.PLAIN, 20));
+        setFont(bottomPanel, new Font("Helvetica", Font.PLAIN, 30));
+        card.add(topPanel, BorderLayout.NORTH);
+        card.add(scroll, BorderLayout.CENTER);
+        card.add(bottomPanel, BorderLayout.SOUTH);
+
+        return card;
+    }
+
     private JPanel showDriversInfo()
     {
         JPanel card = new JPanel();
@@ -432,6 +516,9 @@ public class ManagerGUI implements ItemListener
 
         return card;
     }
+
+
+
 
     //******************************************************
 

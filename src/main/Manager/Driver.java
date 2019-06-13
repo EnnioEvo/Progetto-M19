@@ -36,7 +36,7 @@ public class Driver
 
     public void makeSub()
     {
-        sub = new MonthlySubscription();
+        sub = new MonthlySubscription(80.0);
         if (carId.equals("test0002"))
         {
             setPaidSub(true);

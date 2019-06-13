@@ -1,21 +1,18 @@
 package main.Manager.Subscriptions;
 
-import main.Manager.Manager;
-
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-public class MonthlySubscription extends Subscription
-{
-    public MonthlySubscription(Double cost)
+public class SemestralSub extends Subscription {
+    public SemestralSub(Double cost)
     {
         this.cost = cost;
     }
-
-    public GregorianCalendar makesub()
-    {
+    @Override
+    public GregorianCalendar makesub() {
         GregorianCalendar d = new GregorianCalendar();
-        d.add(Calendar.MONTH, 1);
+        d.add(Calendar.MONTH, 6);
         return d;
+
     }
 }

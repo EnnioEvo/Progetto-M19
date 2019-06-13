@@ -32,7 +32,7 @@ public class Cash{
         }
         else{
             // il cliente non possiede un abbonamento
-            if (driver.)
+            
         }
 
     }
