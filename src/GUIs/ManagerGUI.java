@@ -60,30 +60,30 @@ public class ManagerGUI implements ItemListener
         setFont(comboBoxPane, new Font("Helvetica", Font.PLAIN, 30));
 
         //Schermata 1: crea i piani
-        JPanel card1 = makeFloorsCard();
+        JPanel makeFloors = makeFloorsCard();
         //Schermata 2: elimina piano
-        JPanel card2 = removeFloorCard();
+        JPanel removeFloor = removeFloorCard();
         //Schermata 3: tariffa
-        JPanel card3 = chooseTariffCard();
+        JPanel setTariff = chooseTariffCard();
         //Schermata 4: divisione posti standard/in abbonamento
-        JPanel card4 = chooseSubdivisionCard();
+        JPanel subDivision = chooseSubdivisionCard();
         //Schermata 5: visualizza informazioni sui clienti nel parcheggio
-        JPanel card5 = showDriversInfo();
+        JPanel driverInfo = showDriversInfo();
         //Schermata 6: scelta deltatime
-        JPanel card6 = chooseDeltaTime();
+        JPanel deltaTime = chooseDeltaTime();
         //Schermata 7: scelta costo abbonamento
-        JPanel card7 = chooseCostSub();
+        JPanel subCost = chooseCostSub();
 
 
         //Creo il pannello che contiene le "cards".
         cards = new JPanel(new CardLayout());
-        cards.add(card1, MAKEFLOORS);
-        cards.add(card2, REMOVEFLOOR);
-        cards.add(card3, TARRIFF);
-        cards.add(card4, SUBDIVISION);
-        cards.add(card5, DRIVERINFO);
-        cards.add(card6, DELTATIME);
-        cards.add(card7, SUBCOST);
+        cards.add(makeFloors, MAKEFLOORS);
+        cards.add(removeFloor, REMOVEFLOOR);
+        cards.add(setTariff, TARRIFF);
+        cards.add(subDivision, SUBDIVISION);
+        cards.add(driverInfo, DRIVERINFO);
+        cards.add(deltaTime, DELTATIME);
+        cards.add(subCost, SUBCOST);
 
 
         f.add(comboBoxPane, BorderLayout.NORTH);
