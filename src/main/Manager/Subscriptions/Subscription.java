@@ -29,7 +29,7 @@ public abstract class Subscription
 
     public String infoClient()
     {
-        return "--$dateFinish=" + dateFinish + "$paySub=" + paySub + "$subPayementExpired=" + subPayementExpired + "$cost=" + cost;
+        return "--$subType=" + getClass().getName() + "$dateFinish=" + dateFinish.toZonedDateTime() + "$paySub=" + paySub + "$subPayementExpired=" + subPayementExpired + "$cost=" + cost;
     }
 
     //get and set
@@ -49,6 +49,10 @@ public abstract class Subscription
         return dateFinish;
     }
 
+    public void setDateFinish(GregorianCalendar c)
+    {
+        dateFinish = c;
+    }
 
     public boolean getInPark()
     {
@@ -68,5 +72,10 @@ public abstract class Subscription
     public void setSubPayementExpired(boolean subPayementExpired)
     {
         this.subPayementExpired = subPayementExpired;
+    }
+
+    public void setCost(double cost)
+    {
+        this.cost = cost;
     }
 }

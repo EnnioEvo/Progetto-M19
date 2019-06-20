@@ -31,11 +31,6 @@ public class Driver
         }
     }
 
-    public void setTimePaid(GregorianCalendar timePaid)
-    {
-        this.timePaid = timePaid;
-    }
-
     public void makeSub()
     {
         // DA ELIMINARE ALLA FINE
@@ -44,6 +39,12 @@ public class Driver
         {
             setPaidSub(true);
         }
+    }
+
+    // Aggiunto per il database
+    public void setSub(Subscription s)
+    {
+        sub = s;
     }
 
     public void makeMonthlySub(double cost)
@@ -71,7 +72,8 @@ public class Driver
     public String infoClient()
     {
         StringBuilder sb = new StringBuilder();
-        sb.append("info--$timeIn=" + timeIn.toZonedDateTime().toString());
+        sb.append("info--$carId=" + carId);
+        sb.append("$timeIn=" + timeIn.toZonedDateTime().toString());
         if(timePaid == null)
         {
             sb.append("$timepaid=0");
@@ -103,6 +105,11 @@ public class Driver
         return sub.getDateFinish();
     }
 
+    public void setDateFinishOfSub(GregorianCalendar c)
+    {
+        sub.setDateFinish(c);
+    }
+
     public Subscription getSub() {
         return sub;
     }
@@ -126,7 +133,17 @@ public class Driver
 
     public GregorianCalendar getTimeIn() { return timeIn; }
 
+    public void setTimeIn(GregorianCalendar timeIn)
+    {
+        this.timeIn = timeIn;
+    }
+
     public GregorianCalendar getTimePaid() { return timePaid; }
+
+    public void setTimePaid(GregorianCalendar timePaid)
+    {
+        this.timePaid = timePaid;
+    }
 
     public boolean isPaid() { return paid;  }
 
@@ -151,5 +168,10 @@ public class Driver
     public void setSubPayementExpiredOfSub(boolean b)
     {
         sub.setSubPayementExpired(b);
+    }
+
+    public void setCostOfSub(double d)
+    {
+        sub.setCost(d);
     }
 }

@@ -1,99 +1,128 @@
-package Tests;
+package main.Manager.DataBase;
 
-import GUIs.ManagerGUI;
 import main.Manager.Driver;
-import main.Manager.Manager;
 import main.Manager.Subscriptions.Subscription;
-import main.Peripherals.Columns.EntryColumn;
-import GUIs.EntryColumnGUI;
 
-import java.awt.*;
+import java.io.*;
 import java.lang.reflect.Constructor;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
-public class Test
+public class TextDataBaseAdapter implements DataBaseAdapter
 {
+    private String filePath;
+    private BufferedWriter bw;
+    private BufferedReader br;
 
-    public static void main(String[] args)
+    public TextDataBaseAdapter(String filePath)
     {
+        this.filePath = filePath;
+        createFile();
+    }
 
-        /*int posti[] = new int[10];
-        Manager m = new Manager();
-        m.makeFloors(7, 50);
-        m.setTariff(5);
-        m.setSpacesSubdivision(50);
-        m.entryTicket("IT4560JV");
-        m.entrySub("IT3456GT");
-
-
-        Driver d = m.getDriver("IT4560JV");
-        d.setPaid(true);
-        GregorianCalendar time = new GregorianCalendar();
-        time.add(Calendar.MINUTE, -9);
-        d.setTimePaid(time);
-        //m.exit("IT4560JV");
-
-        Driver d2 = m.getDriver("IT3456GT");
-        d2.setPaidSub(true);
-        //Per testare tariffa extra mettere mese abbonamneto a -1
-        d2.setDatePaidExtraOfSub(time);
-        m.exit("IT3456GT");
-       // m.Analytics();
-
-        EventQueue.invokeLater(new Runnable(){
-
-            @Override
-            public void run()
-            {
-                new ManagerGUI(m);
-            }
-        });
-
-        /*EntryColumn entry = m.createEntryColumn();
-        EventQueue.invokeLater(new Runnable()
+    private void createFile()
+    {
+        File f = new File(filePath);
+        try
         {
-
-            @Override
-            public void run() {
-                EntryColumnGUI g = new EntryColumnGUI(entry);
-                entry.setObs(g);
-            }
-        });*/
-
-        /*GregorianCalendar c = new GregorianCalendar();
-        String t = c.toZonedDateTime().toString();
-        System.out.println(c.toZonedDateTime());
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm XXX");
-        Date d = new Date();
-        try {
-            d = sdf.parse(t);
+            f.createNewFile();
         }
-        catch (ParseException ex)
-        {}
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(d);
-        System.out.println(d);*/
-
-        /*String s = "info--$carId=aaaaaaaa$timeIn=2019-06-20T23:14:38.495+02:00[Europe/Rome]$timepaid=0$paid=false$ticketPayementExpired=false--0";
-        Test.parseDriver(s);*/
-
-        try {
-            Constructor c = Class.forName("main.Manager.Subscriptions.MonthlySubscription").getDeclaredConstructor(Double.class);
-        }
-        catch (Exception ex)
+        catch (IOException ex)
         {
-            ex.printStackTrace();
+            System.out.println("Impossibile creare file");
         }
     }
 
-    private static Driver parseDriver(String line)
+    @Override
+    public HashMap<String, Driver> getData()
+    {
+        HashMap<String, Driver> drivers = new HashMap<>();
+        try
+        {
+            FileReader f = new FileReader(filePath);
+            br = new BufferedReader(f);
+            String line;
+
+            while((line = br.readLine()) != null)
+            {
+                Driver d = parseDriver(line);
+                drivers.put(d.getCarId(), d);
+            }
+        }
+        catch(IOException ex)
+        {
+            ex.printStackTrace();
+        }
+        finally
+        {
+            if(br != null)
+            {
+                try
+                {
+                    br.close();
+                }
+                catch(IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+        return drivers;
+    }
+
+    @Override
+    public void writeData(Driver driver, Boolean remove)
+    {
+        HashMap<String, Driver> oldDrivers = getData();
+        ArrayList<Driver> newDrivers = new ArrayList<>();
+        // Elimino record precedente relativo ai nuovi driver
+        if(remove)
+        {
+            oldDrivers.remove(driver.getCarId());
+            newDrivers.addAll(oldDrivers.values());
+        }
+        newDrivers.add(driver);
+
+        try
+        {
+            StringBuilder sb = new StringBuilder();
+            FileWriter f = new FileWriter(filePath, true);
+            bw = new BufferedWriter(f);
+
+            for (Driver d : newDrivers)
+            {
+                sb.append(d.infoClient());
+                sb.append("\n");
+            }
+
+            bw.write(sb.toString());
+        }
+        catch(IOException e)
+        {
+            e.printStackTrace();
+        }
+        finally
+        {
+            if(bw != null)
+            {
+                try
+                {
+                    bw.close();
+                }
+                catch(IOException e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+    private Driver parseDriver(String line)
     {
         Driver d;
         ArrayList<String> tmp = new ArrayList<>();
-        System.out.println(line);
+
         // Suddivisione di primo livello
         String[] split1 = line.split("--");
         // Salto il comando  che è nella prima stringa
@@ -102,11 +131,9 @@ public class Test
             // Suddivido in variabili il driver e controllo se esiste sub
             if(!split1[i].equals("0"))
             {
-                System.out.println("1" +split1[i]);
                 String[] split2 = split1[i].split("\\$");
                 for (int j=1;j<split2.length;j++)
                 {
-                    System.out.println("2" + split2[j]);
                     String[] split3 = split2[j].split("=");
                     tmp.add(split3[1]);
                 }
@@ -129,11 +156,6 @@ public class Test
             }
         }
 
-        for (String  s: tmp
-             ) {System.out.println(tmp);
-
-        }
-
         // Creo il driver rispettando l'ordine delle info ricevute;
         d = new Driver(tmp.get(0));
         // Parso timeIn
@@ -141,8 +163,7 @@ public class Test
         // Parso timePaid
         if(!tmp.get(2).equals("0"))
         {
-            System.out.println("time in");
-            d.setTimeIn(parseDate(tmp.get(2)));
+            d.setTimePaid(parseDate(tmp.get(2)));
         }
         // Parso i boolean
         d.setPaid(Boolean.parseBoolean(tmp.get(3)));
@@ -152,12 +173,13 @@ public class Test
         {
             try
             {
-                System.out.println("sub");
-                Subscription sub = (Subscription)Class.forName(tmp.get(5)).getConstructor().newInstance(80);
+                Constructor c = Class.forName(tmp.get(5)).getConstructor(Double.class);
+                Subscription sub = (Subscription) c.newInstance( Double.parseDouble(tmp.get(9)));
                 d.setSub(sub);
             }
             catch(Exception ex)
             {
+                ex.printStackTrace();
                 System.out.println("Tipo di abbonamento errato nel database");
             }
             // Parso la scadenza
@@ -165,14 +187,12 @@ public class Test
             // Parso i boolean
             d.setPaidSub(Boolean.parseBoolean(tmp.get(7)));
             d.setSubPayementExpiredOfSub(Boolean.parseBoolean(tmp.get(8)));
-            // Parso il costo
-            d.setCostOfSub(Double.parseDouble(tmp.get(9)));
         }
 
         return d;
     }
 
-    private static GregorianCalendar parseDate(String s)
+    private GregorianCalendar parseDate(String s)
     {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSSXXX");
         Date date = new Date();
@@ -182,7 +202,6 @@ public class Test
         }
         catch (ParseException ex)
         {
-            ex.printStackTrace();
             System.out.println("Errore nel parsing di una data nel database");
         }
         GregorianCalendar cal = (GregorianCalendar)Calendar.getInstance();
@@ -190,4 +209,3 @@ public class Test
         return cal;
     }
 }
-

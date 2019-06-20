@@ -44,7 +44,7 @@ public class EntryColumn extends Column
 
     public void entrySub(String id)
     {
-        messages.add("entrySub--" + id);
+        messages.add("entrySub--" + id + "--MM");
     }
 
     public void getTariffofMan()

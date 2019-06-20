@@ -15,8 +15,6 @@ import java.util.List;
 import java.util.*;
 
 
-
-
 public class TestManager
 {
     private double monthlyCost, semestralCost, annualCost,extraCost;

@@ -3,6 +3,8 @@ package main.Manager;
 import Exceptions.NotEmptyFloorException;
 import Exceptions.SubdivisionException;
 import GUIs.ManagerGUI;
+import main.Manager.DataBase.DataBaseAdapter;
+import main.Manager.DataBase.TextDataBaseAdapter;
 import main.Peripherals.Cash.Cash;
 import main.Peripherals.Columns.Column;
 import main.Peripherals.Columns.EntryColumn;
@@ -16,14 +18,17 @@ import java.text.NumberFormat;
 import java.util.*;
 import java.util.List;
 
+@SuppressWarnings("Duplicates")
 //CHANGED METHODS: FIRST TEST: positive
 public class Manager
 {
-    private double monthlyCost, semestralCost, annualCost,extraCost;
+    private double monthlyCost=1, semestralCost, annualCost,extraCost;
 
     private int peripheralId = 0;
 
     private Server server;
+
+    private DataBaseAdapter db;
 
     private ArrayList<Floor> floorsList;
     private int freeSpacesTot, freeSpacesSubTot, freeSpacesTicketTot;
@@ -55,6 +60,8 @@ public class Manager
         this.subDrivers = new ArrayList<>();
         this.entryToT = 0;
         this.columnList = new ArrayList<>();
+
+        this.db = new TextDataBaseAdapter("./db");
 
         Manager m = this;
         EventQueue.invokeLater(new Runnable()
@@ -138,7 +145,10 @@ public class Manager
         {
             freeSpacesTicketNow++;
             entryToT++;   //Perche non viene incrementata all'ingresso degli abbonati?
-            drivers.add(new Driver(carId));
+            Driver d = new Driver(carId);
+            drivers.add(d);
+            // Nuovo ingresso, non rimuovo dal db
+            db.writeData(d, false);
 
             //stampa fittizia della tessera
             info = "Ingresso riuscito, " + printTickt(carId);
@@ -181,7 +191,7 @@ public class Manager
                 Driver d = new Driver(carId);
                  switch (typeSub){
                      case "MM":
-                         d.makeSub();  // DA ELIMINARE, ABBONAMETO DI TEST
+                         //d.makeSub();  // DA ELIMINARE, ABBONAMETO DI TEST
                          d.makeMonthlySub(monthlyCost);
                          break;
 
@@ -199,6 +209,8 @@ public class Manager
                 freeSpacesSubNow++; //NB: secondo me potremmo anche decrementarlo , e quando arriva a Zero il metodo non va piu,
                 //ovviamente è la stessa cosa, dimmi cosa secondo te è più corretto
                 subDrivers.add(d);
+                // Nuovo ingresso, non rimuovo dal db
+                db.writeData(d, false);
                 d.setInPark(true);
                 entry = true;
             }
@@ -276,6 +288,8 @@ public class Manager
                         {
                             info = "L'abbonamento è scaduto, si prega di tornare alle casse.";
                             d.setSubPayementExpiredOfSub(true);
+                            // Aggiorno l'entry dell'utente nel db
+                            db.writeData(d, true);
                         }
                         else
                         {
@@ -311,6 +325,8 @@ public class Manager
                     {
                         info = "E' passato troppo tempo dal pagamento, si prega di tornare alle casse.";
                         d.setTicketPayementExpired(true);
+                        // Aggiorno l'entry dell'utente nel db
+                        db.writeData(d, true);
                     }
                     else
                     {
