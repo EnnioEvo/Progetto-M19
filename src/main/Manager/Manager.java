@@ -181,6 +181,11 @@ public class Manager
         boolean entry = false;
         if(checkSubOrTicket(carId) == false)
         {
+            if(typeSub.equals("XX"))
+            {
+                info = "Non hai ancora l'abbonamento";
+                return "entryNo--" + info;
+            }
             if(freeSpacesSubNow + 1 > freeSpacesSubTot)
             {
                 info = "Abbonamenti  finiti";
@@ -201,9 +206,6 @@ public class Manager
                      case "Annuale":
                          d.makeAnnualMonthly(annualCost);
                          break;
-                     case "XX":
-                         info = "Non hai ancora l'abbonamento";
-                         return "entryNo--" + info;
                  }
 
                 info = "Abbonamento acquistato, " + d.printSub();

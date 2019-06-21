@@ -101,6 +101,7 @@ public class EntryColumnGUI implements ItemListener, Observer
                 super.componentHidden(e);
                 infoT.setText("");
                 infoS.setText("");
+                infoIS.setText("");
             }
         });
         JScrollPane scroll = new JScrollPane(infoT);
@@ -177,6 +178,7 @@ public class EntryColumnGUI implements ItemListener, Observer
                 super.componentHidden(e);
                 infoS.setText("");
                 infoT.setText("");
+                infoIS.setText("");
             }
         });
         JScrollPane scroll = new JScrollPane(infoS);
@@ -239,11 +241,11 @@ public class EntryColumnGUI implements ItemListener, Observer
                 infoIS.setText("");
             }
         });
-        JScrollPane scroll = new JScrollPane(infoS);
+        JScrollPane scroll = new JScrollPane(infoIS);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
         topPanel.add(jf2);
         topPanel.add(targa);
-        topPanel.setPreferredSize(new Dimension(500,150));
+        topPanel.setPreferredSize(new Dimension(500,100));
         JButton create = new JButton("Entra");
         create.setPreferredSize(new Dimension(200,100));
         create.addActionListener(new ActionListener()
