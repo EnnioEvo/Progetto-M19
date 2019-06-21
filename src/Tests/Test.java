@@ -8,6 +8,7 @@ import main.Peripherals.Columns.EntryColumn;
 import GUIs.EntryColumnGUI;
 
 import java.awt.*;
+import java.io.File;
 import java.lang.reflect.Constructor;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -92,6 +93,13 @@ public class Test
         d.add(2.0);
         d.add(3.1);
         System.out.println(d.toString());
+
+        File f = new File("./ooo");
+        try {
+            f.createNewFile();
+            System.out.println("sds");
+        }
+        catch(Exception ex){ex.printStackTrace();}
     }
 
     private static Driver parseDriver(String line)

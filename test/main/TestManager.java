@@ -1,8 +1,6 @@
-package TestJUnit;
+package main;
 
 import Exceptions.NotEmptyFloorException;
-import Exceptions.SubdivisionException;
-import GUIs.ManagerGUI;
 import main.Manager.Driver;
 import main.Manager.Floor;
 import main.Peripherals.Cash.Cash;

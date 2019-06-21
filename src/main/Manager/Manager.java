@@ -66,7 +66,6 @@ public class Manager
         Manager m = this;
         EventQueue.invokeLater(new Runnable()
         {
-
             @Override
             public void run()
             {
@@ -84,7 +83,9 @@ public class Manager
     public static void main(String[] args)
     {
         if (args.length < 1) return;
+        System.out.println("ss");
         new Manager(Integer.parseInt(args[0]));
+
     }
 
     // ho cambiato il metodo perchè non settava il numero di posti liberi dei piani
@@ -194,14 +195,15 @@ public class Manager
                          //d.makeSub();  // DA ELIMINARE, ABBONAMETO DI TEST
                          d.makeMonthlySub(monthlyCost);
                          break;
-
                      case "Semestrale":
                          d.makeSemestralSub(semestralCost);
                          break;
-
                      case "Annuale":
                          d.makeAnnualMonthly(annualCost);
                          break;
+                     case "XX":
+                         info = "Non hai ancora l'abbonamento";
+                         return "entryNo--" + info;
                  }
 
                 info = "Abbonamento acquistato, " + d.printSub();

@@ -50,6 +50,10 @@ public class Driver
     public void makeMonthlySub(double cost)
     {
         sub = new MonthlySubscription(cost);
+        if (carId.equals("test0002"))
+        {
+            setPaidSub(true);
+        }
     }
 
     public void makeSemestralSub(double cost)

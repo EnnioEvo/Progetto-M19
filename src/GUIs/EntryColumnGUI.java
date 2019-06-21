@@ -13,12 +13,14 @@ public class EntryColumnGUI implements ItemListener, Observer
     private EntryColumn entry;
     private JPanel cards;  //Pannello che usa CardLayout
     final private static String TICKET = "Ticket";
-    final private static String SUB = "Abbonamento";
+    final private static String SUB = "Acquista Abbonamento";
+    final private static String INSUB = "Ingresso Abbonamento";
     private JFrame f;
     private JTextField tariffT;
     private JTextField tariffS;
     private JTextArea infoT;
     private JTextArea infoS;
+    private JTextArea infoIS;
     private JComboBox<String> comboSub;
 
     public EntryColumnGUI(EntryColumn entry)
@@ -44,7 +46,7 @@ public class EntryColumnGUI implements ItemListener, Observer
         //Metto JComboBox in un JPanel per un look migliore
         JPanel comboBoxPane = new JPanel();
         comboBoxPane.setLayout(new GridLayout(1,2));
-        String comboBoxItems[] = {TICKET, SUB};
+        String comboBoxItems[] = {TICKET, SUB, INSUB};
         JComboBox<String> cb = new JComboBox<>(comboBoxItems);
         cb.setEditable(false);
         cb.addItemListener(this);
@@ -59,12 +61,15 @@ public class EntryColumnGUI implements ItemListener, Observer
         JPanel card1 = ticket();
         //Schermata 2: crea nuovo abbonamento
         JPanel card2 = Sub();
+        //Schermata 3: crea nuovo abbonamento
+        JPanel card3 = inSub();
 
 
         //Creo il pannello che contiene le "cards".
         cards = new JPanel(new CardLayout());
         cards.add(card1, TICKET);
         cards.add(card2, SUB);
+        cards.add(card3, INSUB);
 
         f.add(comboBoxPane, BorderLayout.NORTH);
         f.add(cards, BorderLayout.CENTER);
@@ -210,6 +215,59 @@ public class EntryColumnGUI implements ItemListener, Observer
         return card;
     }
 
+    private JPanel inSub()
+    {
+        JPanel card = new JPanel();
+        card.setLayout(new BorderLayout());
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new GridLayout(1, 2));
+        JTextField jf2 = new JTextField("Inserire Targa: ");
+        jf2.setEditable(false);
+        JTextField targa = new JTextField();
+        infoIS = new JTextArea();
+        infoIS.setEditable(false);
+        infoIS.setLineWrap(true);
+        //Reinizializzo JTextArea quando cambio card
+        card.addComponentListener(new ComponentAdapter()
+        {
+            @Override
+            public void componentHidden(ComponentEvent e)
+            {
+                super.componentHidden(e);
+                infoS.setText("");
+                infoT.setText("");
+                infoIS.setText("");
+            }
+        });
+        JScrollPane scroll = new JScrollPane(infoS);
+        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        topPanel.add(jf2);
+        topPanel.add(targa);
+        topPanel.setPreferredSize(new Dimension(500,150));
+        JButton create = new JButton("Entra");
+        create.setPreferredSize(new Dimension(200,100));
+        create.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                entry.entrySub(targa.getText(), "XX");
+            }
+        });
+        JPanel bottomPanel = new JPanel(new GridLayout(1,3));
+        bottomPanel.add(new JPanel());
+        bottomPanel.add(create);
+        bottomPanel.add(new JPanel());
+        setFont(topPanel, new Font("Helvetica", Font.PLAIN, 30));
+        setFont(infoIS, new Font("Helvetica", Font.PLAIN, 40));
+        setFont(bottomPanel, new Font("Helvetica", Font.PLAIN, 30));
+        card.add(topPanel, BorderLayout.NORTH);
+        card.add(scroll, BorderLayout.CENTER);
+        card.add(bottomPanel, BorderLayout.SOUTH);
+
+        return card;
+    }
+
 
     //* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -240,6 +298,7 @@ public class EntryColumnGUI implements ItemListener, Observer
         }
         infoT.setText(entry.getInfoBox());
         infoS.setText(entry.getInfoBox());
+        infoIS.setText(entry.getInfoBox());
     }
 
     private void setFont(Component comp, Font font)
