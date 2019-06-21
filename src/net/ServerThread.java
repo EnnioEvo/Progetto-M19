@@ -63,6 +63,9 @@ public class ServerThread extends Thread
                         case "getTariff":
                             writer.println("tariff--" + man.getTariff());
                             break;
+                        case "getSubTariffs":
+                            writer.println("subTariffs--" + man.getSubTariffs());
+                            break;
                         case "exit":
                             writer.println(man.exit(split[1]));
                             break;

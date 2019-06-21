@@ -8,6 +8,9 @@ import net.ColumnClient;
 
 import javax.swing.*;
 import java.awt.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class EntryColumn extends Column
@@ -15,7 +18,7 @@ public class EntryColumn extends Column
     private Bar bar;
     private Observer obs;
     private final ConcurrentLinkedQueue<String> messages;
-    private double tariff;
+    private double tariff, monthlySubTariff, semestralSubTariff, annualSubTariff;
     private String infoBox;
 
     public EntryColumn(String hostName, int port)
@@ -29,7 +32,7 @@ public class EntryColumn extends Column
             {
                 EntryColumnGUI g = new EntryColumnGUI(col);
                 col.setObs(g);
-                getTariffofMan();
+                getTariffOfMan();
             }
         });
         this.messages = new ConcurrentLinkedQueue<>();
@@ -42,14 +45,19 @@ public class EntryColumn extends Column
         messages.add("entry--" + id);
     }
 
-    public void entrySub(String id)
+    public void entrySub(String id, String type)
     {
-        messages.add("entrySub--" + id + "--MM");
+        messages.add("entrySub--" + id + "--" + type);
     }
 
-    public void getTariffofMan()
+    public void getTariffOfMan()
     {
         messages.add("getTariff--XX");
+    }
+
+    public void getSubTariffsOfMan()
+    {
+        messages.add("getSubTariffs--XX");
     }
 
     @Override
@@ -76,8 +84,21 @@ public class EntryColumn extends Column
                 tariff = Double.parseDouble(split[1]);
                 notifyObs();
                 break;
+            case "subTariffs":
+                System.out.println("Subtariffs");
+                infoBox = "";
+                String s = split[1];
+                List<String> list = Arrays.asList(s.substring(1, s.length() - 1).split(", "));
+                monthlySubTariff = Double.parseDouble(list.get(0));
+                semestralSubTariff = Double.parseDouble(list.get(1));
+                annualSubTariff = Double.parseDouble(list.get(2));
+                notifyObs();
+                break;
             case "getTariff":
-                getTariffofMan();
+                getTariffOfMan();
+                break;
+            case "getSubTariffs":
+                getSubTariffsOfMan();
                 break;
         }
     }
@@ -96,6 +117,21 @@ public class EntryColumn extends Column
     public double getTariff()
     {
         return tariff;
+    }
+
+    public double getMonthlySubTariff()
+    {
+        return monthlySubTariff;
+    }
+
+    public double getSemestralSubTariff()
+    {
+        return semestralSubTariff;
+    }
+
+    public double getAnnualSubTariff()
+    {
+        return annualSubTariff;
     }
 
     public String getInfoBox()

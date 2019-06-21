@@ -19,6 +19,7 @@ public class EntryColumnGUI implements ItemListener, Observer
     private JTextField tariffS;
     private JTextArea infoT;
     private JTextArea infoS;
+    private JComboBox<String> comboSub;
 
     public EntryColumnGUI(EntryColumn entry)
     {
@@ -136,7 +137,24 @@ public class EntryColumnGUI implements ItemListener, Observer
         JPanel card = new JPanel();
         card.setLayout(new BorderLayout());
         JPanel topPanel = new JPanel();
-        topPanel.setLayout(new GridLayout(1, 1));
+        JPanel topSubPanel1 = new JPanel();
+        JPanel topSubPanel2 = new JPanel();
+        topPanel.setLayout(new GridLayout(2, 1));
+        topSubPanel1.setLayout(new GridLayout(1, 2));
+        topSubPanel2.setLayout(new GridLayout(1, 3));
+        JTextField abbTxt = new JTextField("Tipo abbonamento:");
+        abbTxt.setEditable(false);
+        String comboBoxItems[] = {"Mensile", "Semestrale", "Annuale"};
+        comboSub = new JComboBox<>(comboBoxItems);
+        comboSub.setEditable(false);
+        comboSub.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                update();
+            }
+        });
         tariffS = new JTextField("Tariffa : "  + entry.getTariff());
         JTextField jf2 = new JTextField("Inserire Targa: ");
         tariffS.setEditable(false);
@@ -158,10 +176,14 @@ public class EntryColumnGUI implements ItemListener, Observer
         });
         JScrollPane scroll = new JScrollPane(infoS);
         scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-        topPanel.add(tariffS);
-        topPanel.add(jf2);
-        topPanel.add(targa);
-        topPanel.setPreferredSize(new Dimension(500,100));
+        topSubPanel1.add(abbTxt);
+        topSubPanel1.add(comboSub);
+        topSubPanel2.add(tariffS);
+        topSubPanel2.add(jf2);
+        topSubPanel2.add(targa);
+        topPanel.add(topSubPanel1);
+        topPanel.add(topSubPanel2);
+        topPanel.setPreferredSize(new Dimension(500,150));
         JButton create = new JButton("Acquista");
         create.setPreferredSize(new Dimension(200,100));
         create.addActionListener(new ActionListener()
@@ -169,7 +191,7 @@ public class EntryColumnGUI implements ItemListener, Observer
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                entry.entrySub(targa.getText());
+                entry.entrySub(targa.getText(), (String) comboSub.getSelectedItem());
             }
         });
         JPanel bottomPanel = new JPanel(new GridLayout(1,3));
@@ -177,6 +199,8 @@ public class EntryColumnGUI implements ItemListener, Observer
         bottomPanel.add(create);
         bottomPanel.add(new JPanel());
         setFont(topPanel, new Font("Helvetica", Font.PLAIN, 30));
+        setFont(topSubPanel1, new Font("Helvetica", Font.PLAIN, 30));
+        setFont(topSubPanel2, new Font("Helvetica", Font.PLAIN, 30));
         setFont(infoS, new Font("Helvetica", Font.PLAIN, 40));
         setFont(bottomPanel, new Font("Helvetica", Font.PLAIN, 30));
         card.add(topPanel, BorderLayout.NORTH);
@@ -201,7 +225,19 @@ public class EntryColumnGUI implements ItemListener, Observer
     {
         System.out.println("update");
         tariffT.setText("Tariffa : " + entry.getTariff());
-        tariffS.setText("Tariffa : " + entry.getTariff());
+        String sw = (String) comboSub.getSelectedItem();
+        switch (sw)
+        {
+            case "Mensile":
+                tariffS.setText("Tariffa : " + entry.getMonthlySubTariff());
+                break;
+            case "Semestrale":
+                tariffS.setText("Tariffa : " + entry.getSemestralSubTariff());
+                break;
+            case "Annuale":
+                tariffS.setText("Tariffa : " + entry.getAnnualSubTariff());
+                break;
+        }
         infoT.setText(entry.getInfoBox());
         infoS.setText(entry.getInfoBox());
     }

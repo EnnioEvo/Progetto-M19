@@ -87,6 +87,11 @@ public class Test
         {
             ex.printStackTrace();
         }
+
+        ArrayList<Double> d = new ArrayList<>();
+        d.add(2.0);
+        d.add(3.1);
+        System.out.println(d.toString());
     }
 
     private static Driver parseDriver(String line)

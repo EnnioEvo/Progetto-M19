@@ -190,16 +190,16 @@ public class Manager
                 // aggiungo qui l'acquisto dell'abbonamento che va impletato nella gui
                 Driver d = new Driver(carId);
                  switch (typeSub){
-                     case "MM":
+                     case "Mensile":
                          //d.makeSub();  // DA ELIMINARE, ABBONAMETO DI TEST
                          d.makeMonthlySub(monthlyCost);
                          break;
 
-                     case "SM":
+                     case "Semestrale":
                          d.makeSemestralSub(semestralCost);
                          break;
 
-                     case "AN":
+                     case "Annuale":
                          d.makeAnnualMonthly(annualCost);
                          break;
                  }
@@ -715,6 +715,15 @@ public class Manager
         return tariff;
     }
 
+    public ArrayList<Double> getSubTariffs()
+    {
+        ArrayList<Double> t = new ArrayList<>();
+        t.add(monthlyCost);
+        t.add(semestralCost);
+        t.add(annualCost);
+        return t;
+    }
+
 
 
     public int getFreeSpacesTot()
@@ -750,24 +759,30 @@ public class Manager
         return monthlyCost;
     }
 
-    public void setMonthlyCost(double monthlyCost) {
+    public void setMonthlyCost(double monthlyCost)
+    {
         this.monthlyCost = monthlyCost;
+        server.updatePeripherals("getSubTariffs");
     }
 
     public double getSemestralCost() {
         return semestralCost;
     }
 
-    public void setSemestralCost(double semestralCost) {
+    public void setSemestralCost(double semestralCost)
+    {
         this.semestralCost = semestralCost;
+        server.updatePeripherals("getSubTariffs");
     }
 
     public double getAnnualCost() {
         return annualCost;
     }
 
-    public void setAnnualCost(double annualCost) {
+    public void setAnnualCost(double annualCost)
+    {
         this.annualCost = annualCost;
+        server.updatePeripherals("getSubTariffs");
     }
 
     public double getExtraCost() {

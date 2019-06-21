@@ -413,9 +413,11 @@ public class ManagerGUI implements ItemListener
             @Override
             public void actionPerformed(ActionEvent e)
             {
-                try {
+                try
+                {
                     String sw = (String) cb.getSelectedItem();
-                    switch (sw) {
+                    switch (sw)
+                    {
                         case "Mensile":
                             man.setMonthlyCost(Double.parseDouble(costo.getText()));
                             break;
