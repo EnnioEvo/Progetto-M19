@@ -52,30 +52,7 @@ public class ServerThread extends Thread
                 }
                 else
                 {
-                    switch (split[0])
-                    {
-                        case "entry":
-                            writer.println(man.entryTicket(split[1]));
-                            break;
-                        case "entrySub":
-                            writer.println(man.entrySub(split[1], split[2]));
-                            break;
-                        case "getTariff":
-                            writer.println("tariff--" + man.getTariff());
-                            break;
-                        case "getSubTariffs":
-                            writer.println("subTariffs--" + man.getSubTariffs());
-                            break;
-                        case "exit":
-                            writer.println(man.exit(split[1]));
-                            break;
-                        case "driverInfo":
-                            writer.println(man.getDriverClientInfo(split[1]));
-                            break;
-                        default:
-                            System.out.println("Comando errato");
-                            break;
-                    }
+                    writer.println(man.executeCommand(split));
                 }
             }while (isRunning);
 

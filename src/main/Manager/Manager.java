@@ -7,8 +7,6 @@ import main.Manager.DataBase.DataBaseAdapter;
 import main.Manager.DataBase.TextDataBaseAdapter;
 import main.Peripherals.Cash.Cash;
 import main.Peripherals.Columns.Column;
-import main.Peripherals.Columns.EntryColumn;
-import main.Peripherals.Columns.ExitColumn;
 import main.Peripherals.Observer;
 import net.Server;
 
@@ -22,7 +20,7 @@ import java.util.List;
 //CHANGED METHODS: FIRST TEST: positive
 public class Manager
 {
-    private double monthlyCost=1, semestralCost, annualCost,extraCost;
+    private double monthlyCost=1, semestralCost, annualCost, extraCost;
 
     private int peripheralId = 0;
 
@@ -40,6 +38,7 @@ public class Manager
     // paymantAnalytics variables
     private int entryToT;
     private double DAYS=365, MONTH=12;
+    private HashMap<String, Command> commands;
 
     //aggiungo l'arraylist degli abbonamenti
     //private ArrayList<Subscription> sublist;  Ora sono in subDrivers
@@ -63,6 +62,8 @@ public class Manager
 
         this.db = new TextDataBaseAdapter("./db");
 
+        createCommands();
+
         Manager m = this;
         EventQueue.invokeLater(new Runnable()
         {
@@ -83,9 +84,32 @@ public class Manager
     public static void main(String[] args)
     {
         if (args.length < 1) return;
-        System.out.println("ss");
         new Manager(Integer.parseInt(args[0]));
+    }
 
+    public void createCommands()
+    {
+        commands = new HashMap<>();
+        commands.put("entry", (String[] args) -> entryTicket(args[1]));
+        commands.put("entrySub", (String[] args) -> entrySub(args[1], args[2]));
+        commands.put("getTariff", (String[] args) -> "tariff--" + getTariff());
+        commands.put("getSubTariffs", (String[] args) -> "subTariffs--" + getSubTariffs());
+        commands.put("exit", (String[] args) -> exit(args[1]));
+        commands.put("driverInfo", (String[] args) -> getDriverClientInfo(args[1]));
+    }
+
+    public String executeCommand(String[] args)
+    {
+        String s = "";
+        try
+        {
+            s = commands.get(args[0]).execute(args);
+        }
+        catch(NullPointerException ex)
+        {
+            System.out.println("Comando errato");
+        }
+        return s;
     }
 
     // ho cambiato il metodo perchè non settava il numero di posti liberi dei piani
@@ -391,8 +415,15 @@ public class Manager
     {
         if(sub <= freeSpacesTot)
         {
-            freeSpacesSubTot = sub;
-            freeSpacesTicketTot = freeSpacesTot - sub;
+            if(freeSpacesTicketNow <= freeSpacesTot - sub && freeSpacesSubNow <= sub)
+            {
+                freeSpacesSubTot = sub;
+                freeSpacesTicketTot = freeSpacesTot - sub;
+            }
+            else
+            {
+                throw new SubdivisionException("Non ci sono abbastanza posti");
+            }
         }
         else
         {
@@ -597,14 +628,24 @@ public class Manager
     private void randomEntry()
     {
         Random r = new Random();
-        int i = r.nextInt(floorsList.size());
+        int i;
+        // Impedisco che si superi il numero massimo di utenti per piano
+        do
+        {
+            i = r.nextInt(floorsList.size());
+        }while(floorsList.get(i).getCountCarIn() >= floorsList.get(i).getFreeSpace());
         floorsList.get(i).addCar();
     }
 
     private void randomExit()
     {
         Random r = new Random();
-        int i = r.nextInt(floorsList.size());
+        int i;
+        // Impedisco che i posti occupati vadano in negativo
+        do
+        {
+            i = r.nextInt(floorsList.size());
+        }while(floorsList.get(i).getCountCarIn() <= 0);
         floorsList.get(i).deleteCar();
     }
 

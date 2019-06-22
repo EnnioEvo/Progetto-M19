@@ -1,12 +1,12 @@
 package main.Peripherals.Columns;
 
-import GUIs.EntryColumnGUI;
 import GUIs.ExitColumnGUI;
-import main.Manager.Manager;
+import main.Peripherals.ClientCommand;
 import main.Peripherals.Observer;
 import net.Client;
 
 import java.awt.*;
+import java.util.HashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
 public class ExitColumn extends Column {
@@ -15,10 +15,12 @@ public class ExitColumn extends Column {
     private Observer obs;
     private final ConcurrentLinkedQueue<String> messages;
     private String infoBox;
+    private HashMap<String, ClientCommand> commands;
 
     public ExitColumn(String hostName, int port)
     {
         ExitColumn col = this;
+        createCommands();
         //La GUI va chiamata prima del client se no non compare
         EventQueue.invokeLater(new Runnable()
         {
@@ -34,6 +36,26 @@ public class ExitColumn extends Column {
         new Client(hostName, port, messages, col);
     }
 
+    private void createCommands()
+    {
+        commands = new HashMap<>();
+        commands.put("exitOk", (String[] args) ->
+        {
+            System.out.println("exitOk");
+            infoBox = args[1];
+            notifyObs();
+            bar.open();
+        });
+        commands.put("exitNo", (String[] args) ->
+        {
+            System.out.println("exitNo");
+            infoBox = args[1];
+            notifyObs();
+            //bar.open();
+        });
+        commands.put("getTariff", (String[] args) -> System.out.println("getTariff"));
+    }
+
     public void exit(String carId)
     {
         messages.add("exit--" + carId);
@@ -43,23 +65,7 @@ public class ExitColumn extends Column {
     public void receiveInfo(String info)
     {
         String split[] = info.split("--");
-        switch (split[0])
-        {
-            case "exitOk":
-                System.out.println("exitOk");
-                infoBox = split[1];
-                notifyObs();
-                bar.open();
-                break;
-            case "exitNo":
-                System.out.println("exitNo");
-                infoBox = split[1];
-                notifyObs();
-                bar.open();
-                break;
-            case "getTariff":
-                break;
-        }
+        commands.get(split[0]).execute(split);
     }
 
     @Override

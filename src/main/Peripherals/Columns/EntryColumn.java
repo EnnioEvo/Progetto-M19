@@ -1,15 +1,13 @@
 package main.Peripherals.Columns;
 
 import GUIs.EntryColumnGUI;
-import main.Manager.Manager;
+import main.Peripherals.ClientCommand;
 import main.Peripherals.Observer;
 import net.Client;
-import net.ColumnClient;
 
-import javax.swing.*;
 import java.awt.*;
-import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -20,10 +18,12 @@ public class EntryColumn extends Column
     private final ConcurrentLinkedQueue<String> messages;
     private double tariff, monthlySubTariff, semestralSubTariff, annualSubTariff;
     private String infoBox;
+    private HashMap<String, ClientCommand> commands;
 
     public EntryColumn(String hostName, int port)
     {
         EntryColumn col = this;
+        createCommands();
         //La GUI va chiamata prima del client se no non compare
         EventQueue.invokeLater(new Runnable()
         {
@@ -38,6 +38,45 @@ public class EntryColumn extends Column
         this.messages = new ConcurrentLinkedQueue<>();
         this.bar = new Bar();
         new Client(hostName, port, messages, col);
+    }
+
+    private void createCommands()
+    {
+        commands = new HashMap<>();
+        commands.put("entryOk", (String[] args) ->
+        {
+            System.out.println("entryOk");
+            infoBox = args[1];
+            notifyObs();
+            bar.open();
+        });
+        commands.put("entryNo", (String[] args) ->
+        {
+            System.out.println("entryNo");
+            infoBox = args[1];
+            notifyObs();
+            bar.open();
+        });
+        commands.put("tariff", (String[] args) ->
+        {
+            System.out.println("tariff" + Double.parseDouble(args[1]));
+            infoBox = "";
+            tariff = Double.parseDouble(args[1]);
+            notifyObs();
+        });
+        commands.put("subTariffs", (String[] args) ->
+        {
+            System.out.println("subTariffs");
+            infoBox = "";
+            String s = args[1];
+            List<String> list = Arrays.asList(s.substring(1, s.length() - 1).split(", "));
+            monthlySubTariff = Double.parseDouble(list.get(0));
+            semestralSubTariff = Double.parseDouble(list.get(1));
+            annualSubTariff = Double.parseDouble(list.get(2));
+            notifyObs();
+        });
+        commands.put("getTariff", (String[] args) -> getTariffOfMan());
+        commands.put("getSubTariffs", (String[] args) -> getSubTariffsOfMan());
     }
 
     public void entryTicket(String id)
@@ -64,43 +103,7 @@ public class EntryColumn extends Column
     public void receiveInfo(String info)
     {
         String split[] = info.split("--");
-        switch (split[0])
-        {
-            case "entryOk":
-                System.out.println("entryOk");
-                infoBox = split[1];
-                notifyObs();
-                bar.open();
-                break;
-            case "entryNo":
-                System.out.println("entryNo");
-                infoBox = split[1];
-                notifyObs();
-                bar.open();
-                break;
-            case "tariff":
-                System.out.println("tariff" + Double.parseDouble(split[1]));
-                infoBox = "";
-                tariff = Double.parseDouble(split[1]);
-                notifyObs();
-                break;
-            case "subTariffs":
-                System.out.println("Subtariffs");
-                infoBox = "";
-                String s = split[1];
-                List<String> list = Arrays.asList(s.substring(1, s.length() - 1).split(", "));
-                monthlySubTariff = Double.parseDouble(list.get(0));
-                semestralSubTariff = Double.parseDouble(list.get(1));
-                annualSubTariff = Double.parseDouble(list.get(2));
-                notifyObs();
-                break;
-            case "getTariff":
-                getTariffOfMan();
-                break;
-            case "getSubTariffs":
-                getSubTariffsOfMan();
-                break;
-        }
+        commands.get(split[0]).execute(split);
     }
 
     @Override
