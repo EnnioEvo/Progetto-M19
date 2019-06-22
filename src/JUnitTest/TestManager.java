@@ -1,25 +1,35 @@
-package main;
+package JUnitTest;
 
 import Exceptions.NotEmptyFloorException;
+import Exceptions.SubdivisionException;
+import GUIs.ManagerGUI;
+import main.Manager.DataBase.DataBaseAdapter;
+import main.Manager.DataBase.TextDataBaseAdapter;
 import main.Manager.Driver;
 import main.Manager.Floor;
 import main.Peripherals.Cash.Cash;
 import main.Peripherals.Columns.Column;
 import main.Peripherals.Observer;
 import net.Server;
+
+import java.awt.*;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.List;
 import java.util.*;
 
-
+@SuppressWarnings("Duplicates")
+//ho copiato la classe manager per poter evitare il lancio della GUI ad ogni tets,
+// ho tolto solo la parte ''server'' del manager il resto è invariato
 public class TestManager
 {
-    private double monthlyCost, semestralCost, annualCost,extraCost;
+    private double monthlyCost=1, semestralCost, annualCost,extraCost;
 
     private int peripheralId = 0;
 
     private Server server;
+
+    private DataBaseAdapter db;
 
     private ArrayList<Floor> floorsList;
     private int freeSpacesTot, freeSpacesSubTot, freeSpacesTicketTot;
@@ -51,12 +61,11 @@ public class TestManager
         this.entryToT = 0;
         this.columnList = new ArrayList<>();
 
-
+        this.db = new TextDataBaseAdapter("./db");
     }
 
-
-
-    public int makeFloors(int numFloors, int numSpaces)
+    // ho cambiato il metodo perchè non settava il numero di posti liberi dei piani
+    public void makeFloors(int numFloors, int numSpaces)
     {
         for(int i=0; i<numFloors; i++)
         {
@@ -64,7 +73,6 @@ public class TestManager
             floorsList.add(floor);
         }
         setFreeSpacesTot();
-        return floorsList.size();
     }
 
     public void removeFloor(int rm)
@@ -95,37 +103,43 @@ public class TestManager
         String info;
         if (!checkCarId(carId))
         {
-            return "entryNo-- targa non valida";
+            info = "Targa non valida.";
+            System.out.println(info);
+            return "entryNo--" + info;
         }
 
         if (freeSpacesTicketNow + 1 > freeSpacesTicketTot)
         {
             info = "Posti ticket finiti.";
-
+            System.out.println(info);
         }
         else if (checkSubOrTicket(carId))
         {
-            info = "Ingreso fallito: targa: " + carId + " già presente all'interno del parcheggio.";
-
+            info = "Ingresso fallito: targa: " + carId + " già presente all'interno del parcheggio.";
+            System.out.println(info);
         }
         else
         {
             freeSpacesTicketNow++;
             entryToT++;   //Perche non viene incrementata all'ingresso degli abbonati?
-            drivers.add(new Driver(carId));
+            Driver d = new Driver(carId);
+            drivers.add(d);
+            // Nuovo ingresso, non rimuovo dal db
+            db.writeData(d, false);
 
             //stampa fittizia della tessera
             info = "Ingresso riuscito, " + printTickt(carId);
+            System.out.println(info);
             entry = true;
         }
         if (entry)
         {
             randomEntry();
-            return "entryOk";
+            return "entryOk--" + info;
         }
         else
         {
-            return "entryNo";
+            return "entryNo--" + info;
         }
     }
 
@@ -143,6 +157,11 @@ public class TestManager
         boolean entry = false;
         if(checkSubOrTicket(carId) == false)
         {
+            if(typeSub.equals("XX"))
+            {
+                info = "Non hai ancora l'abbonamento";
+                return "entryNo--" + info;
+            }
             if(freeSpacesSubNow + 1 > freeSpacesSubTot)
             {
                 info = "Abbonamenti  finiti";
@@ -153,16 +172,14 @@ public class TestManager
                 // aggiungo qui l'acquisto dell'abbonamento che va impletato nella gui
                 Driver d = new Driver(carId);
                  switch (typeSub){
-                     case "MM":
-                         d.makeSub();  // DA ELIMINARE, ABBONAMETO DI TEST
+                     case "Mensile":
+                         //d.makeSub();  // DA ELIMINARE, ABBONAMETO DI TEST
                          d.makeMonthlySub(monthlyCost);
                          break;
-
-                     case "SM":
+                     case "Semestrale":
                          d.makeSemestralSub(semestralCost);
                          break;
-
-                     case "AN":
+                     case "Annuale":
                          d.makeAnnualMonthly(annualCost);
                          break;
                  }
@@ -172,6 +189,8 @@ public class TestManager
                 freeSpacesSubNow++; //NB: secondo me potremmo anche decrementarlo , e quando arriva a Zero il metodo non va piu,
                 //ovviamente è la stessa cosa, dimmi cosa secondo te è più corretto
                 subDrivers.add(d);
+                // Nuovo ingresso, non rimuovo dal db
+                db.writeData(d, false);
                 d.setInPark(true);
                 entry = true;
             }
@@ -249,6 +268,8 @@ public class TestManager
                         {
                             info = "L'abbonamento è scaduto, si prega di tornare alle casse.";
                             d.setSubPayementExpiredOfSub(true);
+                            // Aggiorno l'entry dell'utente nel db
+                            db.writeData(d, true);
                         }
                         else
                         {
@@ -284,6 +305,8 @@ public class TestManager
                     {
                         info = "E' passato troppo tempo dal pagamento, si prega di tornare alle casse.";
                         d.setTicketPayementExpired(true);
+                        // Aggiorno l'entry dell'utente nel db
+                        db.writeData(d, true);
                     }
                     else
                     {
@@ -340,21 +363,17 @@ public class TestManager
     //********************************* fine metodi d'uscita*********************************
 
     // ho cambiato il metodo da ''private'' a ''public'' perchè non potevo settare dal main il numero dei posti per gli abbonati
-    public int setSpacesSubdivision(int sub)
+    public void setSpacesSubdivision(int sub)
     {
-
-
-
-            if (sub <= freeSpacesTot) {
-                freeSpacesSubTot = sub;
-                freeSpacesTicketTot = freeSpacesTot - sub;
-                return freeSpacesSubTot;
-            }
+        if(sub <= freeSpacesTot)
+        {
+            freeSpacesSubTot = sub;
+            freeSpacesTicketTot = freeSpacesTot - sub;
+        }
         else
         {
-           return 0;
+            throw new SubdivisionException("Non ci sono abbastanza posti");
         }
-
     }
 
     private void setFreeSpacesTot()  //Modificare non dovrebbe restituire nulla
@@ -400,6 +419,8 @@ public class TestManager
         System.out.println("MEDIA INCASSI: \nGioralieri:  " + nf.format(meanPayDay) + "\t" + "Mensili:  "+nf.format(meanPayMth));
     }
 
+    // nel metodo originale in questa stringa abbiamo l'ora in cui il drive inizia,per motivi di test
+    // SOLO PER QUANTO RIGUARDA LA STAMPA, ho sostituito l'ora reale con una fittizia
     private String printTickt(String carId)
     {
         String s = "";
@@ -407,7 +428,7 @@ public class TestManager
         for(Driver d : drivers)
         {
             if(d.getCarId().equals(carId)){
-                s+= ", ora Ingresso:  " + d.getTimeIn().toZonedDateTime().toString(); // toZonedDateTime converte nel nuovo formato di tempo di java 1.8
+                s+= ", ora Ingresso:    00:00:00:000" ; // toZonedDateTime converte nel nuovo formato di tempo di java 1.8
             }
         }
         return s;
@@ -676,6 +697,15 @@ public class TestManager
         return tariff;
     }
 
+    public ArrayList<Double> getSubTariffs()
+    {
+        ArrayList<Double> t = new ArrayList<>();
+        t.add(monthlyCost);
+        t.add(semestralCost);
+        t.add(annualCost);
+        return t;
+    }
+
 
 
     public int getFreeSpacesTot()
@@ -711,24 +741,30 @@ public class TestManager
         return monthlyCost;
     }
 
-    public void setMonthlyCost(double monthlyCost) {
+    public void setMonthlyCost(double monthlyCost)
+    {
         this.monthlyCost = monthlyCost;
+        server.updatePeripherals("getSubTariffs");
     }
 
     public double getSemestralCost() {
         return semestralCost;
     }
 
-    public void setSemestralCost(double semestralCost) {
+    public void setSemestralCost(double semestralCost)
+    {
         this.semestralCost = semestralCost;
+        server.updatePeripherals("getSubTariffs");
     }
 
     public double getAnnualCost() {
         return annualCost;
     }
 
-    public void setAnnualCost(double annualCost) {
+    public void setAnnualCost(double annualCost)
+    {
         this.annualCost = annualCost;
+        server.updatePeripherals("getSubTariffs");
     }
 
     public double getExtraCost() {
