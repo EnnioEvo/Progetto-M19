@@ -99,7 +99,6 @@ public class EntryColumnGUI implements ItemListener, Observer
             public void componentHidden(ComponentEvent e)
             {
                 super.componentHidden(e);
-                infoT.setText("");
                 infoS.setText("");
                 infoIS.setText("");
             }
@@ -176,7 +175,6 @@ public class EntryColumnGUI implements ItemListener, Observer
             public void componentHidden(ComponentEvent e)
             {
                 super.componentHidden(e);
-                infoS.setText("");
                 infoT.setText("");
                 infoIS.setText("");
             }
@@ -238,7 +236,6 @@ public class EntryColumnGUI implements ItemListener, Observer
                 super.componentHidden(e);
                 infoS.setText("");
                 infoT.setText("");
-                infoIS.setText("");
             }
         });
         JScrollPane scroll = new JScrollPane(infoIS);

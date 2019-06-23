@@ -20,4 +20,9 @@ public abstract class Column implements Peripheral
     public abstract void receiveInfo(String info);
 
     public abstract void notifyObs();
+
+    public String getId()
+    {
+        return id;
+    }
 }

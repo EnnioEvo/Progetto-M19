@@ -1,6 +1,7 @@
 package main.Peripherals.Columns;
 
 import GUIs.ExitColumnGUI;
+import GUIs.ExitColumnGUI2;
 import main.Peripherals.ClientCommand;
 import main.Peripherals.Observer;
 import net.Client;
@@ -27,8 +28,9 @@ public class ExitColumn extends Column {
             @Override
             public void run()
             {
-                ExitColumnGUI g = new ExitColumnGUI(col);
+                ExitColumnGUI2 g = new ExitColumnGUI2(col);
                 col.setObs(g);
+                getIdFromMan();
             }
         });
         this.messages = new ConcurrentLinkedQueue<>();
@@ -39,6 +41,17 @@ public class ExitColumn extends Column {
     private void createCommands()
     {
         commands = new HashMap<>();
+        commands.put("id", (String[] args) ->
+        {
+            System.out.println("id");
+            id = args[1];
+        });
+        commands.put("helpComing", (String[] args) ->
+        {
+            System.out.println("helpComing");
+            infoBox = args[1];
+            notifyObs();
+        });
         commands.put("exitOk", (String[] args) ->
         {
             System.out.println("exitOk");
@@ -54,6 +67,16 @@ public class ExitColumn extends Column {
             //bar.open();
         });
         commands.put("getTariff", (String[] args) -> System.out.println("getTariff"));
+    }
+
+    public void getIdFromMan()
+    {
+        messages.add("getId--XX");
+    }
+
+    public void help()
+    {
+        messages.add("help--" + id);
     }
 
     public void exit(String carId)

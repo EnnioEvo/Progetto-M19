@@ -96,6 +96,11 @@ public class Manager
     public void createCommands()
     {
         commands = new HashMap<>();
+        commands.put("getId", (String[] args) -> "id--" + peripheralId());
+        commands.put("help", (String[] args) -> {
+            System.out.println("Richiesta assistenza periferica " + args[1]);
+            return "helpComing--Assitenza in arrivo, attendi.";
+        });
         commands.put("entry", (String[] args) -> entryMan.entryTicket(args[1]));
         commands.put("entrySub", (String[] args) -> entryMan.entrySub(args[1], args[2]));
         commands.put("getTariff", (String[] args) -> "tariff--" + getTariff());

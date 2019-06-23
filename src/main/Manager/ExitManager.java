@@ -36,7 +36,7 @@ public class ExitManager
                     else
                     {
                         // Se è pagato, allora è scaduto
-                        if(!d.getPaySub())
+                        if(d.getPaySub())
                         {
                             info = "L'abbonamento è scaduto, si prega di tornare alle casse.";
                             d.setSubPayementExpiredOfSub(true);

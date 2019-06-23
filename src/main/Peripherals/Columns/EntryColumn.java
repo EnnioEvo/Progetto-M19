@@ -1,6 +1,6 @@
 package main.Peripherals.Columns;
 
-import GUIs.EntryColumnGUI;
+import GUIs.EntryColumnGUI2;
 import main.Peripherals.ClientCommand;
 import main.Peripherals.Observer;
 import net.Client;
@@ -30,9 +30,11 @@ public class EntryColumn extends Column
             @Override
             public void run()
             {
-                EntryColumnGUI g = new EntryColumnGUI(col);
+                EntryColumnGUI2 g = new EntryColumnGUI2(col);
                 col.setObs(g);
+                getIdFromMan();
                 getTariffOfMan();
+                getSubTariffsOfMan();
             }
         });
         this.messages = new ConcurrentLinkedQueue<>();
@@ -43,6 +45,17 @@ public class EntryColumn extends Column
     private void createCommands()
     {
         commands = new HashMap<>();
+        commands.put("id", (String[] args) ->
+        {
+            System.out.println("id");
+            id = args[1];
+        });
+        commands.put("helpComing", (String[] args) ->
+        {
+            System.out.println("helpComing");
+            infoBox = args[1];
+            notifyObs();
+        });
         commands.put("entryOk", (String[] args) ->
         {
             System.out.println("entryOk");
@@ -55,7 +68,6 @@ public class EntryColumn extends Column
             System.out.println("entryNo");
             infoBox = args[1];
             notifyObs();
-            bar.open();
         });
         commands.put("tariff", (String[] args) ->
         {
@@ -77,6 +89,16 @@ public class EntryColumn extends Column
         });
         commands.put("getTariff", (String[] args) -> getTariffOfMan());
         commands.put("getSubTariffs", (String[] args) -> getSubTariffsOfMan());
+    }
+
+    public void getIdFromMan()
+    {
+        messages.add("getId--XX");
+    }
+
+    public void help()
+    {
+        messages.add("help--" + id);
     }
 
     public void entryTicket(String id)
@@ -141,6 +163,8 @@ public class EntryColumn extends Column
     {
         return infoBox;
     }
+
+
 
     public static void main(String[] args)
     {
