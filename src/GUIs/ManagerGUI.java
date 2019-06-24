@@ -20,8 +20,9 @@ public class ManagerGUI implements ItemListener
     final private static String REMOVEFLOOR = "Rimuovi piano";
     final private static String SUBDIVISION = "Scegli suddivisione posti";
     final private static String DRIVERINFO = "Visualizza informazioni clienti";
-    final private static String DELTATIME = "Scegli deltaTime";
+    final private static String DELTATIME = "Scegli durata validità pagamento";
     final private static String SUBCOST = "Scegli costi abbonamenti";
+    final private static String ANALYTICS = "Statistiche";
 
 
 
@@ -48,7 +49,7 @@ public class ManagerGUI implements ItemListener
         //Metto JComboBox in un JPanel per un look migliore
         JPanel comboBoxPane = new JPanel();
         comboBoxPane.setLayout(new GridLayout(1,2));
-        String comboBoxItems[] = {MAKEFLOORS, REMOVEFLOOR, TARRIFF, SUBDIVISION, DRIVERINFO, DELTATIME,SUBCOST};
+        String comboBoxItems[] = {MAKEFLOORS, REMOVEFLOOR, TARRIFF, SUBDIVISION, DRIVERINFO, DELTATIME, SUBCOST, ANALYTICS};
         JComboBox<String> cb = new JComboBox<>(comboBoxItems);
         cb.setEditable(false);
         cb.addItemListener(this);
@@ -73,6 +74,8 @@ public class ManagerGUI implements ItemListener
         JPanel deltaTime = chooseDeltaTime();
         //Schermata 7: scelta costo abbonamento
         JPanel subCost = chooseCostSub();
+        //Schermata 8: statistiche
+        JPanel analytics = analytics();
 
 
         //Creo il pannello che contiene le "cards".
@@ -84,6 +87,7 @@ public class ManagerGUI implements ItemListener
         cards.add(driverInfo, DRIVERINFO);
         cards.add(deltaTime, DELTATIME);
         cards.add(subCost, SUBCOST);
+        cards.add(analytics, ANALYTICS);
 
 
         f.add(comboBoxPane, BorderLayout.NORTH);
@@ -511,6 +515,82 @@ public class ManagerGUI implements ItemListener
         bottomPanel.add(new JPanel()); bottomPanel.add(create); bottomPanel.add(new JPanel());
         setFont(topPanel, new Font("Helvetica", Font.PLAIN, 30));
         setFont(info, new Font("Helvetica", Font.PLAIN, 20));
+        setFont(bottomPanel, new Font("Helvetica", Font.PLAIN, 30));
+        card.add(topPanel, BorderLayout.NORTH);
+        card.add(scroll, BorderLayout.CENTER);
+        card.add(bottomPanel, BorderLayout.SOUTH);
+
+        return card;
+    }
+
+    private JPanel analytics()
+    {
+        JPanel card = new JPanel();
+        card.setLayout(new BorderLayout());
+        JPanel topPanel = new JPanel();
+        topPanel.setLayout(new GridLayout(2, 3));
+        JTextField dayStartTxt = new JTextField("Giorno inizio ");
+        dayStartTxt.setEditable(false);
+        JTextField dayStart = new JTextField();
+        JTextField monthStartTxt = new JTextField("Mese inizio ");
+        monthStartTxt.setEditable(false);
+        JTextField monthStart = new JTextField();
+        JTextField yearStartTxt = new JTextField("Anno inizio ");
+        yearStartTxt.setEditable(false);
+        JTextField yearStart = new JTextField();
+        JTextField dayEndTxt = new JTextField("Giorno fine ");
+        dayEndTxt.setEditable(false);
+        JTextField dayEnd = new JTextField();
+        JTextField monthEndTxt = new JTextField("Mese fine ");
+        monthEndTxt.setEditable(false);
+        JTextField monthEnd = new JTextField();
+        JTextField yearEndTxt = new JTextField("Anno fine ");
+        yearEndTxt.setEditable(false);
+        JTextField yearEnd = new JTextField();
+
+        JTextArea info = new JTextArea();
+        info.setEditable(false);
+        info.setLineWrap(true);
+        //Reinizializzo JTextArea quando cambio card
+        card.addComponentListener(new ComponentAdapter()
+        {
+            @Override
+            public void componentHidden(ComponentEvent e)
+            {
+                super.componentHidden(e);
+                info.setText("");
+            }
+        });
+        topPanel.add(dayStartTxt); topPanel.add(dayStart);topPanel.add(monthStartTxt); topPanel.add(monthStart); topPanel.add(yearStartTxt); topPanel.add(yearStart);
+        topPanel.add(dayEndTxt); topPanel.add(dayEnd);topPanel.add(monthEndTxt); topPanel.add(monthEnd); topPanel.add(yearEndTxt); topPanel.add(yearEnd);
+        topPanel.setPreferredSize(new Dimension(500,100));
+        JButton create = new JButton("Scegli");
+        create.setPreferredSize(new Dimension(200,100));
+        create.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                try
+                {
+                    String from = yearStart.getText() + "-" + monthStart.getText() + "-" + dayStart.getText();
+                    String to = yearEnd.getText() + "-" + monthEnd.getText() + "-" + dayEnd.getText();
+                    double mean = man.analyticsMean(from, to);
+                    info.setText("Secondi medi permanenza ticket: " + mean);
+
+                } catch (RuntimeException ex)
+                {
+                    info.setText(ex.getMessage());
+                }
+
+            }
+        });
+        JScrollPane scroll = new JScrollPane(info);
+        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+        JPanel bottomPanel = new JPanel(new GridLayout(1,3));
+        bottomPanel.add(new JPanel()); bottomPanel.add(create); bottomPanel.add(new JPanel());
+        setFont(topPanel, new Font("Helvetica", Font.PLAIN, 30));
+        setFont(info, new Font("Helvetica", Font.PLAIN, 30));
         setFont(bottomPanel, new Font("Helvetica", Font.PLAIN, 30));
         card.add(topPanel, BorderLayout.NORTH);
         card.add(scroll, BorderLayout.CENTER);

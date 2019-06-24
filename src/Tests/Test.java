@@ -81,7 +81,7 @@ public class Test
         /*String s = "info--$carId=aaaaaaaa$timeIn=2019-06-20T23:14:38.495+02:00[Europe/Rome]$timepaid=0$paid=false$ticketPayementExpired=false--0";
         Test.parseDriver(s);*/
 
-        try {
+        /*try {
             Constructor c = Class.forName("main.Manager.Subscriptions.MonthlySubscription").getDeclaredConstructor(Double.class);
         }
         catch (Exception ex)
@@ -99,7 +99,21 @@ public class Test
             f.createNewFile();
             System.out.println("sds");
         }
-        catch(Exception ex){ex.printStackTrace();}
+        catch(Exception ex){ex.printStackTrace();}*/
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        try
+        {
+            date = sdf.parse("1711-11-32");
+        }
+        catch (ParseException ex)
+        {
+            System.out.println("Errore nel parsing di una data nel database");
+        }
+        GregorianCalendar cal = (GregorianCalendar)Calendar.getInstance();
+        cal.setTime(date);
+        System.out.println(cal.toZonedDateTime().toString());
     }
 
     private static Driver parseDriver(String line)

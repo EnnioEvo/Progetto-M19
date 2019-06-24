@@ -28,6 +28,8 @@ public class Manager
 
     private DataBaseAdapter db;
 
+    private AnalyticsEngine analyticsEngine;
+
     private EntryManager entryMan;
     private ExitManager exitMan;
 
@@ -64,6 +66,8 @@ public class Manager
         this.columnList = new ArrayList<>();
 
         this.db = new TextDataBaseAdapter("./db");
+
+        this.analyticsEngine = new AnalyticsEngine(db);
 
         this.entryMan = new EntryManager(this);
         this.exitMan = new ExitManager(this);
@@ -215,19 +219,20 @@ public class Manager
     }
 
     // analisi ingressi e incassi
-    public void Analytics()
+    public double analyticsMean(String from, String to)
     {
 
         // NumberFormat arrotonda un double per eccesso alle ultime due cifre decimali  0.41666666 --> 0.417
         NumberFormat nf = new DecimalFormat("0.000");
-        double meanDay = (double)entryToT / DAYS;
+        /*double meanDay = (double)entryToT / DAYS;
         double meanMonth = (double)entryToT / MONTH;
         double meanPayDay = meanDay*tariff;
         double meanPayMth = meanMonth*tariff;
 
         System.out.println("MEDIA INGRESSI: \nGioralieri:  " + nf.format(meanDay) + "\t" + "Mensili:  "+nf.format(meanMonth));
         System.out.println("**********************************");
-        System.out.println("MEDIA INCASSI: \nGioralieri:  " + nf.format(meanPayDay) + "\t" + "Mensili:  "+nf.format(meanPayMth));
+        System.out.println("MEDIA INCASSI: \nGioralieri:  " + nf.format(meanPayDay) + "\t" + "Mensili:  "+nf.format(meanPayMth));*/
+        return analyticsEngine.meanTicketTimeIn(from, to);
     }
 
     String printTickt(String carId)
