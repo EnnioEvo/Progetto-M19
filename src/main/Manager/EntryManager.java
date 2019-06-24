@@ -36,6 +36,7 @@ public class EntryManager
             man.setFreeSpacesTicketNow(man.getFreeSpacesTicketNow() + 1);
             man.setEntryToT(man.getEntryToT() + 1);   //Perche non viene incrementata all'ingresso degli abbonati?
             Driver d = new Driver(carId);
+            d.setTariff(man.getTariff());
             man.getDrivers().add(d);
             // Nuovo ingresso, non rimuovo dal db
             man.getDb().writeData(d, false);

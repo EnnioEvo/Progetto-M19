@@ -12,6 +12,7 @@ public class Driver
     private String carId;
     private GregorianCalendar timeIn;
     private GregorianCalendar timePaid;
+    private double tariff;
     private boolean paid;
     private boolean ticketPayementExpired;
     private Subscription sub;
@@ -86,7 +87,7 @@ public class Driver
         {
             sb.append("$timepaid=" + timePaid.toZonedDateTime().toString());
         }
-        sb.append("$paid=" + paid + "$ticketPayementExpired=" + ticketPayementExpired);
+        sb.append("$tariff=" + tariff + "$paid=" + paid + "$ticketPayementExpired=" + ticketPayementExpired);
         if(sub == null)
         {
             sb.append("--0");
@@ -177,5 +178,15 @@ public class Driver
     public void setCostOfSub(double d)
     {
         sub.setCost(d);
+    }
+
+    public double getTariff()
+    {
+        return tariff;
+    }
+
+    public void setTariff(double tariff)
+    {
+        this.tariff = tariff;
     }
 }

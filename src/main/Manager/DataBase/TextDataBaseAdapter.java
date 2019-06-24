@@ -165,16 +165,18 @@ public class TextDataBaseAdapter implements DataBaseAdapter
         {
             d.setTimePaid(parseDate(tmp.get(2)));
         }
+        // Parso la tariffa
+        d.setTimeIn(parseDate(tmp.get(3)));
         // Parso i boolean
-        d.setPaid(Boolean.parseBoolean(tmp.get(3)));
-        d.setTicketPayementExpired(Boolean.parseBoolean(tmp.get(4)));
+        d.setPaid(Boolean.parseBoolean(tmp.get(4)));
+        d.setTicketPayementExpired(Boolean.parseBoolean(tmp.get(5)));
         // Se esiste parso l'abbonamento
-        if(!tmp.get(5).equals("0"))
+        if(!tmp.get(6).equals("0"))
         {
             try
             {
-                Constructor c = Class.forName(tmp.get(5)).getConstructor(Double.class);
-                Subscription sub = (Subscription) c.newInstance( Double.parseDouble(tmp.get(9)));
+                Constructor c = Class.forName(tmp.get(6)).getConstructor(Double.class);
+                Subscription sub = (Subscription) c.newInstance( Double.parseDouble(tmp.get(10)));
                 d.setSub(sub);
             }
             catch(Exception ex)
@@ -183,10 +185,10 @@ public class TextDataBaseAdapter implements DataBaseAdapter
                 System.out.println("Tipo di abbonamento errato nel database");
             }
             // Parso la scadenza
-            d.setDateFinishOfSub(parseDate(tmp.get(6)));
+            d.setDateFinishOfSub(parseDate(tmp.get(7)));
             // Parso i boolean
-            d.setPaidSub(Boolean.parseBoolean(tmp.get(7)));
-            d.setSubPayementExpiredOfSub(Boolean.parseBoolean(tmp.get(8)));
+            d.setPaidSub(Boolean.parseBoolean(tmp.get(8)));
+            d.setSubPayementExpiredOfSub(Boolean.parseBoolean(tmp.get(9)));
         }
 
         return d;
