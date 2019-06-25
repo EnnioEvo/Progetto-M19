@@ -91,6 +91,29 @@ public class Manager
         //this.sublist = new ArrayList<>();
     }
 
+    //CREO un secondo costruttore che serve solo nei test, lo creo cosi che posso ''aggirare'' il lato server del manager
+    public Manager(){
+        this.floorsList = new ArrayList<>();
+        this.freeSpacesTot = 0;
+        this.freeSpacesSubTot = 0;
+        this.freeSpacesTicketTot = 0;
+        this.freeSpacesSubNow = 0;
+        this.freeSpacesTicketNow = 0;
+        this.drivers = new ArrayList<>();
+        this.subDrivers = new ArrayList<>();
+        this.entryToT = 0;
+        this.columnList = new ArrayList<>();
+
+        this.db = new TextDataBaseAdapter("./db");
+
+        this.analyticsEngine = new AnalyticsEngine(db);
+
+        this.entryMan = new EntryManager(this);
+        this.exitMan = new ExitManager(this);
+
+        createCommands();
+    }
+
     public static void main(String[] args)
     {
         if (args.length < 1) return;
@@ -235,7 +258,7 @@ public class Manager
         return analyticsEngine.meanTicketTimeIn(from, to);
     }
 
-    String printTickt(String carId)
+    String printTicket(String carId)
     {
         String s = "";
         s += "IDTicket:   " + carId;

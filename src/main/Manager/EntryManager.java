@@ -5,12 +5,12 @@ public class EntryManager
 {
     private Manager man;
 
-    EntryManager(Manager man)
+    public EntryManager(Manager man)
     {
         this.man = man;
     }
 
-    String entryTicket(String carId)
+   public String entryTicket(String carId)
     {
         boolean entry = false;
         String info;
@@ -28,7 +28,7 @@ public class EntryManager
         }
         else if (man.checkSubOrTicket(carId))
         {
-            info = "Ingreso fallito: targa: " + carId + " già presente all'interno del parcheggio.";
+            info = "Ingresso fallito: targa: " + carId + " già presente all'interno del parcheggio.";
             System.out.println(info);
         }
         else
@@ -42,7 +42,7 @@ public class EntryManager
             man.getDb().writeData(d, false);
 
             //stampa fittizia della tessera
-            info = "Ingresso riuscito, " + man.printTickt(carId);
+            info = "Ingresso riuscito, " + man.printTicket(carId);
             System.out.println(info);
             entry = true;
         }

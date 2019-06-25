@@ -1,6 +1,6 @@
 package GUIs;
 
-import com.sun.corba.se.spi.activation.Server;
+
 import main.Peripherals.Columns.EntryColumn;
 import main.Peripherals.Observer;
 
