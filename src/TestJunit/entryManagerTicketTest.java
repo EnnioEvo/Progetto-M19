@@ -21,7 +21,7 @@ public class entryManagerTicketTest {
     // test targa non valida
     public void entryTicketTest(){
         m.makeFloors(1,200);
-        m.setFreeSpacesSubNow(100);
+        m.setSpacesSubdivision(100);
         assertEquals("entryNo--Targa non valida.",em.entryTicket("000000000"));
     }
 
@@ -30,7 +30,7 @@ public class entryManagerTicketTest {
     public void invalidCarID(){
         String s="", st;
         m.makeFloors(1,200);
-        m.setFreeSpacesSubNow(100);
+        m.setSpacesSubdivision(100);
         // sono costretto a far lo split della stringa che mi conferma l'ingresso perchè i millisecondi della data non
         // davano la possibilita di convalidare il tes
         s = split.split(em.entryTicket("00000000"));
@@ -40,7 +40,7 @@ public class entryManagerTicketTest {
     //posti finiti
     public void finishedticketSpace(){
         m.makeFloors(1,1);
-        m.setFreeSpacesSubNow(0);
+        m.setSpacesSubdivision(0);
         //creo un ingresso valido
         em.entryTicket("00000000");
         //secondo ingresso che genera errore
@@ -51,7 +51,7 @@ public class entryManagerTicketTest {
     //targa in ingresso uguale
     public void sameCarID(){
         m.makeFloors(1,200);
-        m.setFreeSpacesSubNow(100);
+        m.setSpacesSubdivision(100);
         //creo un ingresso valido
         em.entryTicket("00000000");
         //secondo ingresso con stessa targa

@@ -21,7 +21,7 @@ public class entryManagerSubscriptionTest {
     @Test
     public void cardIDTest(){
         m.makeFloors(2,200);
-        m.setFreeSpacesSubNow(200);
+        m.setSpacesSubdivision(200);
         assertEquals("entryNo--Targa non valida",em.entrySub("000000000","MM") );
     }
 
@@ -29,7 +29,7 @@ public class entryManagerSubscriptionTest {
     public void notSubYet()
     {
         m.makeFloors(2,200);
-        m.setFreeSpacesSubNow(200);
+        m.setSpacesSubdivision(200);
         assertEquals("entryNo--Non hai ancora l'abbonamento",
                 em.entrySub("00000000", "XX"));
     }
