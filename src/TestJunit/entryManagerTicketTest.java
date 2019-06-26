@@ -11,7 +11,7 @@ import java.util.GregorianCalendar;
 
 import static junit.framework.TestCase.assertEquals;
 
-public class entryManagerTest {
+public class entryManagerTicketTest {
 
     Manager m = new Manager();
     EntryManager em = new EntryManager(m);

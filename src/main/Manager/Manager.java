@@ -310,9 +310,6 @@ public class Manager
                 check = true;
             }
         }
-
-
-
         return check;
     }
 

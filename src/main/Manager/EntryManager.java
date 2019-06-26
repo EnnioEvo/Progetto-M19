@@ -57,7 +57,7 @@ public class EntryManager
         }
     }
 
-    String entrySub(String carId, String typeSub)
+   public  String entrySub(String carId, String typeSub)
     // codice sub MM = mensile, SM= semestrale, AN=annuale.
     {
         String info;
@@ -78,8 +78,9 @@ public class EntryManager
             }
             if(man.getFreeSpacesSubNow() + 1 > man.getFreeSpacesSubTot())
             {
-                info = "Abbonamenti  finiti";
+                info = "Abbonamenti finiti";
                 System.out.println(info);
+
             }
             else
             {
