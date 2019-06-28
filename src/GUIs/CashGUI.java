@@ -20,6 +20,7 @@ public class CashGUI{
     final private static String START = "Inserisci la targa";
     final private static String PAY = "Inserisci contanti";
     private JTextArea info;
+    private String welcomeString = "Grazie di aver sostato al parcheggio M-19!";
 
     public CashGUI(Cash cash){
         this.cash = cash;
@@ -31,8 +32,8 @@ public class CashGUI{
         Dimension screenSize = toolkit.getScreenSize();
         int screenHeight = screenSize.height;
         int screenWidth = screenSize.width;
-        f.setSize((int)(screenWidth / 4), (int) (screenHeight / 1.5));
-        f.setLocation(screenWidth / 2, screenHeight / 2);
+        f.setSize((int)(screenWidth / 3), (int) (screenHeight / 1.5));
+        f.setLocation((int)(screenWidth / 3), (int)(screenHeight / 3));
         f.setTitle("Cassa");
 
         initComponents(f);
@@ -59,50 +60,34 @@ public class CashGUI{
 
     public JPanel startCard(){
         JPanel card = new JPanel();
-        info = new JTextArea("Grazie di aver sostato al parcheggio M-19!");
+        info = new JTextArea(welcomeString);
         card.addComponentListener(new ComponentAdapter()
         {
             @Override
             public void componentShown(ComponentEvent e)
             {
                 super.componentShown(e);
-                info.setText("Grazie di aver sostato al parcheggio M-19!");
+                info.setText(welcomeString);
             }
         });
         card.setBackground(Color.decode("#778ca3"));
         card.setLayout(new BorderLayout());
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBackground(Color.decode("#778ca3"));
-        //topPanel.add(Box.createRigidArea(new Dimension(70,20)), BorderLayout.NORTH);
-        //topPanel.add(Box.createRigidArea(new Dimension(500,20)), BorderLayout.WEST);
-        //topPanel.add(Box.createRigidArea(new Dimension(20,20)), BorderLayout.EAST);
 
         //Metto JComboBox in un JPanel per un look migliore
         JPanel mainPanel = new JPanel(new GridLayout(0, 1));
         mainPanel.setBackground(Color.decode("#778ca3"));
-        String starterTextInJTarga = "ES: AA000AA";
-        JTextField JTarga = createSimpleTextField(starterTextInJTarga,true,5,5,5,5);
-        JTarga.addFocusListener(new FocusListener() {
-            @Override
-            public void focusGained(FocusEvent focusEvent) {
-                if (JTarga.getText().equals(starterTextInJTarga)){
-                    JTarga.setText("");
-                }
-            }
-
-            @Override
-            public void focusLost(FocusEvent focusEvent) {
-
-            }
-        });
+        JTextField JTarga = createSimpleTextField("",true,5,5,5,5);
         mainPanel.add(JTarga);
+
         JButton t = createSimpleButton(START);
         t.setPreferredSize(new Dimension(200, 200));
         t.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 CardLayout cl = (CardLayout) (cards.getLayout());
-                cl.show(cards, START);
+                cl.show(cards, PAY);
             }
         });
         mainPanel.add(t);
@@ -116,8 +101,7 @@ public class CashGUI{
         setFont(mainPanel, new Font("Helvetica", Font.PLAIN, 30));
         setFont(info, new Font("Helvetica", Font.PLAIN, 30));
 
-        //card.add(Box.createRigidArea(new Dimension(130,10)), BorderLayout.EAST);
-        //card.add(Box.createRigidArea(new Dimension(130,10)), BorderLayout.WEST);
+
         card.add(topPanel, BorderLayout.NORTH);
         card.add(mainPanel, BorderLayout.CENTER);
         card.add(info, BorderLayout.SOUTH);
@@ -128,9 +112,79 @@ public class CashGUI{
     public JPanel payCard(){
         JPanel card = new JPanel();
         card.setLayout(new BorderLayout());
-        JPanel bottomPanel = new JPanel(new GridLayout(1,2));
 
+        info = new JTextArea(welcomeString);
+        card.addComponentListener(new ComponentAdapter()
+        {
+            @Override
+            public void componentShown(ComponentEvent e)
+            {
+                super.componentShown(e);
+                info.setText(welcomeString);
+            }
+        });
+        card.setBackground(Color.decode("#778ca3"));
+        card.setLayout(new BorderLayout());
+        JPanel topPanel = new JPanel(new BorderLayout());
+        topPanel.setBackground(Color.decode("#778ca3"));
+
+        //Metto JComboBox in un JPanel per un look migliore
+        JPanel mainPanel = new JPanel(new GridLayout(0, 1));
+        mainPanel.setBackground(Color.decode("#778ca3"));
+
+        JButton interruptButton = createSimpleButton("Interrompi e torna indietro");
+        interruptButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                cash.forgetSession();
+                info.setText(welcomeString + "\n" + "Erogati al cliente: "
+                        + cash.getCurrentPaid() + "€");
+            }
+        });
+        mainPanel.add(interruptButton);
+
+        JPanel cashRow = new JPanel(new FlowLayout());
+        cashRow.setBackground(Color.decode("#778ca3"));
+        JTextField cashText = createSimpleTextField("Inserisci contante",false,5,5,5,5);
+        cashText.setPreferredSize(new Dimension(300,70));
+        JTextField cashCell = createSimpleTextField("",true,5,5,5,5);
+        cashCell.setPreferredSize(new Dimension(100,70));
+        cashRow.add(cashText);
+        cashRow.add(cashCell);
+        mainPanel.add(cashRow);
+
+        JButton electronicPaymentButton = createSimpleButton("Paga con "+cash.getAdapterName());
+        electronicPaymentButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                if(!cash.receiveElectronicPayment()){
+                    refresh();
+                    info.setText(info.getText()+ "\nTransazione fallita, riprovare.");
+                }
+
+            }
+        });
+        mainPanel.add(electronicPaymentButton);
+
+        info.setBorder(BorderFactory.createMatteBorder(
+                10, 10, 10, 10, Color.decode("#4b6584")));
+        info.setEditable(false);
+        info.setLineWrap(true);
+        info.setPreferredSize(new Dimension(380, 200));
+        setFont(topPanel, new Font("Helvetica", Font.PLAIN, 20));
+        setFont(mainPanel, new Font("Helvetica", Font.PLAIN, 30));
+        setFont(info, new Font("Helvetica", Font.PLAIN, 30));
+
+        //card.add(Box.createRigidArea(new Dimension(130,10)), BorderLayout.EAST);
+        //card.add(Box.createRigidArea(new Dimension(130,10)), BorderLayout.WEST);
+        card.add(topPanel, BorderLayout.NORTH);
+        card.add(mainPanel, BorderLayout.CENTER);
+        card.add(info, BorderLayout.SOUTH);
         return card;
+    }
+
+    private void refresh(){
+        info.setText("Restano da pagare: " + (cash.getCurrentTotPay()-cash.getCurrentPaid()));
     }
 
     private JButton createSimpleButton(String text)
@@ -180,6 +234,7 @@ public class CashGUI{
         }
         return tf;
     }
+
 
     public static void setUIFont (javax.swing.plaf.FontUIResource f){
         java.util.Enumeration keys = UIManager.getDefaults().keys();

@@ -81,11 +81,12 @@ public class Cash{
         checkPaid();
     }
 
-    public void receiveElectronicPayment(){
+    public Boolean receiveElectronicPayment(){
         if(paymentAdapter.pay(currentPayment.getAmount())){
             currentPayment.amountPaid = currentPayment.amount;
         };
         checkPaid();
+        return currentPayment.getCheck();
     }
 
     public void checkPaid(){
@@ -112,11 +113,6 @@ public class Cash{
         //cambiare per client server
     }
 
-    public double getMoney(double moneyPut, double notYetPaid){
-        fund += moneyPut;
-        return notYetPaid - moneyPut;
-    }
-
     public void setTariffaOraria(double tariffaOraria) {
         this.tariffaOraria = tariffaOraria;
     }
@@ -135,6 +131,22 @@ public class Cash{
 
     public PaymentAdapter getPaymentAdapter() {
         return paymentAdapter;
+    }
+
+    public double getCurrentPaid() {
+        return currentPayment.amountPaid;
+    }
+
+    public double getCurrentTotPay(){
+        return currentPayment.amount;
+    }
+
+    public Driver getCurrentDriver() {
+        return currentDriver;
+    }
+
+    public String getAdapterName() {
+        return paymentAdapter.getName();
     }
 
     public int getId() {
