@@ -2,14 +2,16 @@ package main.Peripherals.Cash;
 
 public class Payment {
     Double amount;
+    Double amountPaid;
     String carId;
-    Boolean check;
+    boolean check;
 
 
-    public Payment(Double amount, String carId, Boolean check){
+    public Payment(Double amount, String carId, boolean check){
         this.amount = amount;
         this.carId = carId;
         this.check = check;
+        this.amountPaid = 0.;
     }
 
     public Boolean getCheck() { return check; }
@@ -22,6 +24,14 @@ public class Payment {
 
     public void setAmount(Double amount) {
         this.amount = amount;
+    }
+
+    public Double getAmountPaid() {
+        return amountPaid;
+    }
+
+    public void setAmountPaid(Double amountPaid) {
+        this.amountPaid = amountPaid;
     }
 
     public void setCarId(String carId) {

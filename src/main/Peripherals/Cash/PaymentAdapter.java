@@ -1,6 +1,6 @@
 package main.Peripherals.Cash;
 
 public interface PaymentAdapter {
-    public Payment pay(Payment notPaid);
+    public Boolean pay(Double amount);
     public String getName();
 }

@@ -23,11 +23,14 @@ public class Cash{
         this.paymentAdapter = paymentAdapter;
     }
 
-    //client server
-    //acquistare abbonamento
+    public void askDriver(String carId){
+        // da cambiare con client server
+        currentDriver = manager.getDriver(carId);
+    }
 
-    public Payment generatePayment(Driver driver){
-        Payment payment = new Payment(0d,driver.getCarId(),Boolean.FALSE);
+    public void generatePayment(){
+        Driver driver = currentDriver;
+        Payment payment = new Payment(0d,driver.getCarId(),false);
 
         if (driver.getSub()!=null){
             // il cliente possiede un abbonamento
@@ -70,9 +73,44 @@ public class Cash{
                 }
             }
         }
-        return payment;
+        currentPayment = payment;
     }
 
+    public void receiveCashMoney(Double money){
+        currentPayment.setAmountPaid(currentPayment.getAmountPaid()+money);
+        checkPaid();
+    }
+
+    public void receiveElectronicPayment(){
+        if(paymentAdapter.pay(currentPayment.getAmount())){
+            currentPayment.amountPaid = currentPayment.amount;
+        };
+        checkPaid();
+    }
+
+    public void checkPaid(){
+        if (currentPayment.getAmountPaid()>=currentPayment.getAmount()) {
+            //Se ho pagato il dovuto cambio lo stato di Payment
+            currentPayment.setCheck(Boolean.TRUE);
+            if (currentPayment.getAmountPaid() > currentPayment.getAmount()) {
+                //Se ho pagato più del dovuto erogo il resto
+                deliverMoney(currentPayment.getAmountPaid() - currentPayment.getAmount());
+            }
+            //Notifico al manager l'avvenuto pagamento
+            notifyManager();
+            //Cancello la sessione del pagamento
+            forgetSession();
+        }
+
+    }
+
+    public void deliverMoney(double amount){
+        System.out.println("Erogati " + amount + "€.");
+    }
+
+    public void notifyManager(){
+        //cambiare per client server
+    }
 
     public double getMoney(double moneyPut, double notYetPaid){
         fund += moneyPut;
@@ -89,11 +127,8 @@ public class Cash{
         return hours;
     }
 
-    public Driver askDriver(String carId){
-        return manager.getDriver(carId);
-    }
-
     public void forgetSession(){
+        deliverMoney(currentPayment.amountPaid);
         currentPayment = null;
         currentDriver = null;
     }
