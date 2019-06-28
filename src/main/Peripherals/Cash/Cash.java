@@ -1,5 +1,7 @@
 package main.Peripherals.Cash;
 
+import java.awt.*;
+import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 import main.Manager.Manager;
@@ -24,29 +26,53 @@ public class Cash{
     //client server
     //acquistare abbonamento
 
-    public void pay(Driver driver){
+    public Payment generatePayment(Driver driver){
+        Payment payment = new Payment(0d,driver.getCarId(),Boolean.FALSE);
+
         if (driver.getSub()!=null){
             // il cliente possiede un abbonamento
 
+            if (driver.getSub().getDateFinish().compareTo(GregorianCalendar.getInstance())==-1){
+                // l'abbonamento è scaduto
 
+                payment.setAmount(getServiceHours(driver.getDateFinishOfSub())*tariffaOraria);
+            }
+            else {
+                // l'abbonamento non è scaduto
+
+                if (driver.getPaySub()){
+                    // l'abbonamento è stato già pagato
+                    payment.setCheck(Boolean.TRUE);
+                }
+                else {
+                    // l'abbonamento non è stato pagato
+                    payment.setAmount(driver.getSubCost());
+                }
+
+            }
         }
         else{
             // il cliente non possiede un abbonamento
-            
-        }
 
-    }
+            if (driver.isTicketPayementExpired()){
+                // il ticket pagato è scaduto
+                payment.setAmount(getServiceHours(driver.getTimePaid())*tariffaOraria);
 
-/*    public Payment pay(Driver driver){
-        //Driver driver = manager.getDriver(carId);
-        double serviceHours = getServiceHours(driver);
-        Payment payment = new Payment(serviceHours * tariffaOraria, driver.getCarId(), Boolean.FALSE);
-        paymentAdapter.pay(payment);
-        if (!payment.getCheck()){
-            System.out.println("Transazione fallita.");
+            }
+            else {
+                if (!driver.isPaid()){
+                    //se il ticket non è stato pagato
+                    payment.setAmount(getServiceHours(driver.getTimeIn())*tariffaOraria);
+                }
+                else {
+                    //se il ticket è stato pagato
+                    payment.setCheck(Boolean.TRUE);
+                }
+            }
         }
         return payment;
-    }*/
+    }
+
 
     public double getMoney(double moneyPut, double notYetPaid){
         fund += moneyPut;
@@ -57,11 +83,9 @@ public class Cash{
         this.tariffaOraria = tariffaOraria;
     }
 
-    public double getServiceHours (Driver driver) {
-        //int nOreServizio = (int)(Math.random()*29) + 1; // verrà sostituito dalle ore effettive
-        GregorianCalendar c1 = driver.getTimeIn();
-        GregorianCalendar c2 = new GregorianCalendar(new Locale("en", "IT"));
-        double hours = Math.ceil((c2.getTimeInMillis() - c1.getTimeInMillis()) / (1000 * 60 * 60));
+    public int getServiceHours (GregorianCalendar lastPaid) {
+        GregorianCalendar nowCalendar = new GregorianCalendar(new Locale("en", "IT"));
+        int hours = (int) Math.ceil((nowCalendar.getTimeInMillis() - lastPaid.getTimeInMillis()) / (1000 * 60 * 60));
         return hours;
     }
 
@@ -76,5 +100,9 @@ public class Cash{
 
     public PaymentAdapter getPaymentAdapter() {
         return paymentAdapter;
+    }
+
+    public int getId() {
+        return id;
     }
 }

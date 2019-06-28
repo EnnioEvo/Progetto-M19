@@ -124,6 +124,8 @@ public class Driver
         return sub.getPaySub();
     }
 
+    public Double getSubCost(){ return sub.getCost();}
+
     public void setPaid(boolean paid)
     {
         this.paid = paid;
