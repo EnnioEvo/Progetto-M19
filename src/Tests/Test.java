@@ -5,7 +5,6 @@ import main.Manager.Driver;
 import main.Manager.Manager;
 import main.Manager.Subscriptions.Subscription;
 import main.Peripherals.Columns.EntryColumn;
-import GUIs.EntryColumnGUI;
 
 import java.awt.*;
 import java.io.File;

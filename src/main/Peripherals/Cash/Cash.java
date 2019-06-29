@@ -116,7 +116,14 @@ public class Cash implements Peripheral
     public void askDriver(String carId)
     {
         System.out.println("driverInfo--" + carId);
-        messages.add("driverInfo--" + carId);
+        if(carId.equals(""))
+        {
+            messages.add("driverInfo--XX");
+        }
+        else
+        {
+            messages.add("driverInfo--" + carId);
+        }
     }
 
     public void generatePayment(){

@@ -1,6 +1,5 @@
 package main.Peripherals.Columns;
 
-import GUIs.ExitColumnGUI;
 import GUIs.ExitColumnGUI2;
 import main.Peripherals.ClientCommand;
 import main.Peripherals.Observer;
@@ -82,7 +81,14 @@ public class ExitColumn extends Column {
 
     public void exit(String carId)
     {
-        messages.add("exit--" + carId);
+        if(carId.equals(""))
+        {
+            messages.add("exit--XX");
+        }
+        else
+        {
+            messages.add("exit--" + carId);
+        }
     }
 
     @Override

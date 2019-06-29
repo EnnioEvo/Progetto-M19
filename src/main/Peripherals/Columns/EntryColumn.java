@@ -104,7 +104,14 @@ public class EntryColumn extends Column
 
     public void entryTicket(String id)
     {
-        messages.add("entry--" + id);
+        if(id.equals(""))
+        {
+            messages.add("entry--XX");
+        }
+        else
+        {
+            messages.add("entry--" + id);
+        }
     }
 
     public void entrySub(String id, String type)

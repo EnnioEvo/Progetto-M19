@@ -39,8 +39,10 @@ public class EntryColumnGUI2 implements ItemListener, Observer
         Dimension screenSize = toolkit.getScreenSize();
         int screenHeight = screenSize.height;
         int screenWidth = screenSize.width;
-        f.setSize(screenHeight / 2, screenWidth / 3);
-        f.setLocation(screenWidth / 4, screenHeight / 4);
+        int height = 900;
+        int width = 700;
+        f.setSize(width, height);
+        f.setLocation((screenWidth - width) / 2, (screenHeight - height) / 2);
         f.setTitle("Entry Column");
 
         initComponents(f);

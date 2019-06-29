@@ -2,7 +2,6 @@ package Tests;
 
 import main.Manager.Manager;
 import main.Peripherals.Columns.EntryColumn;
-import GUIs.EntryColumnGUI;
 
 import java.awt.*;
 
