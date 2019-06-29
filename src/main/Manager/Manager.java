@@ -16,8 +16,7 @@ import java.text.NumberFormat;
 import java.util.*;
 import java.util.List;
 
-@SuppressWarnings("Duplicates")
-//CHANGED METHODS: FIRST TEST: positive
+
 public class Manager
 {
     private double monthlyCost=1, semestralCost, annualCost, extraCost;
@@ -45,13 +44,10 @@ public class Manager
     private double DAYS=365, MONTH=12;
     private HashMap<String, Command> commands;
 
-    //aggiungo l'arraylist degli abbonamenti
-    //private ArrayList<Subscription> sublist;  Ora sono in subDrivers
 
-    //aggiungo deltaTime
     private int deltaTimePaid;  //In minuti
 
-
+    // costruttore parte Server, gli passiamo il numero di porta
     public Manager(int port)
     {
         this.floorsList = new ArrayList<>();
@@ -120,6 +116,7 @@ public class Manager
         new Manager(Integer.parseInt(args[0]));
     }
 
+    //creo l'hashmap e aggiungo al suo intero i comandi principali che posso ricevere dalle varie periferiche
     public void createCommands()
     {
         commands = new HashMap<>();
@@ -136,6 +133,7 @@ public class Manager
         commands.put("driverInfo", (String[] args) -> getDriverClientInfo(args[1]));
     }
 
+    // metodo che mi esegue il comando ricevuto da una delle periferiche
     public String executeCommand(String[] args)
     {
         String s = "";
@@ -150,7 +148,7 @@ public class Manager
         return s;
     }
 
-    // ho cambiato il metodo perchè non settava il numero di posti liberi dei piani
+    // creo i piani: posso creare il parcheggio scegliendo il numero di  piani (numFloors) e la loro capienza (numSpaces)
     public void makeFloors(int numFloors, int numSpaces)
     {
         for(int i=0; i<numFloors; i++)
@@ -161,6 +159,7 @@ public class Manager
         setFreeSpacesTot();
     }
 
+    // rimuove un piano: per eventuali modifiche del parcheggio , posso scegliere di eliminare un piano dal software che controlla la struttura
     public void removeFloor(int rm)
     {
         Floor toBeRemoved = new Floor(-1, -1);
@@ -181,6 +180,8 @@ public class Manager
         setFreeSpacesTot();
     }
 
+    // controlla il deltaTime, cioè il minutaggio massimo che può trascorrere dal momento che si paga il ticket all'uscita,
+    // se il delta è rispettato l'uscita avviene senza problemi, in caso contrario il driver deve tornare alla cassa
     boolean checkDeltaTime(GregorianCalendar dataDriverPaid)
     {
         GregorianCalendar dataNow = new GregorianCalendar();
@@ -190,12 +191,9 @@ public class Manager
         }
         return dataNow.before(dataDriverPaid);
 
-        /*double DeltaTime = dataNow.getTimeInMillis() - dataDriver.getTimeInMillis();
-        DeltaTime = DeltaTime/(1000*60*60); //risalgo ai minuti
-        return DeltaTime;*/ //VISTO: POSSIAMO ANCHE ELIMINARE IL DeltaTime se sei d'accordo
     }
 
-    // ho cambiato il metodo da ''private'' a ''public'' perchè non potevo settare dal main il numero dei posti per gli abbonati
+    // determina il numero di  posti riservati agli abbonamenti
     public void setSpacesSubdivision(int sub)
     {
         if(sub <= freeSpacesTot)
@@ -215,7 +213,7 @@ public class Manager
             throw new SubdivisionException("Non ci sono abbastanza posti");
         }
     }
-
+    // determina il numero di posti riservati ai Ticket
     private void setFreeSpacesTot()  //Modificare non dovrebbe restituire nulla
     {
         int i = 0;
@@ -233,6 +231,7 @@ public class Manager
         }
     }
 
+    // dopo aver eliminato uno o più piani, con questo metodo sistemo gli indici restanti
     private void changeFloorId()
     {
         for(int i=0;i<floorsList.size();i++)
@@ -257,7 +256,7 @@ public class Manager
         System.out.println("MEDIA INCASSI: \nGioralieri:  " + nf.format(meanPayDay) + "\t" + "Mensili:  "+nf.format(meanPayMth));*/
         return analyticsEngine.meanTicketTimeIn(from, to);
     }
-
+    // stampa le informazioni del driver in ingresso
     String printTicket(String carId)
     {
         String s = "";
@@ -272,6 +271,7 @@ public class Manager
     }
 
     //*********************************** metodi 'check' per abbonamento****************************
+   // controlla se l'abbonamento è scaduto
     boolean checkDateSub(String carID)
     {
         GregorianCalendar dataNow = new GregorianCalendar();
@@ -292,7 +292,7 @@ public class Manager
         }
         return  check;
     }
-
+    // controlla se la targa passata è presente all'interno dell'arraylist dei driver o dei sub
     boolean checkSubOrTicket(String carID)
     {
         boolean check = false;
@@ -312,7 +312,7 @@ public class Manager
         }
         return check;
     }
-
+    // controlla se il driver è già all'interno del parcheggio
     boolean checkInPark(String cardID)
     {
         boolean check = false;
@@ -327,7 +327,7 @@ public class Manager
         }
         return check;
     }
-
+    // controlla se la sintassi della targa sia corretta
     boolean checkCarId(String carId)
     {
         if(carId.length() == 8)
@@ -343,6 +343,7 @@ public class Manager
 
 //****************** metodo check in park per tickets *******************************
 
+    //controlla se il driver che sta tentando di far l'ingresso è già in possesso di un'altro ticket
     boolean checkTicket(String carID)
     {
         boolean check = false;
@@ -359,6 +360,7 @@ public class Manager
 
     //*******************************************
 
+    // questo metodo mi restituisce le informaizoni relative al driver o al sub
     public String getDriverClientInfo(String carID)
     {
         StringBuilder sb = new StringBuilder();
@@ -390,7 +392,7 @@ public class Manager
     }
 
     //****************** fine metodo check in park per tickets *******************************
-
+    // rimuove dall'arraylist degl'abbonati, il Driver a cui è scaduto l'abbonamento
     void removeSub(String carID)
     {
         Driver toBeRemoved = new Driver("");
@@ -404,6 +406,7 @@ public class Manager
         subDrivers.remove(toBeRemoved);
     }
 
+    // simula l'ingresso di un driver in un piano
     void randomEntry()
     {
         Random r = new Random();
@@ -415,7 +418,7 @@ public class Manager
         }while(floorsList.get(i).getCountCarIn() >= floorsList.get(i).getFreeSpace());
         floorsList.get(i).addCar();
     }
-
+    // simula un uscita di un driver da un piano
     void randomExit()
     {
         Random r = new Random();
@@ -427,19 +430,8 @@ public class Manager
         }while(floorsList.get(i).getCountCarIn() <= 0);
         floorsList.get(i).deleteCar();
     }
+    // osserva tutti i cambiamenti de
 
-    private void addObserver(List<Observer> list, Observer obs)
-    {
-        list.add(obs);
-    }
-
-    private void notifyColumns()
-    {
-        for (Column c : columnList)
-        {
-            c.notifyObs();
-        }
-    }
 
     private String peripheralId()
     {
