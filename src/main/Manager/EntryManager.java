@@ -1,13 +1,17 @@
 package main.Manager;
 
+import main.Manager.DataBase.DataBaseAdapter;
+
 @SuppressWarnings("Duplicates")
 public class EntryManager
 {
     private Manager man;
+    private DataBaseAdapter db;
 
     public EntryManager(Manager man)
     {
         this.man = man;
+        this.db = man.getDb();
     }
 
     // metodo che prende come attributo una targa e permette al driver di entrare nel parcheggio tramite un ticket,
@@ -41,7 +45,7 @@ public class EntryManager
             d.setTariff(man.getTariff());
             man.getDrivers().add(d);
             // Nuovo ingresso, non rimuovo dal db
-            man.getDb().writeData(d, false);
+            db.writeData(d, false);
 
             //stampa fittizia della tessera
             info = "Ingresso riuscito, " + man.printTicket(carId);
@@ -107,7 +111,7 @@ public class EntryManager
                 //ovviamente è la stessa cosa, dimmi cosa secondo te è più corretto
                 man.getSubDrivers().add(d);
                 // Nuovo ingresso, non rimuovo dal db
-                man.getDb().writeData(d, false);
+                db.writeData(d, false);
                 d.setInPark(true);
                 entry = true;
             }

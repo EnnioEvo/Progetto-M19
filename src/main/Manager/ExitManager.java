@@ -1,14 +1,18 @@
 package main.Manager;
 
+import main.Manager.DataBase.DataBaseAdapter;
+
 import java.util.GregorianCalendar;
 
 public class ExitManager
 {
     private Manager man;
+    private DataBaseAdapter db;
 
     public ExitManager(Manager man)
     {
         this.man = man;
+        this.db = man.getDb();
     }
     // metodo che permette ad un driver di uscire, se quest'ultimo è munito di ticket per poter uscire deve rispettare il deltaTime
     // e l'aver pagato il ticket, se invece il driver è munito di abbonamento deve aver effettuato il pagamento di quest'ultimo
@@ -43,7 +47,7 @@ public class ExitManager
                             info = "L'abbonamento è scaduto, si prega di tornare alle casse.";
                             d.setSubPayementExpiredOfSub(true);
                             // Aggiorno l'entry dell'utente nel db
-                            man.getDb().writeData(d, true);
+                            db.writeData(d, true);
                         }
                         else
                         {
@@ -80,7 +84,7 @@ public class ExitManager
                         info = "E' passato troppo tempo dal pagamento, si prega di tornare alle casse.";
                         d.setTicketPayementExpired(true);
                         // Aggiorno l'entry dell'utente nel db
-                        man.getDb().writeData(d, true);
+                        db.writeData(d, true);
                     }
                     else
                     {
