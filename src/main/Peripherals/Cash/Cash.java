@@ -55,6 +55,7 @@ public class Cash implements Peripheral {
     public void askDriver(String carId){
         // da eliminare con client server
         currentDriver = manager.getDriver(carId);
+        notifyObs();
     }
 
     public void generatePayment(){
@@ -108,6 +109,7 @@ public class Cash implements Peripheral {
     public void receiveCashMoney(Double money){
         currentPayment.setAmountPaid(currentPayment.getAmountPaid()+money);
         checkPaid();
+        notifyObs();
     }
 
     public Boolean receiveElectronicPayment(){
@@ -115,6 +117,7 @@ public class Cash implements Peripheral {
             currentPayment.amountPaid = currentPayment.amount;
         };
         checkPaid();
+        notifyObs();
         return currentPayment.getCheck();
     }
 
@@ -164,6 +167,12 @@ public class Cash implements Peripheral {
 
     public Driver getCurrentDriver() {
         return currentDriver;
+    }
+
+    public String getPaymentInfo(){
+        return "Targa: " + currentDriver.getCarId() +
+                "\nTotale da pagare: " + currentPayment.getAmount() +
+                "\nInseriti: " + currentPayment.getAmountPaid();
     }
 
     public String getAdapterName() {
