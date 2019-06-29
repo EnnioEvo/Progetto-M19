@@ -60,8 +60,10 @@ public class CashGUI implements Observer {
     }
 
     public JPanel startCard(){
+
+        //Inizializzo la carta
         JPanel card = new JPanel();
-        info = new JTextArea(welcomeString);
+            //Quando un livello viene cambiato, mostra la scritta di ringraziamento
         card.addComponentListener(new ComponentAdapter()
         {
             @Override
@@ -73,36 +75,36 @@ public class CashGUI implements Observer {
         });
         card.setBackground(Color.decode("#778ca3"));
         card.setLayout(new BorderLayout());
-        JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.setBackground(Color.decode("#778ca3"));
 
-        //Metto JComboBox in un JPanel per un look migliore
+        //Metto i componenti in un JPanel per un look migliore
         JPanel mainPanel = new JPanel(new GridLayout(0, 1));
         mainPanel.setBackground(Color.decode("#778ca3"));
         JTextField JTarga = createSimpleTextField("",true,5,5,5,5);
         mainPanel.add(JTarga);
 
-        JButton t = createSimpleButton(START);
-        t.setPreferredSize(new Dimension(200, 200));
-        t.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                ((CardLayout) (cards.getLayout())).show(cards,PAY);
-            }
-        });
-        mainPanel.add(t);
-        //mainPanel.add(Box.createRigidArea(new Dimension(10,20)));
+        //Creo l'area di testo delle informazioni
+        info = new JTextArea(welcomeString);
         info.setBorder(BorderFactory.createMatteBorder(
                 10, 10, 10, 10, Color.decode("#4b6584")));
         info.setEditable(false);
         info.setLineWrap(true);
         info.setPreferredSize(new Dimension(300, 300));
-        setFont(topPanel, new Font("Helvetica", Font.PLAIN, 20));
+        //setFont(topPanel, new Font("Helvetica", Font.PLAIN, 20));
         setFont(mainPanel, new Font("Helvetica", Font.PLAIN, 30));
         setFont(info, new Font("Helvetica", Font.PLAIN, 30));
 
 
-        card.add(topPanel, BorderLayout.NORTH);
+        //Creo il bottone "Inserisci la targa"
+        JButton plateButton = createSimpleButton(START);
+        plateButton.setPreferredSize(new Dimension(200, 200));
+        plateButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                ((CardLayout) (cards.getLayout())).show(cards,PAY);
+            }
+        });
+        mainPanel.add(plateButton);
+        //Aggiungo i componenti alla carta
         card.add(mainPanel, BorderLayout.CENTER);
         card.add(info, BorderLayout.SOUTH);
         return card;
@@ -113,6 +115,7 @@ public class CashGUI implements Observer {
         JPanel card = new JPanel();
         card.setLayout(new BorderLayout());
 
+        //Inizializzo la casella delle informazioni
         info = new JTextArea(welcomeString);
         card.addComponentListener(new ComponentAdapter()
         {
@@ -123,15 +126,15 @@ public class CashGUI implements Observer {
                 info.setText(welcomeString);
             }
         });
+        //Modifiche estetiche
         card.setBackground(Color.decode("#778ca3"));
         card.setLayout(new BorderLayout());
-        JPanel topPanel = new JPanel(new BorderLayout());
-        topPanel.setBackground(Color.decode("#778ca3"));
 
-        //Metto JComboBox in un JPanel per un look migliore
+        //Metto Componenti in un JPanel per un look migliore
         JPanel mainPanel = new JPanel(new GridLayout(0, 1));
         mainPanel.setBackground(Color.decode("#778ca3"));
 
+        //Aggiungo il bottone "Interrompi e torna indietro"
         JButton interruptButton = createSimpleButton("Interrompi e torna indietro");
         interruptButton.addActionListener(new ActionListener() {
             @Override
@@ -145,13 +148,14 @@ public class CashGUI implements Observer {
         });
         mainPanel.add(interruptButton);
 
+        //Aggiungo la riga per il pagamento in contanti
         JPanel cashRow = new JPanel(new FlowLayout());
         cashRow.setBackground(Color.decode("#778ca3"));
-
+            //Virtualmente sarebbe la buca in cui inserire le monete o le banconote
         JTextField cashText = createSimpleTextField("",true,5,5,5,5);
         cashText.setPreferredSize(new Dimension(110,70));
         cashRow.add(cashText);
-
+            //In una cassa vera, neanche il bottone "Inserisci contanti" ci sarebbe.
         JButton cashButton = createSimpleButton("Inserisci contante");
         cashButton.setPreferredSize(new Dimension(290,70));
         cashRow.add(cashButton);
@@ -173,9 +177,9 @@ public class CashGUI implements Observer {
 
             }
         });
-
         mainPanel.add(cashRow);
 
+        //Creo il bottone per il pagamento elettronico secondo l'adapter della cassa
         JButton electronicPaymentButton = createSimpleButton("Paga con "+cash.getAdapterName());
         electronicPaymentButton.addActionListener(new ActionListener() {
             @Override
@@ -184,6 +188,7 @@ public class CashGUI implements Observer {
                 update();
                 if(transactionSuccess){
                     cash.forgetSession();
+                    update();
                     ((CardLayout) (cards.getLayout())).show(cards,START);
                     info.setText(info.getText()+ "\nTransazione riuscita.");
                     }
@@ -200,13 +205,9 @@ public class CashGUI implements Observer {
         info.setEditable(false);
         info.setLineWrap(true);
         info.setPreferredSize(new Dimension(380, 200));
-        setFont(topPanel, new Font("Helvetica", Font.PLAIN, 20));
         setFont(mainPanel, new Font("Helvetica", Font.PLAIN, 30));
         setFont(info, new Font("Helvetica", Font.PLAIN, 30));
 
-        //card.add(Box.createRigidArea(new Dimension(130,10)), BorderLayout.EAST);
-        //card.add(Box.createRigidArea(new Dimension(130,10)), BorderLayout.WEST);
-        card.add(topPanel, BorderLayout.NORTH);
         card.add(mainPanel, BorderLayout.CENTER);
         card.add(info, BorderLayout.SOUTH);
         return card;
