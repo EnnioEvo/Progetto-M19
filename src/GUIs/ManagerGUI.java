@@ -5,10 +5,12 @@ import Exceptions.SubdivisionException;
 import main.Manager.Driver;
 import main.Manager.Floor;
 import main.Manager.Manager;
+import main.Utilities.PathUtilities;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.IOException;
 import java.util.ArrayList;
 
 public class ManagerGUI implements ItemListener
@@ -40,8 +42,13 @@ public class ManagerGUI implements ItemListener
         f.setTitle("Manager");
 
         initComponents(f);
+
+
+        String iconPath = PathUtilities.getProjectPath()+"\\Progetto-M19\\icons\\manager.png";
+        f.setIconImage(new ImageIcon(iconPath).getImage());;
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setVisible(true);
+
     }
 
     private void initComponents(JFrame f)
