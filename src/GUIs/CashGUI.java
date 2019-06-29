@@ -76,12 +76,6 @@ public class CashGUI implements Observer {
         card.setBackground(Color.decode("#778ca3"));
         card.setLayout(new BorderLayout());
 
-        //Metto i componenti in un JPanel per un look migliore
-        JPanel mainPanel = new JPanel(new GridLayout(0, 1));
-        mainPanel.setBackground(Color.decode("#778ca3"));
-        JTextField JTarga = createSimpleTextField("",true,5,5,5,5);
-        mainPanel.add(JTarga);
-
         //Creo l'area di testo delle informazioni
         info = new JTextArea(welcomeString);
         info.setBorder(BorderFactory.createMatteBorder(
@@ -89,10 +83,9 @@ public class CashGUI implements Observer {
         info.setEditable(false);
         info.setLineWrap(true);
         info.setPreferredSize(new Dimension(300, 300));
-        //setFont(topPanel, new Font("Helvetica", Font.PLAIN, 20));
-        setFont(mainPanel, new Font("Helvetica", Font.PLAIN, 30));
-        setFont(info, new Font("Helvetica", Font.PLAIN, 30));
 
+        //Creo l'area di testo della targa
+        JTextField plateText = createSimpleTextField("",true,5,5,5,5);
 
         //Creo il bottone "Inserisci la targa"
         JButton plateButton = createSimpleButton(START);
@@ -100,10 +93,27 @@ public class CashGUI implements Observer {
         plateButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                ((CardLayout) (cards.getLayout())).show(cards,PAY);
+                cash.askDriver(plateText.getText()); //DA CAMBIARE CON CLIENT SERVER
+                if (cash.getCurrentDriver() == null){
+                    info.setText("La targa inserita non corrisponde ad alcuna macchina, riprovare.");
+                }
+                else{
+                    ((CardLayout) (cards.getLayout())).show(cards,PAY);
+                }
+
             }
         });
+
+        //Metto i componenti in un JPanel per un look migliore
+        JPanel mainPanel = new JPanel(new GridLayout(0, 1));
+        mainPanel.setBackground(Color.decode("#778ca3"));
+        mainPanel.add(plateText);
         mainPanel.add(plateButton);
+
+        //Imposto il font
+        setFont(mainPanel, new Font("Helvetica", Font.PLAIN, 30));
+        setFont(info, new Font("Helvetica", Font.PLAIN, 30));
+
         //Aggiungo i componenti alla carta
         card.add(mainPanel, BorderLayout.CENTER);
         card.add(info, BorderLayout.SOUTH);
@@ -131,7 +141,7 @@ public class CashGUI implements Observer {
             public void componentShown(ComponentEvent e)
             {
                 super.componentShown(e);
-                info.setText(welcomeString);
+                info.setText(cash.getPaymentInfo());
             }
         });
         info.setBorder(BorderFactory.createMatteBorder(
@@ -174,7 +184,6 @@ public class CashGUI implements Observer {
                 Double d;
                 try{
                     cash.receiveCashMoney(Double.parseDouble(cashText.getText()));
-                    update();
 
                 }
                 catch (java.lang.NumberFormatException e){
@@ -194,7 +203,6 @@ public class CashGUI implements Observer {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 boolean transactionSuccess = cash.receiveElectronicPayment();
-                update();
                 if(transactionSuccess){
                     cash.forgetSession();
                     update();
@@ -276,7 +284,7 @@ public class CashGUI implements Observer {
     }
 
     private void setFont(Component comp, Font font)
-    {   
+    {
         comp.setFont(font);
         for (Component child : ((Container)comp).getComponents())
         {
@@ -287,7 +295,13 @@ public class CashGUI implements Observer {
     public void update()
     {
         System.out.println("update");
-        info.setText("Restano da pagare: " + (cash.getCurrentTotPay()-cash.getCurrentPaid()));
+        if(cash.getCurrentDriver()!=null){
+            ((CardLayout)cards.getLayout()).show(cards,PAY);
+        }
+        else{
+            ((CardLayout)cards.getLayout()).show(cards,PAY);
+        }
+        info.setText(cash.getPaymentInfo());
 
     }
 
