@@ -48,7 +48,10 @@ public class AnalyticsEngine
             }
         }
 
-        hours = (double) hours / drivers.size();
+        if(drivers.size() > 0)
+        {
+            hours = (double) hours / drivers.size();
+        }
         return hours;
     }
 

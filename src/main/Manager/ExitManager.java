@@ -10,7 +10,9 @@ public class ExitManager
     {
         this.man = man;
     }
-
+    // metodo che permette ad un driver di uscire, se quest'ultimo è munito di ticket per poter uscire deve rispettare il deltaTime
+    // e l'aver pagato il ticket, se invece il driver è munito di abbonamento deve aver effettuato il pagamento di quest'ultimo
+    // e sopratutto l'abbonamento deve essere valido
     public String exit(String carID)   //messo boolean per recuperare il check
     {
         boolean check = false;

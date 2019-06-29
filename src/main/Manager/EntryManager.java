@@ -10,7 +10,8 @@ public class EntryManager
         this.man = man;
     }
 
-    
+    // metodo che prende come attributo una targa e permette al driver di entrare nel parcheggio tramite un ticket,
+    //il driver può entrare se e solo se ci sono posti disponibili e se la targa è sintatticamente giusta
    public String entryTicket(String carId)
     {
         boolean entry = false;
@@ -57,7 +58,7 @@ public class EntryManager
             return "entryNo--" + info;
         }
     }
-
+    // metodo che permette sia di acquistare un abbonamento sia di entrare nel parcheggio se si possiede già un sub
    public  String entrySub(String carId, String typeSub)
     // codice sub MM = mensile, SM= semestrale, AN=annuale.
     {

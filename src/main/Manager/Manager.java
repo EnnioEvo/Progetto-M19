@@ -62,7 +62,7 @@ public class Manager
         this.entryToT = 0;
         this.columnList = new ArrayList<>();
 
-        this.db = new TextDataBaseAdapter("./db");
+        this.db = new TextDataBaseAdapter("./db.txt");
 
         this.analyticsEngine = new AnalyticsEngine(db);
 
@@ -300,15 +300,8 @@ public class Manager
     // controlla se la targa passata è presente all'interno dell'arraylist dei driver o dei sub
     boolean checkSubOrTicket(String carID)
     {
-        boolean check = false;
+        boolean check = checkTicket(carID);
         for(Driver d : subDrivers)
-        {
-            if(d.getCarId().equals(carID))
-            {
-                check = true;
-            }
-        }
-        for (Driver d : drivers)
         {
             if(d.getCarId().equals(carID))
             {
@@ -420,6 +413,7 @@ public class Manager
         }
         d.setTimePaid(new GregorianCalendar());
         d.setPaid(Boolean.TRUE);
+        db.writeData(d, true);
         return "logOk--XX";
     }
 
@@ -436,6 +430,7 @@ public class Manager
             d.setDateFinishOfSub(new GregorianCalendar());
         }
         d.setPaidSub(Boolean.TRUE);
+        db.writeData(d, true);
         return "logOk--XX";
     }
     // simula l'ingresso di un driver in un oiano
@@ -462,8 +457,6 @@ public class Manager
         }while(floorsList.get(i).getCountCarIn() <= 0);
         floorsList.get(i).deleteCar();
     }
-    // osserva tutti i cambiamenti de
-
 
     private String peripheralId()
     {

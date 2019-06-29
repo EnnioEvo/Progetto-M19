@@ -28,8 +28,9 @@ public class TextDataBaseAdapter implements DataBaseAdapter
         try
         {
             f.createNewFile();
+            System.out.println(f.getAbsolutePath());
         }
-        catch (IOException ex)
+        catch (Exception ex)
         {
             System.out.println("Impossibile creare file");
         }
@@ -48,7 +49,8 @@ public class TextDataBaseAdapter implements DataBaseAdapter
             while((line = br.readLine()) != null)
             {
                 Driver d = DriverParser.parseDriver(line);
-                drivers.put(d.getCarId(), d);
+                // Uso targa e data di ingresso come chiave
+                drivers.put(d.getCarId() + "-" +d.getTimeIn().toZonedDateTime().toString(), d);
             }
         }
         catch(IOException ex)
@@ -80,15 +82,15 @@ public class TextDataBaseAdapter implements DataBaseAdapter
         // Elimino record precedente relativo ai nuovi driver
         if(remove)
         {
-            oldDrivers.remove(driver.getCarId());
-            newDrivers.addAll(oldDrivers.values());
+            oldDrivers.remove(driver.getCarId() + "-" + driver.getTimeIn().toZonedDateTime().toString());
         }
+        newDrivers.addAll(oldDrivers.values());
         newDrivers.add(driver);
 
         try
         {
             StringBuilder sb = new StringBuilder();
-            FileWriter f = new FileWriter(filePath, true);
+            FileWriter f = new FileWriter(filePath, false);
             bw = new BufferedWriter(f);
 
             for (Driver d : newDrivers)
