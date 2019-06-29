@@ -95,6 +95,7 @@ public class CashGUI implements Observer {
             public void actionPerformed(ActionEvent e) {
                 cash.askDriver(plateText.getText()); //DA CAMBIARE CON CLIENT SERVER
                 if (cash.getCurrentDriver() == null){
+                    System.out.println("Targa inesistente");
                     info.setText("La targa inserita non corrisponde ad alcuna macchina, riprovare.");
                 }
                 else{
