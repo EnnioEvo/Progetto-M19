@@ -21,14 +21,15 @@ public class EntryColumn extends Column
     private String infoBox;
     private HashMap<String, ClientCommand> commands;
 
+    //Costruttore della classe "EntryColumn"
     public EntryColumn(String hostName, int port)
     {
         EntryColumn col = this;
         createCommands();
-        //La GUI va chiamata prima del client se no non compare
         EventQueue.invokeLater(new Runnable()
         {
             @Override
+            //Esegue l'interfaccia grafica
             public void run()
             {
                 EntryColumnGUI2 g = new EntryColumnGUI2(col);
@@ -43,6 +44,7 @@ public class EntryColumn extends Column
         new Client(hostName, port, messages, col);
     }
 
+    //Collega il nome del comando con i rispettivi metodi che eseguono le operazioni volute dal server
     private void createCommands()
     {
         commands = new HashMap<>();
@@ -92,16 +94,20 @@ public class EntryColumn extends Column
         commands.put("getSubTariffs", (String[] args) -> getSubTariffsOfMan());
     }
 
+    //I seguenti metodi hanno origine dall'interfaccia grafica e vengono mandati al client
+    //Ottiene l'ID
     public void getIdFromMan()
     {
         messages.add("getId--XX");
     }
 
+    //Chiama l'aiuto
     public void help()
     {
         messages.add("help--" + id);
     }
 
+    //Permette l'entrata tramite l'acquisto del ticket
     public void entryTicket(String id)
     {
         if(id.equals(""))
@@ -114,22 +120,26 @@ public class EntryColumn extends Column
         }
     }
 
+    //Permette l'entrata tramite l'utilizzo o l'acquisto dell'abbonamento
     public void entrySub(String id, String type)
     {
         messages.add("entrySub--" + id + "--" + type);
     }
 
+    //Ottiene la tariffa del ticket
     public void getTariffOfMan()
     {
         messages.add("getTariff--XX");
     }
 
+    //Ottiene la tariffa dell'abbonamento
     public void getSubTariffsOfMan()
     {
         messages.add("getSubTariffs--XX");
     }
 
     @Override
+    //Riceve informazioni dal client
     public void receiveInfo(String info)
     {
         String split[] = info.split("--");
@@ -137,36 +147,43 @@ public class EntryColumn extends Column
     }
 
     @Override
+    //Notifica la modifica di una variabile
     public void notifyObs()
     {
         obs.update();
     }
 
+    //Imposta l'Observer
     public void setObs(Observer obs)
     {
         this.obs = obs;
     }
 
+    //Restituisce la tariffa del ticket
     public double getTariff()
     {
         return tariff;
     }
 
+    //Restituisce la tariffa dell'abbonamento mensile
     public double getMonthlySubTariff()
     {
         return monthlySubTariff;
     }
 
+    //Restituisce la tariffa dell'abbonamento semestrale
     public double getSemestralSubTariff()
     {
         return semestralSubTariff;
     }
 
+    //Restituisce la tariffa dell'abbonamento annuale
     public double getAnnualSubTariff()
     {
         return annualSubTariff;
     }
 
+    //Restituisce il contenuto dell InfoBox
     public String getInfoBox()
     {
         return infoBox;

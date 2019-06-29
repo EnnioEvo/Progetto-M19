@@ -18,14 +18,15 @@ public class ExitColumn extends Column {
     private String infoBox;
     private HashMap<String, ClientCommand> commands;
 
+    //Costruttore della classe "ExitColumn"
     public ExitColumn(String hostName, int port)
     {
         ExitColumn col = this;
         createCommands();
-        //La GUI va chiamata prima del client se no non compare
         EventQueue.invokeLater(new Runnable()
         {
             @Override
+            //Esegue l'interfaccia grafica
             public void run()
             {
                 ExitColumnGUI2 g = new ExitColumnGUI2(col);
@@ -38,6 +39,7 @@ public class ExitColumn extends Column {
         new Client(hostName, port, messages, col);
     }
 
+    //Collega il nome del comando con i rispettivi metodi che eseguono le operazioni volute dal server
     private void createCommands()
     {
         commands = new HashMap<>();
@@ -69,16 +71,20 @@ public class ExitColumn extends Column {
         commands.put("getTariff", (String[] args) -> System.out.println("getTariff"));
     }
 
+    //I seguenti metodi hanno origine dall'interfaccia grafica e vengono mandati al client
+    //Ottiene l'ID
     public void getIdFromMan()
     {
         messages.add("getId--XX");
     }
 
+    //Chiede l'aiuto
     public void help()
     {
         messages.add("help--" + id);
     }
 
+    //Permette di uscire con il ticket o l'abbonamento
     public void exit(String carId)
     {
         if(carId.equals(""))
@@ -92,6 +98,7 @@ public class ExitColumn extends Column {
     }
 
     @Override
+    //Riceve informazioni dal client
     public void receiveInfo(String info)
     {
         String split[] = info.split("--");
@@ -99,16 +106,19 @@ public class ExitColumn extends Column {
     }
 
     @Override
+    //Notifica la modifica di una variabile
     public void notifyObs()
     {
         obs.update();
     }
 
+    //Imposta l'Observer
     public void setObs(Observer obs)
     {
         this.obs = obs;
     }
 
+    //Restituisce il contenuto dell InfoBox
     public String getInfoBox()
     {
         return infoBox;
