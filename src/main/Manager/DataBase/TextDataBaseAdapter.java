@@ -28,7 +28,6 @@ public class TextDataBaseAdapter implements DataBaseAdapter
         try
         {
             f.createNewFile();
-            System.out.println(f.getAbsolutePath());
         }
         catch (Exception ex)
         {

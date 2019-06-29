@@ -13,6 +13,7 @@ import java.awt.event.*;
 import java.io.IOException;
 import java.util.ArrayList;
 
+@SuppressWarnings("Duplicates")
 public class ManagerGUI implements ItemListener
 {
     private Manager man;
@@ -20,6 +21,7 @@ public class ManagerGUI implements ItemListener
     final private static String MAKEFLOORS = "Crea piani";
     final private static String TARRIFF = "Scegli tariffa";
     final private static String REMOVEFLOOR = "Rimuovi piano";
+    final private static String INFOFLOOR = "Informazioni piani";
     final private static String SUBDIVISION = "Scegli suddivisione posti";
     final private static String DRIVERINFO = "Visualizza informazioni clienti";
     final private static String DELTATIME = "Scegli durata validità pagamento";
@@ -44,7 +46,7 @@ public class ManagerGUI implements ItemListener
         initComponents(f);
 
 
-        String iconPath = PathUtilities.getProjectPath()+"\\Progetto-M19\\icons\\manager.png";
+        String iconPath = "icons\\manager.png";
         f.setIconImage(new ImageIcon(iconPath).getImage());;
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setVisible(true);
@@ -56,7 +58,7 @@ public class ManagerGUI implements ItemListener
         //Metto JComboBox in un JPanel per un look migliore
         JPanel comboBoxPane = new JPanel();
         comboBoxPane.setLayout(new GridLayout(1,2));
-        String comboBoxItems[] = {MAKEFLOORS, REMOVEFLOOR, TARRIFF, SUBDIVISION, DRIVERINFO, DELTATIME, SUBCOST, ANALYTICS};
+        String comboBoxItems[] = {MAKEFLOORS, REMOVEFLOOR, INFOFLOOR, TARRIFF, SUBDIVISION, DRIVERINFO, DELTATIME, SUBCOST, ANALYTICS};
         JComboBox<String> cb = new JComboBox<>(comboBoxItems);
         cb.setEditable(false);
         cb.addItemListener(this);
@@ -71,17 +73,19 @@ public class ManagerGUI implements ItemListener
         JPanel makeFloors = makeFloorsCard();
         //Schermata 2: elimina piano
         JPanel removeFloor = removeFloorCard();
-        //Schermata 3: tariffa
+        //Schermata 3: elimina piano
+        JPanel infoFloor = infoFloorCard();
+        //Schermata 4: tariffa
         JPanel setTariff = chooseTariffCard();
-        //Schermata 4: divisione posti standard/in abbonamento
+        //Schermata 5: divisione posti standard/in abbonamento
         JPanel subDivision = chooseSubdivisionCard();
-        //Schermata 5: visualizza informazioni sui clienti nel parcheggio
+        //Schermata 6: visualizza informazioni sui clienti nel parcheggio
         JPanel driverInfo = showDriversInfo();
-        //Schermata 6: scelta deltatime
+        //Schermata 7: scelta deltatime
         JPanel deltaTime = chooseDeltaTime();
-        //Schermata 7: scelta costo abbonamento
+        //Schermata 8: scelta costo abbonamento
         JPanel subCost = chooseCostSub();
-        //Schermata 8: statistiche
+        //Schermata 9: statistiche
         JPanel analytics = analytics();
 
 
@@ -89,6 +93,7 @@ public class ManagerGUI implements ItemListener
         cards = new JPanel(new CardLayout());
         cards.add(makeFloors, MAKEFLOORS);
         cards.add(removeFloor, REMOVEFLOOR);
+        cards.add(infoFloor, INFOFLOOR);
         cards.add(setTariff, TARRIFF);
         cards.add(subDivision, SUBDIVISION);
         cards.add(driverInfo, DRIVERINFO);
@@ -216,6 +221,47 @@ public class ManagerGUI implements ItemListener
         setFont(info, new Font("Helvetica", Font.PLAIN, 40));
         setFont(bottomPanel, new Font("Helvetica", Font.PLAIN, 30));
         card.add(topPanel, BorderLayout.NORTH);
+        card.add(scroll, BorderLayout.CENTER);
+        card.add(bottomPanel, BorderLayout.SOUTH);
+
+        return card;
+    }
+
+    private JPanel infoFloorCard()
+    {
+
+        JPanel card = new JPanel();
+        card.setLayout(new BorderLayout());
+        JTextArea info = new JTextArea();
+        info.setEditable(false);
+        info.setLineWrap(true);
+        //Reinizializzo JTextArea quando cambio card
+        card.addComponentListener(new ComponentAdapter()
+        {
+            @Override
+            public void componentHidden(ComponentEvent e)
+            {
+                super.componentHidden(e);
+                info.setText("");
+            }
+        });
+        JScrollPane scroll = new JScrollPane(info);
+        scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+
+        JButton action = new JButton("Visualizza");
+        action.setPreferredSize(new Dimension(200,100));
+        action.addActionListener(new ActionListener()
+        {
+            @Override
+            public void actionPerformed(ActionEvent e)
+            {
+                info.setText(man.getFloorsInfo());
+            }
+        });
+        JPanel bottomPanel = new JPanel(new GridLayout(1,3));
+        bottomPanel.add(new JPanel()); bottomPanel.add(action); bottomPanel.add(new JPanel());
+        setFont(bottomPanel, new Font("Helvetica", Font.PLAIN, 30));
+        setFont(info, new Font("Helvetica", Font.PLAIN, 40));
         card.add(scroll, BorderLayout.CENTER);
         card.add(bottomPanel, BorderLayout.SOUTH);
 

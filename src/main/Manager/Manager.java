@@ -100,8 +100,7 @@ public class Manager
         this.subDrivers = new ArrayList<>();
         this.entryToT = 0;
         this.columnList = new ArrayList<>();
-
-        this.db = new TextDataBaseAdapter("./db");
+        this.db = new TextDataBaseAdapter("./db.txt");
 
         this.analyticsEngine = new AnalyticsEngine(db);
 

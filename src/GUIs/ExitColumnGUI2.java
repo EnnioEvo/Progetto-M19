@@ -40,7 +40,7 @@ public class ExitColumnGUI2 implements ItemListener, Observer
         f.setTitle("Exit Column");
 
         initComponents(f);
-        String iconPath = PathUtilities.getProjectPath()+"\\Progetto-M19\\icons\\bar.png";
+        String iconPath = "icons\\bar.png";
         f.setIconImage(new ImageIcon(iconPath).getImage());;
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setVisible(true);
