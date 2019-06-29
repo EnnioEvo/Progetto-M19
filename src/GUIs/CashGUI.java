@@ -146,12 +146,15 @@ public class CashGUI implements Observer {
 
         JPanel cashRow = new JPanel(new FlowLayout());
         cashRow.setBackground(Color.decode("#778ca3"));
-        JTextField cashText = createSimpleTextField("Inserisci contante",false,5,5,5,5);
-        cashText.setPreferredSize(new Dimension(300,70));
+
         JTextField cashCell = createSimpleTextField("",true,5,5,5,5);
-        cashCell.setPreferredSize(new Dimension(100,70));
-        cashRow.add(cashText);
+        cashCell.setPreferredSize(new Dimension(110,70));
         cashRow.add(cashCell);
+
+        JButton cashText = createSimpleButton("Inserisci contante");
+        cashText.setPreferredSize(new Dimension(290,70));
+        cashRow.add(cashText);
+
         mainPanel.add(cashRow);
 
         JButton electronicPaymentButton = createSimpleButton("Paga con "+cash.getAdapterName());

@@ -53,7 +53,7 @@ public class Cash implements Peripheral {
     }
 
     public void askDriver(String carId){
-        // da cambiare con client server
+        // da eliminare con client server
         currentDriver = manager.getDriver(carId);
     }
 
