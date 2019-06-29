@@ -275,7 +275,7 @@ public class Cash implements Peripheral
     public int getServiceHours (GregorianCalendar lastPaid)
     {
         GregorianCalendar nowCalendar = new GregorianCalendar();
-        int hours = (int) Math.ceil((nowCalendar.getTimeInMillis() - lastPaid.getTimeInMillis()) / (1000 )); //Metto secondi
+        int hours = (int) Math.ceil((nowCalendar.getTimeInMillis() - lastPaid.getTimeInMillis()) / (1000)); //Metto secondi per test
         System.out.println("hours"+hours);
         return hours;
     }
