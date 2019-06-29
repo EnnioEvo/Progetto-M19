@@ -1,25 +1,54 @@
 package main.Peripherals.Cash;
 
 import java.awt.*;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
+
+import GUIs.CashGUI;
 import main.Manager.Manager;
 import main.Manager.Driver;
-import main.Manager.Subscriptions.Subscription;
+import main.Peripherals.ClientCommand;
+import main.Peripherals.Observer;
+import main.Peripherals.Peripheral;
+import main.Utilities.DriverParser;
+import net.Client;
 
-public class Cash{
-    private int id;
-    private double tariffaOraria; // in Euro
+import java.util.HashMap;
+import java.util.concurrent.ConcurrentLinkedQueue;
+
+public class Cash implements Peripheral {
+
+    private Observer obs;
+    private final ConcurrentLinkedQueue<String> messages;
+    private String infoBox;
+    private HashMap<String, ClientCommand> commands;
+
+    private String id;
     private double fund = 0;
     private PaymentAdapter paymentAdapter;
     private Manager manager;
-    Payment currentPayment;
-    Driver currentDriver;
+    private Payment currentPayment;
+    private Driver currentDriver;
 
-    public Cash(int id, double tariffaOraria, PaymentAdapter paymentAdapter){
+    public Cash(String hostName, int port, String id, PaymentAdapter paymentAdapter){
+
+        Cash cash = this;
+        createCommands();
+        //La GUI va chiamata prima del client se no non compare
+        EventQueue.invokeLater(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                CashGUI g = new CashGUI(cash);
+                cash.setObs(g);
+                getIdFromMan();
+            }
+        });
+        this.messages = new ConcurrentLinkedQueue<>();
+        new Client(hostName, port, messages, cash);
+
         this.id = id;
-        this.tariffaOraria = tariffaOraria;
         this.paymentAdapter = paymentAdapter;
     }
 
@@ -38,7 +67,7 @@ public class Cash{
             if (driver.getSub().getDateFinish().compareTo(GregorianCalendar.getInstance())==-1){
                 // l'abbonamento è scaduto
 
-                payment.setAmount(getServiceHours(driver.getDateFinishOfSub())*tariffaOraria);
+                payment.setAmount(getServiceHours(driver.getDateFinishOfSub())*driver.getTariff());
             }
             else {
                 // l'abbonamento non è scaduto
@@ -59,13 +88,13 @@ public class Cash{
 
             if (driver.isTicketPayementExpired()){
                 // il ticket pagato è scaduto
-                payment.setAmount(getServiceHours(driver.getTimePaid())*tariffaOraria);
+                payment.setAmount(getServiceHours(driver.getTimePaid())*driver.getTariff());
 
             }
             else {
                 if (!driver.isPaid()){
                     //se il ticket non è stato pagato
-                    payment.setAmount(getServiceHours(driver.getTimeIn())*tariffaOraria);
+                    payment.setAmount(getServiceHours(driver.getTimeIn())*driver.getTariff());
                 }
                 else {
                     //se il ticket è stato pagato
@@ -109,14 +138,6 @@ public class Cash{
         System.out.println("Erogati " + amount + "€.");
     }
 
-    public void notifyManager(){
-        //cambiare per client server
-    }
-
-    public void setTariffaOraria(double tariffaOraria) {
-        this.tariffaOraria = tariffaOraria;
-    }
-
     public int getServiceHours (GregorianCalendar lastPaid) {
         GregorianCalendar nowCalendar = new GregorianCalendar(new Locale("en", "IT"));
         int hours = (int) Math.ceil((nowCalendar.getTimeInMillis() - lastPaid.getTimeInMillis()) / (1000 * 60 * 60));
@@ -149,7 +170,50 @@ public class Cash{
         return paymentAdapter.getName();
     }
 
-    public int getId() {
+    public String getId() {
         return id;
+    }
+
+    public void setObs(Observer obs)
+    {
+        this.obs = obs;
+    }
+    public void notifyObs()
+    {
+        obs.update();
+    }
+    public void getIdFromMan()
+    {
+        messages.add("getId--XX");
+    }
+
+    public void notifyManager(){
+        //cambiare per client server
+    }
+
+    @Override
+    public void receiveInfo(String info)
+    {
+        String split[] = info.split("--");
+        commands.get(split[0]).execute(split);
+    }
+
+
+
+    private void createCommands()
+    {
+        commands = new HashMap<>();
+        commands.put("id", (String[] args) ->
+        {
+            System.out.println("id");
+            id = args[1];
+        });
+        commands.put("driver",(String[] args) ->
+        {
+            System.out.println("driver");
+            currentDriver = DriverParser.parseDriver(args[1]);
+
+        });
+        commands.put("getTariff", (String[] args) -> System.out.println("getTariff"));
     }
 }

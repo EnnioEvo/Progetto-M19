@@ -1,6 +1,7 @@
 package GUIs;
 import main.Peripherals.Cash.Cash;
 import main.Peripherals.Cash.Payment;
+import main.Peripherals.Observer;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -12,10 +13,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-public class CashGUI{
+public class CashGUI implements Observer {
 
     private Cash cash;
-    String electronicMethod;
+    private String electronicMethod;
     private JPanel cards;  //Pannello che usa CardLayout
     final private static String START = "Inserisci la targa";
     final private static String PAY = "Inserisci contanti";
@@ -158,7 +159,7 @@ public class CashGUI{
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if(!cash.receiveElectronicPayment()){
-                    refresh();
+                    update();
                     info.setText(info.getText()+ "\nTransazione fallita, riprovare.");
                 }
 
@@ -183,9 +184,6 @@ public class CashGUI{
         return card;
     }
 
-    private void refresh(){
-        info.setText("Restano da pagare: " + (cash.getCurrentTotPay()-cash.getCurrentPaid()));
-    }
 
     private JButton createSimpleButton(String text)
     {
@@ -254,5 +252,13 @@ public class CashGUI{
             child.setFont(font);
         }
     }
+    @Override
+    public void update()
+    {
+        System.out.println("update");
+        info.setText("Restano da pagare: " + (cash.getCurrentTotPay()-cash.getCurrentPaid()));
+
+    }
+
 
 }
