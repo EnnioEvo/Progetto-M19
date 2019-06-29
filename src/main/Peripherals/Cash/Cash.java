@@ -7,7 +7,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 import GUIs.CashGUI2;
 import main.Manager.Driver;
 import main.Peripherals.ClientCommand;
-import main.Peripherals.Observer;
+import main.Utilities.Observer;
 import main.Peripherals.Peripheral;
 import main.Utilities.DriverParser;
 import net.Client;
@@ -64,7 +64,7 @@ public class Cash implements Peripheral
             System.out.println("driverInfo" + args[1]);
             if(args[1].equals("0"))
             {
-                infoBox = "Tessera non riconosciuta";
+                infoBox = "Tessera non riconosciuta.";
             }
             else
             {

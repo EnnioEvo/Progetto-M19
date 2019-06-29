@@ -2,7 +2,7 @@ package main.Peripherals.Columns;
 
 import GUIs.EntryColumnGUI2;
 import main.Peripherals.ClientCommand;
-import main.Peripherals.Observer;
+import main.Utilities.Observer;
 import net.Client;
 
 import java.awt.*;

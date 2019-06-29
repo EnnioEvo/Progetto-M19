@@ -107,7 +107,7 @@ public class ExitManager
         //Caso in cui la tessera non è riconosciuta per un qualsiasi motivo
         if(!check)
         {
-            info = "Tessera non riconosciuta";
+            info = "Tessera non riconosciuta.";
             System.out.println(info);
         }
         if (exit)

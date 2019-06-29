@@ -69,7 +69,7 @@ public class EntryManager
         String info;
         if(!man.checkCarId(carId))
         {
-            info = "Targa non valida";
+            info = "Targa non valida.";
             System.out.println(info);
             return "entryNo--" + info;
         }
@@ -79,12 +79,12 @@ public class EntryManager
         {
             if(typeSub.equals("XX"))
             {
-                info = "Non hai ancora l'abbonamento";
+                info = "Non hai ancora l'abbonamento.";
                 return "entryNo--" + info;
             }
             if(man.getFreeSpacesSubNow() + 1 > man.getFreeSpacesSubTot())
             {
-                info = "Abbonamenti finiti";
+                info = "Abbonamenti finiti.";
                 System.out.println(info);
 
             }
@@ -133,12 +133,12 @@ public class EntryManager
             }
             else if (man.checkInPark(carId))
             {
-                info = "Ingresso non riuscito, targa: " + carId + " già all'interno del parcheggio";
+                info = "Ingresso non riuscito, targa: " + carId + " già all'interno del parcheggio.";
                 System.out.println(info);
             }
             else
             {
-                info = "Ingresso abbonato avvenuto con successo";
+                info = "Ingresso abbonato avvenuto con successo.";
                 System.out.println(info);
                 Driver d = man.getDriver(carId);
                 d.setInPark(true);
