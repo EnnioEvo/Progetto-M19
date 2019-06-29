@@ -43,7 +43,7 @@ public class CashGUI2 implements ItemListener, Observer
 
 
         initComponents(f);
-        String iconPath = PathUtilities.getProjectPath()+"\\Progetto-M19\\icons\\cash.png";
+        String iconPath = "icons\\cash.png";
         f.setIconImage(new ImageIcon(iconPath).getImage());;
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setVisible(true);
