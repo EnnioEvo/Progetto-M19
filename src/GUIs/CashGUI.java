@@ -115,6 +115,14 @@ public class CashGUI implements Observer {
         JPanel card = new JPanel();
         card.setLayout(new BorderLayout());
 
+        //Modifiche estetiche
+        card.setBackground(Color.decode("#778ca3"));
+        card.setLayout(new BorderLayout());
+
+        //Metto Componenti in un JPanel per un look migliore
+        JPanel mainPanel = new JPanel(new GridLayout(0, 1));
+        mainPanel.setBackground(Color.decode("#778ca3"));
+
         //Inizializzo la casella delle informazioni
         info = new JTextArea(welcomeString);
         card.addComponentListener(new ComponentAdapter()
@@ -126,13 +134,14 @@ public class CashGUI implements Observer {
                 info.setText(welcomeString);
             }
         });
-        //Modifiche estetiche
-        card.setBackground(Color.decode("#778ca3"));
-        card.setLayout(new BorderLayout());
+        info.setBorder(BorderFactory.createMatteBorder(
+                10, 10, 10, 10, Color.decode("#4b6584")));
+        info.setEditable(false);
+        info.setLineWrap(true);
+        info.setPreferredSize(new Dimension(380, 200));
+        setFont(mainPanel, new Font("Helvetica", Font.PLAIN, 30));
+        setFont(info, new Font("Helvetica", Font.PLAIN, 30));
 
-        //Metto Componenti in un JPanel per un look migliore
-        JPanel mainPanel = new JPanel(new GridLayout(0, 1));
-        mainPanel.setBackground(Color.decode("#778ca3"));
 
         //Aggiungo il bottone "Interrompi e torna indietro"
         JButton interruptButton = createSimpleButton("Interrompi e torna indietro");
@@ -200,14 +209,7 @@ public class CashGUI implements Observer {
         });
         mainPanel.add(electronicPaymentButton);
 
-        info.setBorder(BorderFactory.createMatteBorder(
-                10, 10, 10, 10, Color.decode("#4b6584")));
-        info.setEditable(false);
-        info.setLineWrap(true);
-        info.setPreferredSize(new Dimension(380, 200));
-        setFont(mainPanel, new Font("Helvetica", Font.PLAIN, 30));
-        setFont(info, new Font("Helvetica", Font.PLAIN, 30));
-
+        //Aggiungo i due componenti alla cassa
         card.add(mainPanel, BorderLayout.CENTER);
         card.add(info, BorderLayout.SOUTH);
         return card;
@@ -274,7 +276,7 @@ public class CashGUI implements Observer {
     }
 
     private void setFont(Component comp, Font font)
-    {
+    {   
         comp.setFont(font);
         for (Component child : ((Container)comp).getComponents())
         {
