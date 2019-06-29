@@ -87,8 +87,7 @@ public class CashGUI implements Observer {
         t.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                CardLayout cl = (CardLayout) (cards.getLayout());
-                cl.show(cards, PAY);
+                ((CardLayout) (cards.getLayout())).show(cards,PAY);
             }
         });
         mainPanel.add(t);
@@ -138,8 +137,10 @@ public class CashGUI implements Observer {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 cash.forgetSession();
+                ((CardLayout) (cards.getLayout())).show(cards,START);
                 info.setText(welcomeString + "\n" + "Erogati al cliente: "
                         + cash.getCurrentPaid() + "€");
+
             }
         });
         mainPanel.add(interruptButton);
@@ -147,13 +148,31 @@ public class CashGUI implements Observer {
         JPanel cashRow = new JPanel(new FlowLayout());
         cashRow.setBackground(Color.decode("#778ca3"));
 
-        JTextField cashCell = createSimpleTextField("",true,5,5,5,5);
-        cashCell.setPreferredSize(new Dimension(110,70));
-        cashRow.add(cashCell);
-
-        JButton cashText = createSimpleButton("Inserisci contante");
-        cashText.setPreferredSize(new Dimension(290,70));
+        JTextField cashText = createSimpleTextField("",true,5,5,5,5);
+        cashText.setPreferredSize(new Dimension(110,70));
         cashRow.add(cashText);
+
+        JButton cashButton = createSimpleButton("Inserisci contante");
+        cashButton.setPreferredSize(new Dimension(290,70));
+        cashRow.add(cashButton);
+        cashButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent actionEvent) {
+                Double d;
+                try{
+                    cash.receiveCashMoney(Double.parseDouble(cashText.getText()));
+                    update();
+
+                }
+                catch (java.lang.NumberFormatException e){
+                    info.setText(info.getText() + "\n Accettiamo solo monete o banconote in €");
+                }
+                finally {
+                    cashText.setText("");
+                }
+
+            }
+        });
 
         mainPanel.add(cashRow);
 
@@ -161,8 +180,14 @@ public class CashGUI implements Observer {
         electronicPaymentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
-                if(!cash.receiveElectronicPayment()){
-                    update();
+                boolean transactionSuccess = cash.receiveElectronicPayment();
+                update();
+                if(transactionSuccess){
+                    cash.forgetSession();
+                    ((CardLayout) (cards.getLayout())).show(cards,START);
+                    info.setText(info.getText()+ "\nTransazione riuscita.");
+                    }
+                else{
                     info.setText(info.getText()+ "\nTransazione fallita, riprovare.");
                 }
 
