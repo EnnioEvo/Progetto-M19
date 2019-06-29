@@ -4,6 +4,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import GUIs.CashGUI2;
 import main.Manager.Manager;
@@ -27,7 +28,7 @@ public class Cash implements Peripheral
     private double extraCost;
     private double resto;
     private Observer obs;
-    private final ConcurrentLinkedQueue<String> messages;
+    private final LinkedBlockingQueue<String> messages;
     private String infoBox;
     private HashMap<String, ClientCommand> commands;
 
@@ -47,7 +48,7 @@ public class Cash implements Peripheral
                 getIdFromMan();
             }
         });
-        this.messages = new ConcurrentLinkedQueue<>();
+        this.messages = new LinkedBlockingQueue<>();
         new Client(hostName, port, messages, cash);
     }
 

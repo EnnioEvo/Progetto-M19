@@ -9,12 +9,13 @@ import net.Client;
 import java.awt.*;
 import java.util.HashMap;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class ExitColumn extends Column {
 
     private Bar bar;
     private Observer obs;
-    private final ConcurrentLinkedQueue<String> messages;
+    private final LinkedBlockingQueue<String> messages;
     private String infoBox;
     private HashMap<String, ClientCommand> commands;
 
@@ -33,7 +34,7 @@ public class ExitColumn extends Column {
                 getIdFromMan();
             }
         });
-        this.messages = new ConcurrentLinkedQueue<>();
+        this.messages = new LinkedBlockingQueue<>();
         this.bar = new Bar();
         new Client(hostName, port, messages, col);
     }

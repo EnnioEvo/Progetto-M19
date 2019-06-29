@@ -10,12 +10,13 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class EntryColumn extends Column
 {
     private Bar bar;
     private Observer obs;
-    private final ConcurrentLinkedQueue<String> messages;
+    private final LinkedBlockingQueue<String> messages;
     private double tariff, monthlySubTariff, semestralSubTariff, annualSubTariff;
     private String infoBox;
     private HashMap<String, ClientCommand> commands;
@@ -37,7 +38,7 @@ public class EntryColumn extends Column
                 getSubTariffsOfMan();
             }
         });
-        this.messages = new ConcurrentLinkedQueue<>();
+        this.messages = new LinkedBlockingQueue<>();
         this.bar = new Bar();
         new Client(hostName, port, messages, col);
     }

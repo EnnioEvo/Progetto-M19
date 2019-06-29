@@ -6,6 +6,8 @@ import main.Peripherals.Peripheral;
 import java.net.*;
 import java.io.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.LinkedBlockingDeque;
+import java.util.concurrent.LinkedBlockingQueue;
 
 /**
  * This program demonstrates a simple TCP/IP socket client that reads input
@@ -18,9 +20,9 @@ public class Client
     private String hostName;
     private int port;
     private Peripheral per;
-    private final ConcurrentLinkedQueue<String> messages;
+    private final LinkedBlockingQueue<String> messages;
 
-    public Client(String hostName, int port, ConcurrentLinkedQueue<String> messages, Peripheral per)
+    public Client(String hostName, int port, LinkedBlockingQueue<String> messages, Peripheral per)
     {
         this.hostName = hostName;
         this.port = port;
@@ -41,7 +43,7 @@ public class Client
 
             while (true)
             {
-                final String message = messages.poll(); // does not block, returns null if none is available
+                final String message = messages.take(); // does not block, returns null if none is available
                 if (message != null)
                 {
                     writer.println(message);
