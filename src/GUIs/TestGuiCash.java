@@ -6,10 +6,10 @@ import main.Peripherals.Columns.EntryColumn;
 import main.Peripherals.Columns.ExitColumn;
 
 public class TestGuiCash {
-    public static void main(String[] args) {
+    /*public static void main(String[] args) {
         CashGUI cashGUI = new CashGUI(new Cash(1, 20, new BancomatAdapter()));
         //EntryColumnGUI2 entryColumnGUI2 = new EntryColumnGUI2(new EntryColumn("127.0.0.1",121));
         //ExitColumnGUI2 exitColumnGUI2 = new ExitColumnGUI2(new ExitColumn("127.0.0.1",121));
 
-    }
+    }*/
 }

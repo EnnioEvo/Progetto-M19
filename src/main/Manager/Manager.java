@@ -133,12 +133,16 @@ public class Manager
         commands.put("getTariff", (String[] args) -> "tariff--" + getTariff());
         commands.put("getSubTariffs", (String[] args) -> "subTariffs--" + getSubTariffs());
         commands.put("exit", (String[] args) -> exitMan.exit(args[1]));
-        commands.put("driverInfo", (String[] args) -> getDriverClientInfo(args[1]));
+        commands.put("driverInfo", (String[] args) -> {System.out.println("drinfo");return getDriverClientInfo(args[1]);});
+        commands.put("setTicketPaid", (String[] args) -> setTicketPaid(args[1]));
+        commands.put("setSubPaid", (String[] args) -> setSubPaid(args[1]));
+        commands.put("extra", (String[] args) -> "extra--" + extraCost);
     }
 
     public String executeCommand(String[] args)
     {
         String s = "";
+        System.out.println(args[0]);
         try
         {
             s = commands.get(args[0]).execute(args);
@@ -402,6 +406,34 @@ public class Manager
             }
         }
         subDrivers.remove(toBeRemoved);
+    }
+
+    String setTicketPaid(String carId)
+    {
+        Driver d = getDriver(carId);
+        if(d == null)
+        {
+            return "logError--XX";
+        }
+        d.setTimePaid(new GregorianCalendar());
+        d.setPaid(Boolean.TRUE);
+        return "logOk--XX";
+    }
+
+    String setSubPaid(String carId)
+    {
+        Driver d = getDriver(carId);
+        if(d == null)
+        {
+            return "logError--XX";
+        }
+        // Se l'abbonamneto era scaduto aggiorno la sua validità
+        if(d.getDateFinishOfSub().before(new GregorianCalendar()))
+        {
+            d.setDateFinishOfSub(new GregorianCalendar());
+        }
+        d.setPaidSub(Boolean.TRUE);
+        return "logOk--XX";
     }
 
     void randomEntry()

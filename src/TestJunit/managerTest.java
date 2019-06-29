@@ -4,8 +4,7 @@ package TestJunit;
 import Exceptions.SubdivisionException;
 import main.Manager.*;
 import org.junit.jupiter.api.Test;
-import static junit.framework.TestCase.assertEquals;
-
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
 public class managerTest {

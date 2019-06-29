@@ -1,6 +1,7 @@
 package GUIs;
 import main.Peripherals.Cash.Cash;
 import main.Peripherals.Cash.Payment;
+import main.Peripherals.Observer;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -12,7 +13,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
 
-public class CashGUI{
+public class CashGUI implements Observer
+{
 
     private Cash cash;
     String electronicMethod;
@@ -154,16 +156,15 @@ public class CashGUI{
         mainPanel.add(cashRow);
 
         JButton electronicPaymentButton = createSimpleButton("Paga con "+cash.getAdapterName());
-        electronicPaymentButton.addActionListener(new ActionListener() {
+       /* electronicPaymentButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent actionEvent) {
                 if(!cash.receiveElectronicPayment()){
                     refresh();
                     info.setText(info.getText()+ "\nTransazione fallita, riprovare.");
-                }
-
+                }*
             }
-        });
+        });*/
         mainPanel.add(electronicPaymentButton);
 
         info.setBorder(BorderFactory.createMatteBorder(
@@ -255,4 +256,8 @@ public class CashGUI{
         }
     }
 
+    @Override
+    public void update() {
+
+    }
 }
