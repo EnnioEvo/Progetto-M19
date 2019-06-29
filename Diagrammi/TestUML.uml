@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>main.Manager</OriginalElement>
+  <nodes>
+    <node x="465.0" y="87.0">main.Manager.Manager</node>
+    <node x="295.0" y="194.0">TestJunit.entryManagerTicketTest</node>
+    <node x="0.0" y="194.0">TestJunit.entryManagerSubscriptionTest</node>
+    <node x="543.0" y="194.0">TestJunit.exitManagerTest</node>
+    <node x="452.0" y="0.0">GUIs.ManagerGUI</node>
+    <node x="739.0" y="194.0">TestJunit.managerTest</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="TestJunit.managerTest" target="main.Manager.Manager">
+      <point x="37.5" y="-18.5" />
+      <point x="851.5" y="144.0" />
+      <point x="580.3125" y="144.0" />
+      <point x="53.8125" y="18.5" />
+    </edge>
+    <edge source="TestJunit.exitManagerTest" target="main.Manager.Manager">
+      <point x="-44.0" y="-18.5" />
+      <point x="587.0" y="174.0" />
+      <point x="534.1875" y="174.0" />
+      <point x="7.6875" y="18.5" />
+    </edge>
+    <edge source="TestJunit.entryManagerTicketTest" target="main.Manager.Manager">
+      <point x="57.0" y="-18.5" />
+      <point x="466.0" y="174.0" />
+      <point x="518.8125" y="174.0" />
+      <point x="-7.6875" y="18.5" />
+    </edge>
+    <edge source="GUIs.ManagerGUI" target="main.Manager.Manager">
+      <point x="49.66666666666663" y="18.5" />
+      <point x="576.1666666666666" y="62.0" />
+      <point x="567.5" y="62.0" />
+      <point x="41.0" y="-18.5" />
+    </edge>
+    <edge source="TestJunit.entryManagerSubscriptionTest" target="main.Manager.Manager">
+      <point x="-68.75" y="-18.5" />
+      <point x="68.75" y="144.0" />
+      <point x="472.6875" y="144.0" />
+      <point x="-53.8125" y="18.5" />
+    </edge>
+    <edge source="main.Manager.Manager" target="GUIs.ManagerGUI">
+      <point x="-41.0" y="-18.5" />
+      <point x="485.5" y="62.0" />
+      <point x="476.83333333333326" y="62.0" />
+      <point x="-49.666666666666686" y="18.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="1.0" x="451.77777777777794" y="307.5" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
