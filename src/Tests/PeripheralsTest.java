@@ -1,10 +1,5 @@
 package Tests;
 
-import main.Manager.Manager;
-import main.Peripherals.Columns.EntryColumn;
-
-import java.awt.*;
-
 public class PeripheralsTest {
     public static void main(String[] arg){
        /*ExitColumn exit = new ExitColumn("IT1224LK");

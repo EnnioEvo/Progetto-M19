@@ -1,7 +1,5 @@
 package main.Manager.Subscriptions;
 
-import main.Manager.Manager;
-
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 

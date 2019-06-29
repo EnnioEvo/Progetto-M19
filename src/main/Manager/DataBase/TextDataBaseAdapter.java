@@ -1,13 +1,9 @@
 package main.Manager.DataBase;
 
 import main.Manager.Driver;
-import main.Manager.Subscriptions.Subscription;
 import main.Utilities.DriverParser;
 
 import java.io.*;
-import java.lang.reflect.Constructor;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class TextDataBaseAdapter implements DataBaseAdapter

@@ -3,13 +3,11 @@ package GUIs;
 
 import main.Peripherals.Columns.EntryColumn;
 import main.Peripherals.Observer;
-import main.Utilities.PathUtilities;
 
 import javax.swing.*;
 import javax.swing.border.Border;
 import javax.swing.border.CompoundBorder;
 import javax.swing.border.EmptyBorder;
-import javax.swing.border.LineBorder;
 import java.awt.*;
 import java.awt.event.*;
 
@@ -48,7 +46,7 @@ public class EntryColumnGUI2 implements ItemListener, Observer
 
         initComponents(f);
         String iconPath = "icons\\bar.png";
-        f.setIconImage(new ImageIcon(iconPath).getImage());;
+        f.setIconImage(new ImageIcon(iconPath).getImage());
         f.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         f.setVisible(true);
     }

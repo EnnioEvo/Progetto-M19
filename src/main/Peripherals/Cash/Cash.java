@@ -2,14 +2,10 @@ package main.Peripherals.Cash;
 
 import java.awt.*;
 import java.util.*;
-import java.util.List;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 import GUIs.CashGUI2;
-import main.Manager.Manager;
 import main.Manager.Driver;
-import main.Manager.Subscriptions.Subscription;
 import main.Peripherals.ClientCommand;
 import main.Peripherals.Observer;
 import main.Peripherals.Peripheral;
@@ -19,12 +15,9 @@ import net.Client;
 public class Cash implements Peripheral
 {
     private String id;
-    private double tariffaOraria; // in Euro
-    private double fund = 0;
     private PaymentAdapter paymentAdapter;
-    private Manager manager;
-    Payment currentPayment;
-    Driver currentDriver;
+    private Payment currentPayment;
+    private Driver currentDriver;
     private double extraCost;
     private double resto;
     private Observer obs;
@@ -266,10 +259,6 @@ public class Cash implements Peripheral
             messages.add("setSubPaid--" + currentDriver.getCarId());
         }
         //forgetSession();
-    }
-
-    public void setTariffaOraria(double tariffaOraria) {
-        this.tariffaOraria = tariffaOraria;
     }
 
     public int getServiceHours (GregorianCalendar lastPaid)

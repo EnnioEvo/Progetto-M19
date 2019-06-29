@@ -1,14 +1,8 @@
 package Tests;
 
-import GUIs.ManagerGUI;
 import main.Manager.Driver;
-import main.Manager.Manager;
 import main.Manager.Subscriptions.Subscription;
-import main.Peripherals.Columns.EntryColumn;
 
-import java.awt.*;
-import java.io.File;
-import java.lang.reflect.Constructor;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;

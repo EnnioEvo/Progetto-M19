@@ -5,10 +5,6 @@ import main.Manager.Manager;
 
 import java.io.*;
 import java.net.*;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.concurrent.ConcurrentLinkedQueue;
 
 /**
  * This thread is responsible to handle client connection.

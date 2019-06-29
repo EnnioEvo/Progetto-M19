@@ -5,16 +5,12 @@ import Exceptions.SubdivisionException;
 import GUIs.ManagerGUI;
 import main.Manager.DataBase.DataBaseAdapter;
 import main.Manager.DataBase.TextDataBaseAdapter;
-import main.Peripherals.Cash.Cash;
-import main.Peripherals.Columns.Column;
-import main.Peripherals.Observer;
 import net.Server;
 
 import java.awt.*;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.*;
-import java.util.List;
 
 
 public class Manager
@@ -37,8 +33,6 @@ public class Manager
     private int freeSpacesSubNow, freeSpacesTicketNow;
     private double tariff;
     private ArrayList<Driver> drivers, subDrivers;
-    private ArrayList<Cash> cashList;
-    private ArrayList<Column> columnList;
     // paymantAnalytics variables
     private int entryToT;
     private double DAYS=365, MONTH=12;
@@ -60,7 +54,6 @@ public class Manager
         this.drivers = new ArrayList<>();
         this.subDrivers = new ArrayList<>();
         this.entryToT = 0;
-        this.columnList = new ArrayList<>();
 
         this.db = new TextDataBaseAdapter("./db.txt");
 
@@ -99,7 +92,6 @@ public class Manager
         this.drivers = new ArrayList<>();
         this.subDrivers = new ArrayList<>();
         this.entryToT = 0;
-        this.columnList = new ArrayList<>();
         this.db = new TextDataBaseAdapter("./db.txt");
 
         this.analyticsEngine = new AnalyticsEngine(db);

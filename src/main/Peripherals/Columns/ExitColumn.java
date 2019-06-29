@@ -7,7 +7,6 @@ import net.Client;
 
 import java.awt.*;
 import java.util.HashMap;
-import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.LinkedBlockingQueue;
 
 public class ExitColumn extends Column {

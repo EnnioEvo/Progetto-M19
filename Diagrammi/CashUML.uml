@@ -3,170 +3,137 @@
   <ID>JAVA</ID>
   <OriginalElement>main.Manager</OriginalElement>
   <nodes>
-    <node x="566.620234204793" y="458.0">net.ServerThread</node>
-    <node x="315.0" y="97.0">main.Peripherals.Cash.Payment</node>
-    <node x="490.125" y="244.0">main.Peripherals.Cash.Cash</node>
-    <node x="631.995234204793" y="341.0">main.Manager.Manager</node>
-    <node x="337.125" y="244.0">main.Manager.Command</node>
-    <node x="514.3494008714597" y="0.0">main.Peripherals.Observer</node>
-    <node x="676.620234204793" y="545.0">net.Server</node>
-    <node x="911.7783224400871" y="97.0">main.Peripherals.Cash.BancomatAdapter</node>
-    <node x="752.7058823529412" y="0.0">main.Peripherals.Cash.PaymentAdapter</node>
-    <node x="193.0" y="97.0">net.Client</node>
-    <node x="456.0" y="97.0">GUIs.CashGUI2</node>
-    <node x="617.3077342047931" y="97.0">main.Peripherals.Cash.VisaAdapter</node>
-    <node x="197.51606753812632" y="0.0">main.Peripherals.Peripheral</node>
-    <node x="788.7783224400871" y="97.0">main.Manager.Driver</node>
-    <node x="0.0" y="97.0">main.Peripherals.ClientCommand</node>
+    <node x="0.0" y="547.0">net.ServerThread</node>
+    <node x="315.0" y="87.0">main.Peripherals.Cash.Payment</node>
+    <node x="369.33333333333337" y="204.0">main.Peripherals.Cash.Cash</node>
+    <node x="90.015625" y="460.0">main.Manager.Manager</node>
+    <node x="85.015625" y="373.0">main.Manager.Command</node>
+    <node x="630.4545454545455" y="87.0">main.Peripherals.Observer</node>
+    <node x="103.515625" y="634.0">net.Server</node>
+    <node x="774.4545454545455" y="87.0">main.Peripherals.Cash.BancomatAdapter</node>
+    <node x="571.1830086580087" y="0.0">main.Peripherals.Cash.PaymentAdapter</node>
+    <node x="193.0" y="87.0">net.Client</node>
+    <node x="362.95833333333337" y="291.0">GUIs.CashGUI2</node>
+    <node x="456.0" y="87.0">main.Peripherals.Cash.VisaAdapter</node>
+    <node x="195.875" y="0.0">main.Peripherals.Peripheral</node>
+    <node x="0.0" y="87.0">main.Peripherals.ClientCommand</node>
   </nodes>
   <notes />
   <edges>
     <edge source="main.Peripherals.Cash.Cash" target="main.Peripherals.Cash.VisaAdapter">
-      <point x="21.882352941176464" y="-18.5" />
-      <point x="558.5073529411765" y="184.0" />
-      <point x="689.8077342047931" y="184.0" />
+      <point x="8.454545454545496" y="-18.5" />
+      <point x="424.28787878787887" y="144.0" />
+      <point x="528.5" y="144.0" />
       <point x="0.0" y="18.5" />
     </edge>
     <edge source="net.Client" target="main.Peripherals.Peripheral">
       <point x="-25.25" y="-18.5" />
-      <point x="218.25" y="77.0" />
-      <point x="219.3494008714597" y="77.0" />
       <point x="-43.66666666666663" y="18.5" />
     </edge>
-    <edge source="main.Manager.Manager" target="main.Peripherals.Cash.Cash">
-      <point x="-30.75" y="-18.5" />
-      <point x="662.745234204793" y="311.0" />
-      <point x="513.375" y="311.0" />
-      <point x="-23.25" y="18.5" />
-    </edge>
     <edge source="net.Server" target="main.Manager.Manager">
-      <point x="43.750000000000014" y="-18.5" />
-      <point x="772.870234204793" y="525.0" />
-      <point x="763.120234204793" y="525.0" />
-      <point x="763.120234204793" y="398.0" />
-      <point x="744.745234204793" y="398.0" />
+      <point x="43.75" y="-18.5" />
+      <point x="199.765625" y="614.0" />
+      <point x="196.5" y="614.0" />
+      <point x="196.5" y="527.0" />
+      <point x="202.765625" y="527.0" />
       <point x="51.25" y="18.5" />
     </edge>
     <edge source="main.Peripherals.Cash.BancomatAdapter" target="main.Peripherals.Cash.PaymentAdapter">
       <point x="0.0" y="-18.5" />
-      <point x="1005.2783224400871" y="77.0" />
-      <point x="908.4558823529412" y="77.0" />
+      <point x="867.9545454545455" y="67.0" />
+      <point x="726.9330086580087" y="67.0" />
       <point x="66.75" y="18.5" />
     </edge>
-    <edge source="main.Peripherals.Cash.Cash" target="main.Manager.Driver">
-      <point x="43.76470588235293" y="-18.5" />
-      <point x="580.3897058823529" y="224.0" />
-      <point x="819.6783224400872" y="224.0" />
-      <point x="-20.59999999999991" y="18.5" />
-    </edge>
     <edge source="main.Manager.Manager" target="main.Manager.Command">
-      <point x="-51.25" y="-18.5" />
-      <point x="642.245234204793" y="321.0" />
-      <point x="403.625" y="321.0" />
+      <point x="0.0" y="-18.5" />
       <point x="0.0" y="18.5" />
     </edge>
     <edge source="main.Peripherals.Cash.Cash" target="main.Peripherals.Peripheral">
-      <point x="-32.823529411764696" y="-18.5" />
-      <point x="503.8014705882353" y="204.0" />
-      <point x="304.5" y="204.0" />
-      <point x="304.5" y="77.0" />
-      <point x="306.68273420479295" y="77.0" />
+      <point x="-25.363636363636374" y="-18.5" />
+      <point x="390.469696969697" y="164.0" />
+      <point x="304.5" y="164.0" />
       <point x="43.66666666666663" y="18.5" />
     </edge>
     <edge source="GUIs.CashGUI2" target="main.Peripherals.Observer">
-      <point x="0.0" y="-18.5" />
-      <point x="520.5" y="77.0" />
-      <point x="535.0160675381263" y="77.0" />
-      <point x="-41.333333333333336" y="18.5" />
+      <point x="51.599999999999994" y="-18.5" />
+      <point x="479.0583333333334" y="266.0" />
+      <point x="704.5864989177489" y="266.0" />
+      <point x="704.5864989177489" y="184.0" />
+      <point x="733.7878787878789" y="184.0" />
+      <point x="41.33333333333334" y="18.5" />
     </edge>
     <edge source="GUIs.CashGUI2" target="main.Peripherals.Cash.Cash">
-      <point x="48.375" y="18.5" />
-      <point x="568.875" y="154.0" />
-      <point x="542.0955882352941" y="154.0" />
-      <point x="5.470588235294144" y="-18.5" />
-    </edge>
-    <edge source="main.Manager.Manager" target="main.Manager.Driver">
-      <point x="30.75" y="-18.5" />
-      <point x="724.245234204793" y="311.0" />
-      <point x="855.0411764705882" y="311.0" />
-      <point x="855.0411764705882" y="224.0" />
-      <point x="860.878322440087" y="224.0" />
-      <point x="20.59999999999991" y="18.5" />
+      <point x="-51.599999999999994" y="-18.5" />
+      <point x="375.8583333333334" y="266.0" />
+      <point x="380.95833333333337" y="266.0" />
+      <point x="-34.875" y="18.5" />
     </edge>
     <edge source="main.Peripherals.Cash.VisaAdapter" target="main.Peripherals.Cash.PaymentAdapter">
       <point x="0.0" y="-18.5" />
-      <point x="689.8077342047931" y="57.0" />
-      <point x="774.9558823529412" y="57.0" />
+      <point x="528.5" y="67.0" />
+      <point x="593.4330086580087" y="67.0" />
       <point x="-66.75" y="18.5" />
     </edge>
     <edge source="main.Peripherals.Cash.Cash" target="main.Peripherals.ClientCommand">
-      <point x="-43.76470588235293" y="-18.5" />
-      <point x="492.8602941176471" y="224.0" />
-      <point x="86.5" y="224.0" />
+      <point x="-42.27272727272725" y="-18.5" />
+      <point x="373.5606060606061" y="184.0" />
+      <point x="86.5" y="184.0" />
       <point x="0.0" y="18.5" />
     </edge>
     <edge source="main.Peripherals.Cash.Cash" target="GUIs.CashGUI2">
-      <point x="-5.4705882352940876" y="-18.5" />
-      <point x="531.1544117647059" y="154.0" />
-      <point x="504.375" y="154.0" />
-      <point x="-16.125" y="18.5" />
+      <point x="34.875" y="18.5" />
+      <point x="450.70833333333337" y="266.0" />
+      <point x="453.25833333333344" y="266.0" />
+      <point x="25.80000000000001" y="-18.5" />
     </edge>
     <edge source="main.Peripherals.Cash.Cash" target="main.Peripherals.Cash.Payment">
-      <point x="-27.35294117647061" y="-18.5" />
-      <point x="509.2720588235294" y="194.0" />
-      <point x="335.16666666666663" y="194.0" />
+      <point x="-16.909090909090935" y="-18.5" />
+      <point x="398.9242424242425" y="154.0" />
+      <point x="335.16666666666663" y="154.0" />
       <point x="-40.33333333333337" y="18.5" />
     </edge>
     <edge source="main.Peripherals.Cash.Cash" target="main.Peripherals.Cash.PaymentAdapter">
-      <point x="32.823529411764696" y="-18.5" />
-      <point x="569.4485294117646" y="204.0" />
-      <point x="778.2783224400871" y="204.0" />
-      <point x="778.2783224400871" y="77.0" />
-      <point x="863.9558823529412" y="77.0" />
-      <point x="22.25" y="18.5" />
+      <point x="16.909090909090878" y="-18.5" />
+      <point x="432.74242424242425" y="154.0" />
+      <point x="611.5" y="154.0" />
+      <point x="611.5" y="57.0" />
+      <point x="637.9330086580087" y="57.0" />
+      <point x="-22.25" y="18.5" />
     </edge>
     <edge source="main.Peripherals.Cash.Cash" target="main.Peripherals.Observer">
-      <point x="10.941176470588232" y="-18.5" />
-      <point x="547.5661764705883" y="164.0" />
-      <point x="595.5" y="164.0" />
-      <point x="595.5" y="77.0" />
-      <point x="576.3494008714597" y="77.0" />
+      <point x="42.27272727272725" y="-18.5" />
+      <point x="458.1060606060606" y="184.0" />
+      <point x="692.4545454545455" y="184.0" />
       <point x="0.0" y="18.5" />
     </edge>
     <edge source="net.Server" target="net.ServerThread">
       <point x="-26.25" y="-18.5" />
-      <point x="702.870234204793" y="515.0" />
-      <point x="681.370234204793" y="515.0" />
+      <point x="129.765625" y="604.0" />
+      <point x="114.75" y="604.0" />
       <point x="38.25" y="18.5" />
     </edge>
     <edge source="main.Manager.Manager" target="net.Server">
       <point x="30.75" y="18.5" />
-      <point x="724.245234204793" y="408.0" />
-      <point x="752.120234204793" y="408.0" />
-      <point x="752.120234204793" y="525.0" />
-      <point x="755.370234204793" y="525.0" />
+      <point x="182.265625" y="527.0" />
+      <point x="185.5" y="527.0" />
+      <point x="185.5" y="614.0" />
+      <point x="182.265625" y="614.0" />
       <point x="26.25" y="-18.5" />
     </edge>
     <edge source="main.Peripherals.Cash.Cash" target="net.Client">
-      <point x="-38.29411764705878" y="-18.5" />
-      <point x="498.3308823529412" y="214.0" />
-      <point x="243.5" y="214.0" />
+      <point x="-33.81818181818181" y="-18.5" />
+      <point x="382.0151515151516" y="174.0" />
+      <point x="243.5" y="174.0" />
       <point x="0.0" y="18.5" />
-    </edge>
-    <edge source="main.Peripherals.Cash.Cash" target="main.Manager.Manager">
-      <point x="23.25" y="18.5" />
-      <point x="559.875" y="301.0" />
-      <point x="683.245234204793" y="301.0" />
-      <point x="-10.25" y="-18.5" />
     </edge>
     <edge source="net.ServerThread" target="main.Manager.Manager">
       <point x="-38.25" y="-18.5" />
-      <point x="604.870234204793" y="438.0" />
-      <point x="642.245234204793" y="438.0" />
+      <point x="38.25" y="527.0" />
+      <point x="100.265625" y="527.0" />
       <point x="-51.25" y="18.5" />
     </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="1.0999999999999999" x="720.0000000000002" y="233.4895382395382" />
+  <settings layout="Hierarchic Group" zoom="0.9479015918958031" x="481.0" y="335.5" />
   <SelectedNodes />
   <Categories />
   <SCOPE>All</SCOPE>

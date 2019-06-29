@@ -3,129 +3,37 @@
   <ID>JAVA</ID>
   <OriginalElement>main.Manager</OriginalElement>
   <nodes>
-    <node x="336.0444444444444" y="294.0">main.Peripherals.Cash.Cash</node>
-    <node x="134.1375" y="167.0">main.Manager.Manager</node>
-    <node x="479.5" y="294.0">main.Peripherals.Columns.EntryColumn</node>
-    <node x="505.44999999999993" y="0.0">main.Peripherals.Observer</node>
-    <node x="296.3944444444444" y="167.0">GUIs.CashGUI2</node>
-    <node x="169.0" y="0.0">net.Server</node>
-    <node x="574.8263888888888" y="167.0">GUIs.EntryColumnGUI2</node>
-    <node x="370.44999999999993" y="0.0">main.Peripherals.Columns.Column</node>
-    <node x="0.0" y="0.0">GUIs.ManagerGUI</node>
+    <node x="318.0" y="338.0">main.Peripherals.Cash.Cash</node>
+    <node x="0.0" y="338.0">main.Manager.Manager</node>
+    <node x="0.0" y="256.0">main.Peripherals.Columns.EntryColumn</node>
+    <node x="91.25" y="0.0">main.Peripherals.Observer</node>
+    <node x="0.0" y="87.0">GUIs.CashGUI2</node>
+    <node x="168.0" y="338.0">net.Server</node>
+    <node x="149.0" y="87.0">GUIs.EntryColumnGUI2</node>
+    <node x="18.0" y="169.0">main.Peripherals.Columns.Column</node>
+    <node x="196.0" y="169.0">GUIs.ManagerGUI</node>
   </nodes>
   <notes />
   <edges>
-    <edge source="main.Manager.Manager" target="main.Peripherals.Cash.Cash">
-      <point x="30.75" y="18.5" />
-      <point x="226.3875" y="264.0" />
-      <point x="353.4819444444444" y="264.0" />
-      <point x="-29.0625" y="-18.5" />
-    </edge>
-    <edge source="net.Server" target="main.Manager.Manager">
-      <point x="39.375" y="18.5" />
-      <point x="260.875" y="77.0" />
-      <point x="222.97083333333333" y="77.0" />
-      <point x="27.333333333333343" y="-18.5" />
-    </edge>
     <edge source="main.Peripherals.Columns.EntryColumn" target="main.Peripherals.Columns.Column">
-      <point x="-66.0625" y="-18.5" />
-      <point x="488.9375" y="274.0" />
-      <point x="461.5819444444444" y="274.0" />
-      <point x="461.5819444444444" y="97.0" />
-      <point x="442.32499999999993" y="97.0" />
-      <point x="14.375" y="18.5" />
+      <point x="0.0" y="-18.5" />
+      <point x="0.0" y="18.5" />
     </edge>
     <edge source="GUIs.CashGUI2" target="main.Peripherals.Observer">
       <point x="0.0" y="-18.5" />
-      <point x="360.8944444444444" y="107.0" />
-      <point x="515.7833333333333" y="107.0" />
-      <point x="-51.666666666666686" y="18.5" />
-    </edge>
-    <edge source="GUIs.CashGUI2" target="main.Peripherals.Cash.Cash">
-      <point x="48.375" y="18.5" />
-      <point x="409.2694444444444" y="254.0" />
-      <point x="399.9819444444444" y="254.0" />
-      <point x="17.4375" y="-18.5" />
-    </edge>
-    <edge source="GUIs.ManagerGUI" target="main.Manager.Manager">
-      <point x="0.0" y="18.5" />
-      <point x="74.5" y="137.0" />
-      <point x="154.6375" y="137.0" />
-      <point x="-41.0" y="-18.5" />
-    </edge>
-    <edge source="main.Peripherals.Cash.Cash" target="GUIs.CashGUI2">
-      <point x="-17.4375" y="-18.5" />
-      <point x="365.1069444444444" y="254.0" />
-      <point x="312.5194444444444" y="254.0" />
-      <point x="-48.375" y="18.5" />
-    </edge>
-    <edge source="main.Peripherals.Columns.Column" target="main.Manager.Manager">
-      <point x="-14.375" y="18.5" />
-      <point x="413.57499999999993" y="97.0" />
-      <point x="250.30416666666665" y="97.0" />
-      <point x="54.66666666666666" y="-18.5" />
-    </edge>
-    <edge source="main.Peripherals.Columns.EntryColumn" target="GUIs.EntryColumnGUI2">
-      <point x="9.4375" y="-18.5" />
-      <point x="564.4375" y="244.0" />
-      <point x="598.0763888888888" y="244.0" />
-      <point x="-69.75" y="18.5" />
+      <point x="64.5" y="62.0" />
+      <point x="122.25" y="62.0" />
+      <point x="-31.0" y="18.5" />
     </edge>
     <edge source="GUIs.EntryColumnGUI2" target="main.Peripherals.Observer">
       <point x="0.0" y="-18.5" />
-      <point x="667.8263888888888" y="147.0" />
-      <point x="619.1166666666667" y="147.0" />
-      <point x="51.666666666666686" y="18.5" />
-    </edge>
-    <edge source="GUIs.EntryColumnGUI2" target="main.Peripherals.Columns.EntryColumn">
-      <point x="23.25000000000003" y="18.5" />
-      <point x="691.0763888888889" y="264.0" />
-      <point x="602.1875" y="264.0" />
-      <point x="47.187500000000014" y="-18.5" />
-    </edge>
-    <edge source="main.Manager.Manager" target="main.Peripherals.Columns.Column">
-      <point x="41.0" y="-18.5" />
-      <point x="236.6375" y="87.0" />
-      <point x="384.82499999999993" y="87.0" />
-      <point x="-43.125" y="18.5" />
-    </edge>
-    <edge source="main.Peripherals.Cash.Cash" target="main.Peripherals.Observer">
-      <point x="40.6875" y="-18.5" />
-      <point x="423.2319444444444" y="274.0" />
-      <point x="446.8944444444444" y="274.0" />
-      <point x="446.8944444444444" y="127.0" />
-      <point x="557.1166666666667" y="127.0" />
-      <point x="-10.333333333333314" y="18.5" />
-    </edge>
-    <edge source="main.Manager.Manager" target="GUIs.ManagerGUI">
-      <point x="-54.66666666666663" y="-18.5" />
-      <point x="140.97083333333336" y="147.0" />
-      <point x="24.833333333333314" y="147.0" />
-      <point x="-49.66666666666666" y="18.5" />
-    </edge>
-    <edge source="main.Peripherals.Columns.EntryColumn" target="main.Peripherals.Observer">
-      <point x="-9.4375" y="-18.5" />
-      <point x="545.5625" y="234.0" />
-      <point x="564.3263888888889" y="234.0" />
-      <point x="564.3263888888889" y="147.0" />
-      <point x="598.4499999999999" y="147.0" />
+      <point x="242.0" y="62.0" />
+      <point x="184.25" y="62.0" />
       <point x="31.0" y="18.5" />
     </edge>
-    <edge source="main.Peripherals.Cash.Cash" target="main.Manager.Manager">
-      <point x="-40.6875" y="-18.5" />
-      <point x="341.8569444444444" y="274.0" />
-      <point x="164.8875" y="274.0" />
-      <point x="-30.75" y="18.5" />
-    </edge>
-    <edge source="main.Manager.Manager" target="net.Server">
-      <point x="-13.666666666666657" y="-18.5" />
-      <point x="-39.375" y="18.5" />
-    </edge>
   </edges>
-  <settings layout="Hierarchic Group" zoom="1.2999999999999994" x="520.8170995670994" y="219.33333333333346" />
-  <SelectedNodes>
-    <node>GUIs.ManagerGUI</node>
-  </SelectedNodes>
+  <settings layout="Hierarchic Group" zoom="1.0" x="205.5" y="165.5" />
+  <SelectedNodes />
   <Categories />
   <SCOPE>All</SCOPE>
   <VISIBILITY>private</VISIBILITY>

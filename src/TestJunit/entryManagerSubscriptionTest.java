@@ -1,13 +1,6 @@
 package TestJunit;
-import  main.Manager.*;
-import main.Manager.Manager;
-import main.Manager.EntryManager;
-import org.junit.jupiter.api.Test;
-import Exceptions.SubdivisionException;
 import main.Manager.*;
 import org.junit.jupiter.api.Test;
-
-import java.util.GregorianCalendar;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
