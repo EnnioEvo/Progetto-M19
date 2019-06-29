@@ -210,6 +210,7 @@ public class EntryColumnGUI2 implements ItemListener, Observer
         tf.setBorder(compound);
         if(editable)
         {
+
             tf.addFocusListener(new FocusListener() {
                 @Override
                 public void focusGained(FocusEvent e) {
