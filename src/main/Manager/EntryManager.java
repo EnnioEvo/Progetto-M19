@@ -10,6 +10,7 @@ public class EntryManager
         this.man = man;
     }
 
+    
    public String entryTicket(String carId)
     {
         boolean entry = false;

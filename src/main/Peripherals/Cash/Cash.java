@@ -5,7 +5,6 @@ import java.util.*;
 import java.util.List;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
-import GUIs.CashGUI;
 import GUIs.CashGUI2;
 import main.Manager.Manager;
 import main.Manager.Driver;
@@ -216,7 +215,10 @@ public class Cash implements Peripheral
             infoBox = "Hai gia pagato!";
             notifyObs();
         }
-
+        if(currentPayment.getDovuto() < 0)
+        {
+            return 0d;
+        }
         return currentPayment.dovuto;
     }
 
