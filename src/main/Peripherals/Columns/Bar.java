@@ -3,18 +3,22 @@ package main.Peripherals.Columns;
 public class Bar {
     private boolean isOpen;
 
+    //Costruttore della classe Bar
     public Bar() {
         this.isOpen = false;
     }
 
+    //Restituisce lo stato della sbarra
     public boolean isOpen() {
         return isOpen;
     }
 
+    //Imposta lo stato della sbarra ad "aperta"
     public void setOpen(boolean open) {
         isOpen = open;
     }
 
+    //Apre la sbarra, dopo un certo tempo la sbarra si chiude
     public void open()
     {
         isOpen = true;
@@ -29,6 +33,7 @@ public class Bar {
         close();
     }
 
+    //Chiude la sbarra
     public void close(){
         isOpen = false;
     }
