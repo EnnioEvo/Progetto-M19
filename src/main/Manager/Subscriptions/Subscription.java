@@ -24,7 +24,7 @@ public abstract class Subscription
     @Override
     public String toString()
     {
-        return "Abbonamento scade:" + dateFinish.toZonedDateTime().toString();
+        return "Abbonamento scade:" + dateFinish.toZonedDateTime().toString() + ", abbonamento pagato: " + (paySub?"Si":"No");
     }
 
     public String infoClient()
