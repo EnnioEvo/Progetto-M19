@@ -21,53 +21,53 @@ public class exitManagerTest {
     @Test
     public void validExitSub() {
         makePark();
-        em.entrySub("00000000", "Mensile");
+        em.entrySub("0000000", "Mensile");
         // set paySub
-        m.getDriver("00000000").setPaidSub(true);
-        System.out.println("paySub:" + m.getDriver("00000000").getPaySub());
-        assertEquals("exitOk--Uscita abbonamento avvenuta con successo 00000000",
-                ee.exit("00000000"));
+        m.getDriver("0000000").setPaidSub(true);
+        System.out.println("paySub:" + m.getDriver("0000000").getPaySub());
+        assertEquals("exitOk--Uscita abbonamento avvenuta con successo 0000000",
+                ee.exit("0000000"));
     }
 
     @Test
     public void setInParkTest() {
         makePark();
-        em.entrySub("11111111", "Mensile");
+        em.entrySub("1111111", "Mensile");
         // set paySub
-        m.getDriver("11111111").setPaidSub(true);
-        System.out.println("paySub:" + m.getDriver("11111111").getPaySub());
-        ee.exit("11111111");
-        assertEquals(false, m.getDriver("11111111").getInPark());
+        m.getDriver("1111111").setPaidSub(true);
+        System.out.println("paySub:" + m.getDriver("1111111").getPaySub());
+        ee.exit("1111111");
+        assertEquals(false, m.getDriver("1111111").getInPark());
     }
 
     @Test
     public void notBuySub() {
         makePark();
-        em.entrySub("00000000", "Mensile");
+        em.entrySub("0000000", "Mensile");
         // no set pay Sub
-        System.out.println("paySub:" + m.getDriver("00000000").getPaySub());
+        System.out.println("paySub:" + m.getDriver("0000000").getPaySub());
         assertEquals("exitNo--L'abbonamento non è pagato, si prega di tornare alle casse.",
-                ee.exit("00000000"));
+                ee.exit("0000000"));
     }
 
     @Test
     public void notSubInPark() {
         makePark();
-        em.entrySub("00000000", "Mensile");
+        em.entrySub("0000000", "Mensile");
         // set pay Sub
-        m.getDriver("00000000").setPaidSub(true);
+        m.getDriver("0000000").setPaidSub(true);
         //setto l'uscita manualmente
-        m.getDriver("00000000").setInPark(false);
+        m.getDriver("0000000").setInPark(false);
         //provo ad uscire con una targa che all'interno del parcheggio non c'è
-        assertEquals("exitNo--Uscita fallita, l'abbonato non è nel parcheggio 00000000",
-                ee.exit("00000000"));
+        assertEquals("exitNo--Uscita fallita, l'abbonato non è nel parcheggio 0000000",
+                ee.exit("0000000"));
     }
 
     @Test
     public void ticketNotPay() {
         makePark();
-        em.entryTicket("00000000");
-        assertEquals("exitNo--Ticket non pagato, torna in cassa!", ee.exit("00000000"));
+        em.entryTicket("0000000");
+        assertEquals("exitNo--Ticket non pagato, torna in cassa!", ee.exit("0000000"));
     }
 }
 

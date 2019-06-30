@@ -374,7 +374,7 @@ public class Manager
     // controlla se la sintassi della targa sia corretta
     boolean checkCarId(String carId)
     {
-        if(carId.length() == 8)
+        if(carId.length() == 7)
         {
             return true;
         }
