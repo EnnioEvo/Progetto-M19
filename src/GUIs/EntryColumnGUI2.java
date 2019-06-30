@@ -482,7 +482,7 @@ public class EntryColumnGUI2 implements ItemListener, Observer
         actionPanel.add(Box.createRigidArea(new Dimension(200,50)), BorderLayout.SOUTH);
         actionPanel.add(Box.createRigidArea(new Dimension(150,50)), BorderLayout.EAST);
         actionPanel.add(Box.createRigidArea(new Dimension(150,50)), BorderLayout.WEST);
-        JButton action = createSimpleButton("Acquista");
+        JButton action = createSimpleButton("Entra");
         action.setPreferredSize(new Dimension(200,100));
         action.addActionListener(new ActionListener()
         {
