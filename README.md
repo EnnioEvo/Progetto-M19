@@ -33,5 +33,5 @@ java -cp C:\Users\NomeUtente\Documents\Progetto-M19-out main.Peripherals.Columns
 
 java -cp C:\Users\NomeUtente\Documents\Progetto-M19-out main.Peripherals.Columns.EntryColumn 127.0.0.1 1030
 ```
-Alternativamente si possono inserire i parametri nel file Parcheggio-M19.bat e avviarlo.
+Alternativamente si possono inserire i parametri nel file ```Parcheggio-M19.bat``` e avviarlo.
 
