@@ -97,7 +97,7 @@ public class entryManagerSubscriptionTest {
         m.getDriver("00000000").setInPark(false);
         System.out.println("InPark" + m.getDriver("00000000").getInPark());
         //rientra
-        assertEquals("entryOk--Ingresso abbonato avvenuto con successo.",
+        assertEquals("entryOk--Hai già un abbonamento, puoi entrare.",
                 em.entrySub("00000000","Mensile"));
     }
 
