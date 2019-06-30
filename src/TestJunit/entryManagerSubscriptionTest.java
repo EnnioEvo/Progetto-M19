@@ -15,7 +15,7 @@ public class entryManagerSubscriptionTest {
     public void cardIDTest(){
         m.makeFloors(2,200);
         m.setSpacesSubdivision(200);
-        assertEquals("entryNo--Targa non valida",em.entrySub("000000000","MM") );
+        assertEquals("entryNo--Targa non valida.",em.entrySub("000000000","MM") );
     }
 
     @Test
@@ -23,7 +23,7 @@ public class entryManagerSubscriptionTest {
     {
         m.makeFloors(2,200);
         m.setSpacesSubdivision(200);
-        assertEquals("entryNo--Non hai ancora l'abbonamento",
+        assertEquals("entryNo--Non hai ancora l'abbonamento.",
                 em.entrySub("00000000", "XX"));
     }
 
@@ -35,7 +35,7 @@ public class entryManagerSubscriptionTest {
         //ingresso valido con abbonamento
         em.entrySub("00000000","Mensile");
         //ingresso che dovebbre generare l'errore
-        assertEquals("entryNo--Abbonamenti finiti",
+        assertEquals("entryNo--Abbonamenti finiti.",
                 em.entrySub("11111111","Mensile"));
     }
 
@@ -83,7 +83,7 @@ public class entryManagerSubscriptionTest {
         m.setSpacesSubdivision(5);
         em.entrySub("00000000","Mensile");
 
-        assertEquals("entryNo--Ingresso non riuscito, targa: 00000000 già all'interno del parcheggio",
+        assertEquals("entryNo--Ingresso non riuscito, targa: 00000000 già all'interno del parcheggio.",
                 em.entrySub("00000000","Mensile"));
     }
 
@@ -97,7 +97,7 @@ public class entryManagerSubscriptionTest {
         m.getDriver("00000000").setInPark(false);
         System.out.println("InPark" + m.getDriver("00000000").getInPark());
         //rientra
-        assertEquals("entryOk--Ingresso abbonato avvenuto con successo",
+        assertEquals("entryOk--Ingresso abbonato avvenuto con successo.",
                 em.entrySub("00000000","Mensile"));
     }
 

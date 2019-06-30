@@ -84,7 +84,7 @@ public class Manager
 
     }
 
-    //CREO un secondo costruttore che serve solo nei test, lo creo cosi che posso ''aggirare'' il lato server del manager
+    //CREO un secondo costruttore che serve solo nei test, lo creo cosi che posso ''aggirare'' il lato server del manager (tolgo anche il db)
     public Manager(){
         this.floorsList = new ArrayList<>();
         this.freeSpacesTot = 0;
@@ -103,7 +103,6 @@ public class Manager
         this.exitMan = new ExitManager(this);
 
         createCommands();
-        getDriversFromDb();
     }
 
     public static void main(String[] args)
