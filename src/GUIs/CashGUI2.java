@@ -2,7 +2,7 @@ package GUIs;
 
 
 import main.Peripherals.Cash.Cash;
-import main.Peripherals.Observer;
+import main.Utilities.Observer;
 
 import javax.swing.*;
 import javax.swing.border.Border;
@@ -100,14 +100,12 @@ public class CashGUI2 implements ItemListener, Observer
         display.add(toPay);
         display.add(jf1);
         display.add(money);
-        displayContainer.add(Box.createRigidArea(new Dimension(100, 15)), BorderLayout.NORTH);
+        displayContainer.add(Box.createRigidArea(new Dimension(100, 50)), BorderLayout.NORTH);
         displayContainer.add(display, BorderLayout.CENTER);
         JPanel actionPanel = new JPanel(new BorderLayout());
-        actionPanel.add(Box.createRigidArea(new Dimension(200,15)), BorderLayout.NORTH);
-        actionPanel.add(Box.createRigidArea(new Dimension(200,15)), BorderLayout.SOUTH);
-        actionPanel.add(Box.createRigidArea(new Dimension(150,50)), BorderLayout.EAST);
-        actionPanel.add(Box.createRigidArea(new Dimension(150,50)), BorderLayout.WEST);
-        JButton action = createSimpleButton("Paga in contanti");
+        actionPanel.add(Box.createRigidArea(new Dimension(200,50)), BorderLayout.NORTH);
+        actionPanel.add(Box.createRigidArea(new Dimension(200,50)), BorderLayout.SOUTH);
+        JButton action = createSimpleButton("Contanti");
         action.setPreferredSize(new Dimension(200,100));
         action.addActionListener(new ActionListener()
         {
@@ -124,7 +122,7 @@ public class CashGUI2 implements ItemListener, Observer
                 }
             }
         });
-        JButton action2 = createSimpleButton("Paga con carta");
+        JButton action2 = createSimpleButton("Carta");
         action2.setPreferredSize(new Dimension(200,100));
         action2.addActionListener(new ActionListener()
         {
@@ -153,6 +151,7 @@ public class CashGUI2 implements ItemListener, Observer
         setFont(display, new Font("Helvetica", Font.PLAIN, 30));
         setFont(infoP, new Font("Helvetica", Font.PLAIN, 30));
         setFont(actionPanel, new Font("Helvetica", Font.PLAIN, 30));
+        setFont(centerPanel, new Font("Helvetica", Font.PLAIN, 30));
 
         card.add(Box.createRigidArea(new Dimension(40,10)), BorderLayout.EAST);
         card.add(Box.createRigidArea(new Dimension(40,10)), BorderLayout.WEST);
@@ -257,29 +256,24 @@ public class CashGUI2 implements ItemListener, Observer
     private JPanel selection()
     {
         JPanel card = new JPanel();
+        card.addComponentListener(new ComponentAdapter()
+        {
+            @Override
+            public void componentShown(ComponentEvent e)
+            {
+                super.componentShown(e);
+                info.setText("Benvenuto alle casse. Prego digitare la targa");
+            }
+        });
         card.setBackground(Color.decode("#778ca3"));
         card.setLayout(new BorderLayout());
         JPanel topPanel = new JPanel(new BorderLayout());
         topPanel.setBackground(Color.decode("#778ca3"));
         topPanel.add(Box.createRigidArea(new Dimension(70,20)), BorderLayout.NORTH);
-        topPanel.add(Box.createRigidArea(new Dimension(70,20)), BorderLayout.SOUTH);
+        topPanel.add(Box.createRigidArea(new Dimension(500,50)), BorderLayout.WEST);
         topPanel.add(Box.createRigidArea(new Dimension(40,50)), BorderLayout.EAST);
-        topPanel.add(Box.createRigidArea(new Dimension(40,50)), BorderLayout.WEST);
-        JPanel topCenterPanel = new JPanel(new GridLayout(1,3));
-        topCenterPanel.setBackground(Color.decode("#778ca3"));
-        /*LayoutManager layout = new BoxLayout(topCenterPanel, BoxLayout.X_AXIS);*/
-        JButton back = createSimpleButton("Indietro");
-        topCenterPanel.add(back);
-        back.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                CardLayout cl = (CardLayout) (cards.getLayout());
-                cl.show(cards, MAIN);
-            }
-        });
-        topCenterPanel.add(Box.createRigidArea(new Dimension(400, 50)));
-        topCenterPanel.add(createHelpButton("Aiuto"));
-        topPanel.add(topCenterPanel, BorderLayout.CENTER);
+        topPanel.add(createHelpButton("Aiuto"), BorderLayout.CENTER);
+        topPanel.setBackground(Color.decode("#778ca3"));
 
         JPanel displayContainer = new JPanel(new BorderLayout());
         displayContainer.setBackground(Color.decode("#778ca3"));
@@ -304,27 +298,22 @@ public class CashGUI2 implements ItemListener, Observer
             public void actionPerformed(ActionEvent e)
             {
                 cash.askDriver(targa.getText());
-                /*if(!info.toString().equals("Tessera non riconosciuta"))
-                {
-                    CardLayout cl = (CardLayout) (cards.getLayout());
-                    cl.show(cards, PAY);
-                }*/
             }
         });
         actionPanel.add(action, BorderLayout.CENTER);
         actionPanel.setBackground(Color.decode("#778ca3"));
         displayContainer.add(actionPanel, BorderLayout.SOUTH);
 
-        info = new JTextArea();
+        info = new JTextArea("Benvenuto alle casse.\nPrego digitare la targa");
         info.setBorder(BorderFactory.createMatteBorder(
                 10, 10, 10, 10, Color.decode("#4b6584")));
         info.setEditable(false);
         info.setLineWrap(true);
         info.setPreferredSize(new Dimension(300, 300));
-        setFont(topCenterPanel, new Font("Helvetica", Font.PLAIN, 20));
         setFont(display, new Font("Helvetica", Font.PLAIN, 30));
         setFont(info, new Font("Helvetica", Font.PLAIN, 30));
         setFont(actionPanel, new Font("Helvetica", Font.PLAIN, 30));
+        setFont(topPanel, new Font("Helvetica", Font.PLAIN, 20));
 
         card.add(Box.createRigidArea(new Dimension(40,10)), BorderLayout.EAST);
         card.add(Box.createRigidArea(new Dimension(40,10)), BorderLayout.WEST);

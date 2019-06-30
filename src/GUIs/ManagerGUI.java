@@ -3,15 +3,19 @@ package GUIs;
 import Exceptions.NotEmptyFloorException;
 import Exceptions.SubdivisionException;
 import main.Manager.Manager;
+import main.Utilities.Observer;
 
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 
 @SuppressWarnings("Duplicates")
-public class ManagerGUI implements ItemListener
+public class ManagerGUI implements ItemListener, Observer
 {
     private Manager man;
+    private JFrame f;
     private JPanel cards;  //Pannello che usa CardLayout
     final private static String MAKEFLOORS = "Crea piani";
     final private static String TARRIFF = "Scegli tariffa";
@@ -28,7 +32,7 @@ public class ManagerGUI implements ItemListener
     public ManagerGUI(Manager man)
     {
         this.man = man;
-        JFrame f = new JFrame();
+        f = new JFrame();
 
         Toolkit toolkit = Toolkit.getDefaultToolkit();
         Dimension screenSize = toolkit.getScreenSize();
@@ -349,7 +353,7 @@ public class ManagerGUI implements ItemListener
                 try
                 {
                     man.setDeltaTimePaid(Integer.parseInt(tempo.getText()));
-                    String st = "DeltaTime attuale: " + man.getDeltaTimePaid();
+                    String st = "Tempo concesso all'utente per uscire: " + man.getDeltaTimePaid() + " (minuti)";
                     info.setText(st);
                 }
                 catch(NumberFormatException ex)
@@ -624,7 +628,10 @@ public class ManagerGUI implements ItemListener
                     String from = yearStart.getText() + "-" + monthStart.getText() + "-" + dayStart.getText();
                     String to = yearEnd.getText() + "-" + monthEnd.getText() + "-" + dayEnd.getText();
                     double mean = man.analyticsMean(from, to);
-                    info.setText("Secondi medi permanenza ticket: " + mean);
+                    double paid = man.analyticsTotPaid(from, to);
+                    int[] totTAndS = man.analyticsTotTicketandSub(from, to);
+                    NumberFormat nf = new DecimalFormat("0.000");
+                    info.setText("Secondi medi permanenza ticket: " + nf.format(mean) + "\nSpesa media per utente: " + nf.format(paid) + "\nTicket nel periodo: " + totTAndS[0] + "\nAbbonamenti nel periodo: " + totTAndS[1]);
 
                 } catch (RuntimeException ex)
                 {
@@ -665,5 +672,17 @@ public class ManagerGUI implements ItemListener
         {
             child.setFont(font);
         }
+    }
+
+    @Override
+    public void update()
+    {
+        JOptionPane op = new JOptionPane(man.getInfoBox(), JOptionPane.WARNING_MESSAGE);
+        JDialog dialog = op.createDialog("Assistenza richiesta");
+        dialog.setAlwaysOnTop(true);
+        dialog.setModal(false);
+        dialog.setDefaultCloseOperation(JDialog.DISPOSE_ON_CLOSE);
+        dialog.setVisible(true);
+        //JOptionPane.showMessageDialog(f, man.getInfoBox(), "Assistenza richiesta", JOptionPane.WARNING_MESSAGE);
     }
 }

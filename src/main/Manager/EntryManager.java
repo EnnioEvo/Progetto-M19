@@ -40,7 +40,7 @@ public class EntryManager
         else
         {
             man.setFreeSpacesTicketNow(man.getFreeSpacesTicketNow() + 1);
-            man.setEntryToT(man.getEntryToT() + 1);   //Perche non viene incrementata all'ingresso degli abbonati?
+            man.setEntryToT(man.getEntryToT() + 1);
             Driver d = new Driver(carId);
             d.setTariff(man.getTariff());
             man.getDrivers().add(d);
@@ -69,7 +69,7 @@ public class EntryManager
         String info;
         if(!man.checkCarId(carId))
         {
-            info = "Targa non valida";
+            info = "Targa non valida.";
             System.out.println(info);
             return "entryNo--" + info;
         }
@@ -79,12 +79,12 @@ public class EntryManager
         {
             if(typeSub.equals("XX"))
             {
-                info = "Non hai ancora l'abbonamento";
+                info = "Non hai ancora l'abbonamento.";
                 return "entryNo--" + info;
             }
             if(man.getFreeSpacesSubNow() + 1 > man.getFreeSpacesSubTot())
             {
-                info = "Abbonamenti finiti";
+                info = "Abbonamenti finiti.";
                 System.out.println(info);
 
             }
@@ -133,15 +133,23 @@ public class EntryManager
             }
             else if (man.checkInPark(carId))
             {
-                info = "Ingresso non riuscito, targa: " + carId + " già all'interno del parcheggio";
+                info = "Ingresso non riuscito, targa: " + carId + " già all'interno del parcheggio.";
                 System.out.println(info);
             }
             else
             {
-                info = "Ingresso abbonato avvenuto con successo";
+                if(typeSub.equals("XX"))
+                {
+                    info = "Ingresso abbonato avvenuto con successo.";
+                }
+                else
+                {
+                    info = "Hai già un abbonamento, puoi entrare.";
+                }
                 System.out.println(info);
                 Driver d = man.getDriver(carId);
                 d.setInPark(true);
+                db.writeData(d, true);
                 entry = true;
             }
         }

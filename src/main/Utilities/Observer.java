@@ -1,4 +1,4 @@
-package main.Peripherals;
+package main.Utilities;
 
 public interface Observer
 {

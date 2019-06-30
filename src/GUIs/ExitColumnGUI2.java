@@ -2,7 +2,7 @@ package GUIs;
 
 
 import main.Peripherals.Columns.ExitColumn;
-import main.Peripherals.Observer;
+import main.Utilities.Observer;
 
 import javax.swing.*;
 import javax.swing.border.Border;

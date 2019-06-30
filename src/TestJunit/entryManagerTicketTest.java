@@ -26,7 +26,7 @@ public class entryManagerTicketTest {
         m.setSpacesSubdivision(100);
         // sono costretto a far lo split della stringa che mi conferma l'ingresso perchè i millisecondi della data non
         // davano la possibilita di convalidare il tes
-        s = split.split(em.entryTicket("00000000"));
+        s = split.split(em.entryTicket("0000000"));
         assertEquals("entryOk", s);
     }
     @Test
@@ -35,9 +35,9 @@ public class entryManagerTicketTest {
         m.makeFloors(1,1);
         m.setSpacesSubdivision(0);
         //creo un ingresso valido
-        em.entryTicket("00000000");
+        em.entryTicket("0000000");
         //secondo ingresso che genera errore
-        assertEquals("entryNo--Posti ticket finiti.", em.entryTicket("11111111"));
+        assertEquals("entryNo--Posti ticket finiti.", em.entryTicket("1111111"));
     }
 
     @Test
@@ -46,10 +46,10 @@ public class entryManagerTicketTest {
         m.makeFloors(1,200);
         m.setSpacesSubdivision(100);
         //creo un ingresso valido
-        em.entryTicket("00000000");
+        em.entryTicket("0000000");
         //secondo ingresso con stessa targa
-        assertEquals("entryNo--Ingresso fallito: targa: 00000000 già presente all'interno del parcheggio.",
-                em.entryTicket("00000000"));
+        assertEquals("entryNo--Ingresso fallito: targa: 0000000 già presente all'interno del parcheggio.",
+                em.entryTicket("0000000"));
     }
 
 

@@ -15,7 +15,7 @@ public class entryManagerSubscriptionTest {
     public void cardIDTest(){
         m.makeFloors(2,200);
         m.setSpacesSubdivision(200);
-        assertEquals("entryNo--Targa non valida",em.entrySub("000000000","MM") );
+        assertEquals("entryNo--Targa non valida.",em.entrySub("000000000","MM") );
     }
 
     @Test
@@ -23,8 +23,8 @@ public class entryManagerSubscriptionTest {
     {
         m.makeFloors(2,200);
         m.setSpacesSubdivision(200);
-        assertEquals("entryNo--Non hai ancora l'abbonamento",
-                em.entrySub("00000000", "XX"));
+        assertEquals("entryNo--Non hai ancora l'abbonamento.",
+                em.entrySub("0000000", "XX"));
     }
 
     @Test
@@ -33,10 +33,10 @@ public class entryManagerSubscriptionTest {
         m.makeFloors(1,10);
         m.setSpacesSubdivision(1);
         //ingresso valido con abbonamento
-        em.entrySub("00000000","Mensile");
+        em.entrySub("0000000","Mensile");
         //ingresso che dovebbre generare l'errore
-        assertEquals("entryNo--Abbonamenti finiti",
-                em.entrySub("11111111","Mensile"));
+        assertEquals("entryNo--Abbonamenti finiti.",
+                em.entrySub("1111111","Mensile"));
     }
 
     @Test
@@ -44,7 +44,7 @@ public class entryManagerSubscriptionTest {
         String s;
         m.makeFloors(1,10);
         m.setSpacesSubdivision(10);
-        s = split.split(em.entrySub("11111111","Mensile"));
+        s = split.split(em.entrySub("1111111","Mensile"));
         assertEquals("entryOk",s);
     }
 
@@ -53,7 +53,7 @@ public class entryManagerSubscriptionTest {
         String s;
         m.makeFloors(1,10);
         m.setSpacesSubdivision(10);
-        s = split.split(em.entrySub("22222222","Semestrale"));
+        s = split.split(em.entrySub("2222222","Semestrale"));
         assertEquals("entryOk",s);
     }
 
@@ -62,7 +62,7 @@ public class entryManagerSubscriptionTest {
         String s;
         m.makeFloors(1,10);
         m.setSpacesSubdivision(10);
-        s = split.split(em.entrySub("33333333","Annuale"));
+        s = split.split(em.entrySub("3333333","Annuale"));
         assertEquals("entryOk",s);
     }
 
@@ -71,20 +71,20 @@ public class entryManagerSubscriptionTest {
         m.makeFloors(1,10);
         m.setSpacesSubdivision(5);
         //ingresso valido
-        em.entryTicket("00000000");
+        em.entryTicket("0000000");
         //ingresso che da errore
         assertEquals("entryNo--Ingresso non riuscito, la targa risulta già all'interno con un ticket.",
-                em.entrySub("00000000","Mensile") );
+                em.entrySub("0000000","Mensile") );
     }
 
     @Test
     public void carInParkYey(){
         m.makeFloors(1,10);
         m.setSpacesSubdivision(5);
-        em.entrySub("00000000","Mensile");
+        em.entrySub("0000000","Mensile");
 
-        assertEquals("entryNo--Ingresso non riuscito, targa: 00000000 già all'interno del parcheggio",
-                em.entrySub("00000000","Mensile"));
+        assertEquals("entryNo--Ingresso non riuscito, targa: 0000000 già all'interno del parcheggio.",
+                em.entrySub("0000000","Mensile"));
     }
 
     @Test
@@ -92,13 +92,13 @@ public class entryManagerSubscriptionTest {
         m.makeFloors(1,10);
         m.setSpacesSubdivision(5);
         //ingresso
-        em.entrySub("00000000","Mensile");
+        em.entrySub("0000000","Mensile");
         //simulo l'uscita
-        m.getDriver("00000000").setInPark(false);
-        System.out.println("InPark" + m.getDriver("00000000").getInPark());
+        m.getDriver("0000000").setInPark(false);
+        System.out.println("InPark" + m.getDriver("0000000").getInPark());
         //rientra
-        assertEquals("entryOk--Ingresso abbonato avvenuto con successo",
-                em.entrySub("00000000","Mensile"));
+        assertEquals("entryOk--Hai già un abbonamento, puoi entrare.",
+                em.entrySub("0000000","Mensile"));
     }
 
 }

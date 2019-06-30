@@ -22,17 +22,7 @@ public class AnalyticsEngine
     public double meanTicketTimeIn(String from, String to)
     {
         ArrayList<Driver> drivers = new ArrayList<>();
-        ArrayList<Driver> toBeRemoved = new ArrayList<>();
-        drivers.addAll(db.getData().values());
-        GregorianCalendar[] fromTo = parseDates(from, to);
-        for (Driver d : drivers)
-        {
-            if(!checkBetween(fromTo, d.getTimeIn()))
-            {
-                toBeRemoved.add(d);
-            }
-        }
-        drivers.removeAll(toBeRemoved);
+        removeFromTo(drivers, from, to);
 
         double hours = 0;
         for (Driver d : drivers)
@@ -54,6 +44,60 @@ public class AnalyticsEngine
         }
         return hours;
     }
+
+    public int[] totTicketAndSub(String from, String to)
+    {
+        ArrayList<Driver> drivers = new ArrayList<>();
+        removeFromTo(drivers, from, to);
+
+        int totT = 0;
+        int totS = 0;
+        for (Driver d : drivers)
+        {
+            if(d.getSub() == null)
+            {
+                totT++;
+            }
+            else
+            {
+                totS++;
+            }
+        }
+        int[] ret = {totT, totS};
+        return ret;
+    }
+
+    public double meanPaid(String from, String to)
+    {
+        ArrayList<Driver> drivers = new ArrayList<>();
+        removeFromTo(drivers, from, to);
+
+        double paid = 0;
+        for (Driver d : drivers)
+        {
+            if(d.getSub() == null)
+            {
+                GregorianCalendar exitTime = new GregorianCalendar();
+                if(d.getTimePaid() != null)
+                {
+                    exitTime = d.getTimePaid();
+                }
+                // Uso secondi per il testing
+                paid += ChronoUnit.SECONDS.between(d.getTimeIn().toZonedDateTime(), exitTime.toZonedDateTime()) * d.getTariff();
+            }
+            else
+            {
+                paid += d.getSubCost();
+            }
+        }
+
+        if(drivers.size() > 0)
+        {
+            paid = (double) paid / drivers.size();
+        }
+        return paid;
+    }
+
 
     private GregorianCalendar[] parseDates(String from, String to)
     {
@@ -84,5 +128,20 @@ public class AnalyticsEngine
             return true;
         }
         return false;
+    }
+
+    private void removeFromTo(ArrayList<Driver> drivers,String from, String to)
+    {
+        ArrayList<Driver> toBeRemoved = new ArrayList<>();
+        drivers.addAll(db.getData().values());
+        GregorianCalendar[] fromTo = parseDates(from, to);
+        for (Driver d : drivers)
+        {
+            if(!checkBetween(fromTo, d.getTimeIn()))
+            {
+                toBeRemoved.add(d);
+            }
+        }
+        drivers.removeAll(toBeRemoved);
     }
 }

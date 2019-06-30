@@ -63,6 +63,7 @@ public class DriverParser
             // Parso i boolean
             d.setPaidSub(Boolean.parseBoolean(tmp.get(8)));
             d.setSubPayementExpiredOfSub(Boolean.parseBoolean(tmp.get(9)));
+            d.setInPark(Boolean.parseBoolean(tmp.get(11)));
         }
 
         return d;

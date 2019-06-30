@@ -5,6 +5,7 @@ import Exceptions.SubdivisionException;
 import GUIs.ManagerGUI;
 import main.Manager.DataBase.DataBaseAdapter;
 import main.Manager.DataBase.TextDataBaseAdapter;
+import main.Utilities.Observer;
 import net.Server;
 
 import java.awt.*;
@@ -37,6 +38,8 @@ public class Manager
     private int entryToT;
     private double DAYS=365, MONTH=12;
     private HashMap<String, Command> commands;
+    private Observer obs;
+    private String infoBox;
 
 
     //aggiungo deltaTime
@@ -63,6 +66,7 @@ public class Manager
         this.exitMan = new ExitManager(this);
 
         createCommands();
+        getDriversFromDb();
 
         Manager m = this;
         EventQueue.invokeLater(new Runnable()
@@ -70,18 +74,17 @@ public class Manager
             @Override
             public void run()
             {
-                new ManagerGUI(m);
+                ManagerGUI gui = new ManagerGUI(m);
+                m.setObs(gui);
             }
         });
 
         this.server = new Server(port, this);
         this.server.startServer();
 
-        //arraylist abbonamenti
-        //this.sublist = new ArrayList<>();
     }
 
-    //CREO un secondo costruttore che serve solo nei test, lo creo cosi che posso ''aggirare'' il lato server del manager
+    //CREO un secondo costruttore che serve solo nei test, lo creo cosi che posso ''aggirare'' il lato server del manager (tolgo anche il db)
     public Manager(){
         this.floorsList = new ArrayList<>();
         this.freeSpacesTot = 0;
@@ -114,7 +117,8 @@ public class Manager
         commands = new HashMap<>();
         commands.put("getId", (String[] args) -> "id--" + peripheralId());
         commands.put("help", (String[] args) -> {
-            System.out.println("Richiesta assistenza periferica " + args[1]);
+            infoBox = "Richiesta assistenza alla periferica " + args[1];
+            notifyObs();
             return "helpComing--Assitenza in arrivo, attendi.";
         });
         commands.put("entry", (String[] args) -> entryMan.entryTicket(args[1]));
@@ -122,7 +126,10 @@ public class Manager
         commands.put("getTariff", (String[] args) -> "tariff--" + getTariff());
         commands.put("getSubTariffs", (String[] args) -> "subTariffs--" + getSubTariffs());
         commands.put("exit", (String[] args) -> exitMan.exit(args[1]));
-        commands.put("driverInfo", (String[] args) -> {System.out.println("drinfo");return getDriverClientInfo(args[1]);});
+        commands.put("driverInfo", (String[] args) -> {
+            System.out.println("drinfo");
+            return getDriverClientInfo(args[1]);
+        });
         commands.put("setTicketPaid", (String[] args) -> setTicketPaid(args[1]));
         commands.put("setSubPaid", (String[] args) -> setSubPaid(args[1]));
         commands.put("extra", (String[] args) -> "extra--" + extraCost);
@@ -142,6 +149,53 @@ public class Manager
             System.out.println("Comando errato");
         }
         return s;
+    }
+
+    // Riprendo utenti dal db
+    private void getDriversFromDb()
+    {
+        ArrayList<Driver> totDrivers = new ArrayList<>();
+        totDrivers.addAll(db.getData().values());
+        ArrayList<Driver> toKeep = new ArrayList<>();
+        for(Driver d : totDrivers)
+        {
+            if((d.getSub() == null && d.getTimePaid() == null) || (d.getSub() != null && (d.getDateFinishOfSub().after(GregorianCalendar.getInstance()) || d.getInPark())))
+            {
+                toKeep.add(d);
+            }
+        }
+
+        int nSub = 0;
+        for(Driver d : toKeep)
+        {
+            if(d.getSub() != null)
+            {
+                nSub++;
+                subDrivers.add(d);
+                freeSpacesSubNow++;
+            }
+            else
+            {
+                drivers.add(d);
+                freeSpacesTicketNow++;
+            }
+
+        }
+
+        // Creo piano fittizio.
+        if(toKeep.size() > 0)
+        {
+            makeFloors(1, toKeep.size());
+            setSpacesSubdivision(nSub);
+            for(Driver d : toKeep)
+            {
+                // Conto come ingressi solo gli abbonati che sono dentro e i ticket
+                if(d.getSub() != null && d.getInPark())
+                {
+                    randomEntry();
+                }
+            }
+        }
     }
 
     // creo i piani: posso creare il parcheggio scegliendo il numero di  piani (numFloors) e la loro capienza (numSpaces)
@@ -239,19 +293,20 @@ public class Manager
     // analisi ingressi e incassi
     public double analyticsMean(String from, String to)
     {
-
-        // NumberFormat arrotonda un double per eccesso alle ultime due cifre decimali  0.41666666 --> 0.417
-        NumberFormat nf = new DecimalFormat("0.000");
-        /*double meanDay = (double)entryToT / DAYS;
-        double meanMonth = (double)entryToT / MONTH;
-        double meanPayDay = meanDay*tariff;
-        double meanPayMth = meanMonth*tariff;
-
-        System.out.println("MEDIA INGRESSI: \nGioralieri:  " + nf.format(meanDay) + "\t" + "Mensili:  "+nf.format(meanMonth));
-        System.out.println("**********************************");
-        System.out.println("MEDIA INCASSI: \nGioralieri:  " + nf.format(meanPayDay) + "\t" + "Mensili:  "+nf.format(meanPayMth));*/
         return analyticsEngine.meanTicketTimeIn(from, to);
     }
+
+    public double analyticsTotPaid(String from, String to)
+    {
+        return analyticsEngine.meanPaid(from, to);
+    }
+
+    public int[] analyticsTotTicketandSub(String from, String to)
+    {
+        return analyticsEngine.totTicketAndSub(from, to);
+    }
+
+
     // stampa le informazioni del driver in ingresso
     String printTicket(String carId)
     {
@@ -319,7 +374,7 @@ public class Manager
     // controlla se la sintassi della targa sia corretta
     boolean checkCarId(String carId)
     {
-        if(carId.length() == 8)
+        if(carId.length() == 7)
         {
             return true;
         }
@@ -634,5 +689,18 @@ public class Manager
 
     public void setEntryToT(int entryToT) {
         this.entryToT = entryToT;
+    }
+
+    public void setObs(Observer obs) {
+        this.obs = obs;
+    }
+
+    public void notifyObs()
+    {
+        obs.update();
+    }
+
+    public String getInfoBox() {
+        return infoBox;
     }
 }
