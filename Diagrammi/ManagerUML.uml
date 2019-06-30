@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Diagram>
+  <ID>JAVA</ID>
+  <OriginalElement>main.Manager</OriginalElement>
+  <nodes>
+    <node x="865.5736117216117" y="184.0">net.ServerThread</node>
+    <node x="48.16410256410256" y="97.0">main.Manager.Subscriptions.AnnualSub</node>
+    <node x="527.4710659340659" y="548.0">main.Manager.Manager</node>
+    <node x="443.61410256410255" y="0.0">main.Manager.Subscriptions.Subscription</node>
+    <node x="703.7948717948718" y="311.0">main.Manager.Command</node>
+    <node x="586.7948717948718" y="311.0">main.Manager.Floor</node>
+    <node x="229.33333333333326" y="311.0">main.Manager.ExitManager</node>
+    <node x="856.7948717948718" y="311.0">net.Server</node>
+    <node x="205.16410256410256" y="97.0">main.Manager.Subscriptions.SemestralSub</node>
+    <node x="514.471065934066" y="635.0">GUIs.ManagerGUI</node>
+    <node x="397.3333333333333" y="311.0">main.Manager.EntryManager</node>
+    <node x="39.33333333333326" y="311.0">main.Manager.AnalyticsEngine</node>
+    <node x="1.1428571428571104" y="184.0">main.Manager.DataBase</node>
+    <node x="439.98707326007326" y="184.0">main.Manager.Driver</node>
+    <node x="381.16410256410256" y="97.0">main.Manager.Subscriptions.MonthlySubscription</node>
+  </nodes>
+  <notes />
+  <edges>
+    <edge source="main.Manager.Driver" target="main.Manager.Subscriptions.Subscription">
+      <point x="41.200000000000045" y="-18.5" />
+      <point x="532.6870732600732" y="164.0" />
+      <point x="610.6641025641026" y="164.0" />
+      <point x="610.6641025641026" y="67.0" />
+      <point x="577.7141025641026" y="67.0" />
+      <point x="59.60000000000003" y="18.5" />
+    </edge>
+    <edge source="main.Manager.Driver" target="main.Manager.Subscriptions.SemestralSub">
+      <point x="-20.600000000000023" y="-18.5" />
+      <point x="470.88707326007324" y="154.0" />
+      <point x="283.16410256410256" y="154.0" />
+      <point x="0.0" y="18.5" />
+    </edge>
+    <edge source="main.Manager.Manager" target="main.Manager.Driver">
+      <point x="11.826923076923094" y="-18.5" />
+      <point x="600.797989010989" y="378.0" />
+      <point x="576.2948717948718" y="378.0" />
+      <point x="576.2948717948718" y="261.0" />
+      <point x="536.5495732600732" y="261.0" />
+      <point x="45.0625" y="18.5" />
+    </edge>
+    <edge source="main.Manager.EntryManager" target="main.Manager.Driver">
+      <point x="0.0" y="-18.5" />
+      <point x="476.8333333333333" y="291.0" />
+      <point x="485.04957326007326" y="291.0" />
+      <point x="-6.4375" y="18.5" />
+    </edge>
+    <edge source="main.Manager.ExitManager" target="main.Manager.Manager">
+      <point x="18.5" y="18.5" />
+      <point x="321.83333333333326" y="458.0" />
+      <point x="562.9518351648352" y="458.0" />
+      <point x="-26.019230769230774" y="-18.5" />
+    </edge>
+    <edge source="main.Manager.AnalyticsEngine" target="main.Manager.DataBase">
+      <point x="0.0" y="-18.5" />
+      <point x="124.33333333333326" y="291.0" />
+      <point x="107.85714285714278" y="291.0" />
+      <point x="23.714285714285666" y="18.5" />
+    </edge>
+    <edge source="net.Server" target="net.ServerThread">
+      <point x="26.25" y="-18.5" />
+      <point x="935.5448717948718" y="291.0" />
+      <point x="922.9486117216117" y="291.0" />
+      <point x="-19.125" y="18.5" />
+    </edge>
+    <edge source="main.Manager.ExitManager" target="main.Manager.Driver">
+      <point x="49.33333333333337" y="-18.5" />
+      <point x="352.66666666666663" y="281.0" />
+      <point x="472.17457326007326" y="281.0" />
+      <point x="-19.3125" y="18.5" />
+    </edge>
+    <edge source="net.ServerThread" target="main.Manager.Manager">
+      <point x="57.375" y="18.5" />
+      <point x="999.4486117216117" y="291.0" />
+      <point x="977.0256410256409" y="291.0" />
+      <point x="977.0256410256409" y="528.0" />
+      <point x="648.1056813186813" y="528.0" />
+      <point x="59.13461538461536" y="-18.5" />
+    </edge>
+    <edge source="main.Manager.EntryManager" target="main.Manager.DataBase">
+      <point x="-53.0" y="-18.5" />
+      <point x="423.8333333333333" y="241.0" />
+      <point x="155.28571428571422" y="241.0" />
+      <point x="71.14285714285711" y="18.5" />
+    </edge>
+    <edge source="main.Manager.ExitManager" target="main.Manager.DataBase">
+      <point x="-49.33333333333337" y="-18.5" />
+      <point x="253.9999999999999" y="251.0" />
+      <point x="131.57142857142856" y="251.0" />
+      <point x="47.428571428571445" y="18.5" />
+    </edge>
+    <edge source="net.Server" target="main.Manager.Manager">
+      <point x="39.375" y="18.5" />
+      <point x="948.6698717948718" y="508.0" />
+      <point x="638.6441428571428" y="508.0" />
+      <point x="49.673076923076906" y="-18.5" />
+    </edge>
+    <edge source="main.Manager.Manager" target="main.Manager.Floor">
+      <point x="21.288461538461547" y="-18.5" />
+      <point x="610.2595274725275" y="448.0" />
+      <point x="635.2948717948718" y="448.0" />
+      <point x="0.0" y="18.5" />
+    </edge>
+    <edge source="main.Manager.Driver" target="main.Manager.Subscriptions.AnnualSub">
+      <point x="-41.200000000000045" y="-18.5" />
+      <point x="450.2870732600732" y="164.0" />
+      <point x="116.66410256410256" y="164.0" />
+      <point x="0.0" y="18.5" />
+    </edge>
+    <edge source="main.Manager.Manager" target="main.Manager.ExitManager">
+      <point x="-35.480769230769226" y="-18.5" />
+      <point x="553.4902967032967" y="478.0" />
+      <point x="247.83333333333326" y="478.0" />
+      <point x="-55.5" y="18.5" />
+    </edge>
+    <edge source="main.Manager.Manager" target="main.Manager.Command">
+      <point x="30.75" y="-18.5" />
+      <point x="619.7210659340659" y="468.0" />
+      <point x="770.2948717948718" y="468.0" />
+      <point x="0.0" y="18.5" />
+    </edge>
+    <edge source="main.Manager.AnalyticsEngine" target="main.Manager.Driver">
+      <point x="56.66666666666663" y="-18.5" />
+      <point x="180.9999999999999" y="261.0" />
+      <point x="446.42457326007326" y="261.0" />
+      <point x="-45.0625" y="18.5" />
+    </edge>
+    <edge source="main.Manager.Manager" target="main.Manager.AnalyticsEngine">
+      <point x="-40.21153846153845" y="-18.5" />
+      <point x="548.7595274725275" y="488.0" />
+      <point x="166.83333333333326" y="488.0" />
+      <point x="42.5" y="18.5" />
+    </edge>
+    <edge source="GUIs.ManagerGUI" target="main.Manager.Manager">
+      <point x="-49.666666666666686" y="-18.5" />
+      <point x="539.3043992673993" y="610.0" />
+      <point x="547.9710659340659" y="610.0" />
+      <point x="-41.0" y="18.5" />
+    </edge>
+    <edge source="main.Manager.Manager" target="main.Manager.EntryManager">
+      <point x="-11.826923076923094" y="-18.5" />
+      <point x="577.1441428571428" y="428.0" />
+      <point x="456.9583333333333" y="428.0" />
+      <point x="-19.875" y="18.5" />
+    </edge>
+    <edge source="main.Manager.Manager" target="main.Manager.DataBase">
+      <point x="-59.13461538461536" y="-18.5" />
+      <point x="529.8364505494505" y="528.0" />
+      <point x="19.37179487179469" y="528.0" />
+      <point x="19.37179487179469" y="291.0" />
+      <point x="13.0" y="291.0" />
+      <point x="-71.14285714285711" y="18.5" />
+    </edge>
+    <edge source="main.Manager.Subscriptions.SemestralSub" target="main.Manager.Subscriptions.Subscription">
+      <point x="0.0" y="-18.5" />
+      <point x="283.16410256410256" y="67.0" />
+      <point x="488.3141025641026" y="67.0" />
+      <point x="-29.799999999999955" y="18.5" />
+    </edge>
+    <edge source="main.Manager.Subscriptions.AnnualSub" target="main.Manager.Subscriptions.Subscription">
+      <point x="0.0" y="-18.5" />
+      <point x="116.66410256410256" y="57.0" />
+      <point x="458.51410256410253" y="57.0" />
+      <point x="-59.60000000000002" y="18.5" />
+    </edge>
+    <edge source="main.Manager.EntryManager" target="main.Manager.Manager">
+      <point x="59.625" y="18.5" />
+      <point x="536.4583333333333" y="408.0" />
+      <point x="586.6056813186813" y="408.0" />
+      <point x="-2.3653846153846416" y="-18.5" />
+    </edge>
+    <edge source="main.Manager.Driver" target="main.Manager.Subscriptions.MonthlySubscription">
+      <point x="0.0" y="-18.5" />
+      <point x="491.48707326007326" y="164.0" />
+      <point x="485.16410256410256" y="164.0" />
+      <point x="0.0" y="18.5" />
+    </edge>
+    <edge source="main.Manager.Manager" target="GUIs.ManagerGUI">
+      <point x="41.0" y="18.5" />
+      <point x="629.9710659340659" y="610.0" />
+      <point x="638.6377326007325" y="610.0" />
+      <point x="49.66666666666657" y="-18.5" />
+    </edge>
+    <edge source="main.Manager.Manager" target="net.Server">
+      <point x="40.21153846153845" y="-18.5" />
+      <point x="629.1826043956044" y="488.0" />
+      <point x="896.1698717948718" y="488.0" />
+      <point x="-13.125" y="18.5" />
+    </edge>
+    <edge source="main.Manager.Subscriptions.MonthlySubscription" target="main.Manager.Subscriptions.Subscription">
+      <point x="0.0" y="-18.5" />
+      <point x="485.16410256410256" y="77.0" />
+      <point x="518.1141025641025" y="77.0" />
+      <point x="0.0" y="18.5" />
+    </edge>
+  </edges>
+  <settings layout="Hierarchic Group" zoom="0.8" x="905.0" y="381.7314213564215" />
+  <SelectedNodes />
+  <Categories />
+  <SCOPE>All</SCOPE>
+  <VISIBILITY>private</VISIBILITY>
+</Diagram>
+
