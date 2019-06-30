@@ -24,7 +24,7 @@ public class Driver
         this.timeIn = new GregorianCalendar();
         this.paid = false;
         this.ticketPayementExpired = false;
-        //Per testing
+        // Per testing
         if (carId.equals("test0001"))
         {
             timePaid = new GregorianCalendar();
@@ -34,7 +34,7 @@ public class Driver
 
     public void makeSub()
     {
-        // DA ELIMINARE ALLA FINE
+        // Per testing
         sub = new MonthlySubscription(80.0);
         if (carId.equals("test0002"))
         {

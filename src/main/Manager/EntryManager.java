@@ -40,7 +40,7 @@ public class EntryManager
         else
         {
             man.setFreeSpacesTicketNow(man.getFreeSpacesTicketNow() + 1);
-            man.setEntryToT(man.getEntryToT() + 1);   //Perche non viene incrementata all'ingresso degli abbonati?
+            man.setEntryToT(man.getEntryToT() + 1);
             Driver d = new Driver(carId);
             d.setTariff(man.getTariff());
             man.getDrivers().add(d);

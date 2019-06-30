@@ -29,7 +29,7 @@ public abstract class Subscription
 
     public String infoClient()
     {
-        return "--$subType=" + getClass().getName() + "$dateFinish=" + dateFinish.toZonedDateTime() + "$paySub=" + paySub + "$subPayementExpired=" + subPayementExpired + "$cost=" + cost;
+        return "--$subType=" + getClass().getName() + "$dateFinish=" + dateFinish.toZonedDateTime() + "$paySub=" + paySub + "$subPayementExpired=" + subPayementExpired + "$cost=" + cost + "$inPark=" + inPark;
     }
 
     //get and set

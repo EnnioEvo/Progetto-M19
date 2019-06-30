@@ -65,7 +65,6 @@ public class ExitColumn extends Column {
             System.out.println("exitNo");
             infoBox = args[1];
             notifyObs();
-            //bar.open();
         });
         commands.put("getTariff", (String[] args) -> System.out.println("getTariff"));
     }

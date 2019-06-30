@@ -66,6 +66,7 @@ public class Manager
         this.exitMan = new ExitManager(this);
 
         createCommands();
+        getDriversFromDb();
 
         Manager m = this;
         EventQueue.invokeLater(new Runnable()
@@ -102,6 +103,7 @@ public class Manager
         this.exitMan = new ExitManager(this);
 
         createCommands();
+        getDriversFromDb();
     }
 
     public static void main(String[] args)
@@ -148,6 +150,49 @@ public class Manager
             System.out.println("Comando errato");
         }
         return s;
+    }
+
+    // Riprendo utenti dal db
+    private void getDriversFromDb()
+    {
+        ArrayList<Driver> totDrivers = new ArrayList<>();
+        totDrivers.addAll(db.getData().values());
+        ArrayList<Driver> toKeep = new ArrayList<>();
+        for(Driver d : totDrivers)
+        {
+            if((d.getSub() == null && d.getTimePaid() == null) || (d.getSub() != null && (d.getDateFinishOfSub().after(GregorianCalendar.getInstance()) || d.getInPark())))
+            {
+                toKeep.add(d);
+            }
+        }
+
+        int nSub = 0;
+        for(Driver d : toKeep)
+        {
+            if(d.getSub() != null)
+            {
+                nSub++;
+                subDrivers.add(d);
+                freeSpacesSubNow++;
+            }
+            else
+            {
+                drivers.add(d);
+                freeSpacesTicketNow++;
+            }
+
+        }
+
+        // Creo piano fittizio.
+        if(toKeep.size() > 0)
+        {
+            makeFloors(1, toKeep.size());
+            setSpacesSubdivision(nSub);
+            for(Driver d : toKeep)
+            {
+                randomEntry();
+            }
+        }
     }
 
     // creo i piani: posso creare il parcheggio scegliendo il numero di  piani (numFloors) e la loro capienza (numSpaces)
