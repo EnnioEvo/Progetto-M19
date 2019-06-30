@@ -71,7 +71,7 @@ public class Driver
 
     public String getDriverInfo()
     {
-        return "Cliente: " + getCarId() + ", ingresso: " + getTimeIn().toZonedDateTime().toString() + ", pagato: " + (getTimePaid()==null?"No":getTimePaid().toZonedDateTime().toString()) + ", abbonamento: " + (printSub()==null?"No":printSub());
+        return "Cliente: " + getCarId() + ", ingresso: " + getTimeIn().toZonedDateTime().toString() + ", ticket pagato: " + (getTimePaid()==null?"No":getTimePaid().toZonedDateTime().toString()) + ", abbonamento: " + (printSub()==null?"No":printSub());
     }
 
     public String infoClient()
