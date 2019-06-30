@@ -36,3 +36,4 @@ java -cp C:\Users\NomeUtente\Documents\Progetto-M19-out main.Peripherals.Columns
 ```
 Alternativamente si possono inserire i parametri nel file ```Parcheggio-M19.bat``` e avviarlo.
 
+Al primo avvio viene creato un file di testo db nella cartella da cui è stato chiamato il codice compilato, agli avvii successivi sono caricati nel parcheggio gli abbonati e gli utenti ancora dentro. Per ignorare i dati registrati è sufficiente rimuovere dalla cartella il file db.
