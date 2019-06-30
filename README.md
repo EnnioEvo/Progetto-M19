@@ -7,3 +7,18 @@ Altre caratteristiche sono:
 - interfacce grafiche e testuali; 
 - interfaccia di supervisione;
 - sistema distribuito.
+
+# Come avviare
+
+Per prima cosa avviare il manager inserendo come argomenti la porta desiderata per la connessione:
+
+"java -cp C:\Users\NomeUtente\Documents\Progetto-M19-out java main.Manager.Manager port
+
+In seguito avviare, nell'ordine preferito le tre periferiche colonnina d'entrata, d'uscita e la cassa, per ognuna sono richiesti due argomenti: l'indirizzo di host del manager e la porta in cui è stata aperta la connessione:
+
+java -cp C:\Users\NomeUtente\Documents\Progetto-M19-out main.Peripherals.Cash.Cash hostAddress port
+
+java -cp C:\Users\NomeUtente\Documents\Progetto-M19-out main.Peripherals.Columns.ExitColumn hostAddress port
+
+java -cp C:\Users\NomeUtente\Documents\Progetto-M19-out main.Peripherals.Columns.EntryColumn hostAddress port
+
