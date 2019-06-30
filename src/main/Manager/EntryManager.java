@@ -94,7 +94,6 @@ public class EntryManager
                 Driver d = new Driver(carId);
                 switch (typeSub){
                     case "Mensile":
-                        //d.makeSub();  // DA ELIMINARE, ABBONAMETO DI TEST
                         d.makeMonthlySub(man.getMonthlyCost());
                         break;
                     case "Semestrale":
@@ -107,8 +106,7 @@ public class EntryManager
 
                 info = "Abbonamento acquistato, " + d.printSub();
                 System.out.println(info);
-                man.setFreeSpacesSubNow(man.getFreeSpacesSubNow() + 1); //NB: secondo me potremmo anche decrementarlo , e quando arriva a Zero il metodo non va piu,
-                //ovviamente è la stessa cosa, dimmi cosa secondo te è più corretto
+                man.setFreeSpacesSubNow(man.getFreeSpacesSubNow() + 1);
                 man.getSubDrivers().add(d);
                 // Nuovo ingresso, non rimuovo dal db
                 db.writeData(d, false);

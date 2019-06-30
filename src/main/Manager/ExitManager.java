@@ -17,13 +17,12 @@ public class ExitManager
     // metodo che permette ad un driver di uscire, se quest'ultimo è munito di ticket per poter uscire deve rispettare il deltaTime
     // e l'aver pagato il ticket, se invece il driver è munito di abbonamento deve aver effettuato il pagamento di quest'ultimo
     // e sopratutto l'abbonamento deve essere valido
-    public String exit(String carID)   //messo boolean per recuperare il check
+    public String exit(String carID)
     {
         boolean check = false;
         boolean exit = false;
         String info = "";
         Driver toBeRemoved = new Driver("");
-        //Da fare: thread che ogni ora elimina abbonamneti scaduti NON presenti in quel momento nel parcheggio
         for(Driver d : man.getSubDrivers())
         {
             if(d.getCarId().equals(carID) && d.getInPark())
@@ -97,7 +96,6 @@ public class ExitManager
                 else
                 {
                     exit = true;
-                    //NB mai rimuovere oggetti in un foreach
                     toBeRemoved = d;
                     man.setFreeSpacesTicketNow(man.getFreeSpacesTicketNow() - 1);
                     info = "Uscita avvenuta con successo " + d.getCarId();

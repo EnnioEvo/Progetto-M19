@@ -84,7 +84,7 @@ public class Manager
 
     }
 
-    //CREO un secondo costruttore che serve solo nei test, lo creo cosi che posso ''aggirare'' il lato server del manager (tolgo anche il db)
+    //CREO un secondo costruttore che serve solo nei test, lo creo così posso "aggirare" il lato server del manager (tolgo anche il db)
     public Manager(){
         this.floorsList = new ArrayList<>();
         this.freeSpacesTot = 0;
@@ -221,7 +221,6 @@ public class Manager
                 {
                     throw new NotEmptyFloorException("Non puoi rimuovere un piano non vuoto.");
                 }
-                //NB mai rimuovere oggetti in un foreach
                 toBeRemoved = f;
             }
         }
@@ -264,7 +263,7 @@ public class Manager
         }
     }
     // determina il numero di posti riservati ai Ticket
-    private void setFreeSpacesTot()  //Modificare non dovrebbe restituire nulla
+    private void setFreeSpacesTot()
     {
         int i = 0;
         for(Floor f : floorsList)
@@ -479,7 +478,7 @@ public class Manager
         db.writeData(d, true);
         return "logOk--XX";
     }
-    // simula l'ingresso di un driver in un oiano
+    // simula l'ingresso di un driver in un piano
     void randomEntry()
     {
         Random r = new Random();
