@@ -38,6 +38,7 @@ public class ExitManager
                         info = "Uscita abbonamento avvenuta con successo " + d.getCarId();
                         System.out.println(info);
                         d.setInPark(false);
+                        db.writeData(d, true);
                     }
                     else
                     {
@@ -62,6 +63,7 @@ public class ExitManager
                     info = "Uscita abbonamento avvenuta con successo " + d.getCarId();
                     System.out.println(info);
                     d.setInPark(false);
+                    db.writeData(d, true);
                 }
             }
             else if (d.getCarId().equals(carID))

@@ -138,10 +138,18 @@ public class EntryManager
             }
             else
             {
-                info = "Ingresso abbonato avvenuto con successo.";
+                if(typeSub.equals("XX"))
+                {
+                    info = "Ingresso abbonato avvenuto con successo.";
+                }
+                else
+                {
+                    info = "Hai già un abbonamento, puoi entrare.";
+                }
                 System.out.println(info);
                 Driver d = man.getDriver(carId);
                 d.setInPark(true);
+                db.writeData(d, true);
                 entry = true;
             }
         }

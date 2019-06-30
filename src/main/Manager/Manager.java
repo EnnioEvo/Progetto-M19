@@ -189,7 +189,11 @@ public class Manager
             setSpacesSubdivision(nSub);
             for(Driver d : toKeep)
             {
-                randomEntry();
+                // Conto come ingressi solo gli abbonati che sono dentro e i ticket
+                if(d.getSub() != null && d.getInPark())
+                {
+                    randomEntry();
+                }
             }
         }
     }
