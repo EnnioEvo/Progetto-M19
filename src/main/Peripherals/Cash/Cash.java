@@ -24,8 +24,7 @@ In tutti questi casi, è necessario che il cliente si rechi alla cassa per pagar
 di sosta scelta, oppure soltanto l'extra dovuto. L'extra viene pagato sempre secondo la tariffa oraria.
 
 Affinchè la cassa funzioni è necessario che il Manager sia attivo e connesso alla rete.
-Una volta avviata, la cassa stabilisce una connesione col manager all'indirizzo hostName e port specificati
-necessari a connettersi al manager.
+Una volta avviata, la cassa stabilisce una connesione col manager all'indirizzo hostName e port specificati.
 
 Una volta arrivato alla cassa, il cliente inserisce nella schermata prncipale della cassa il numero della sua targa,
 la cassa chiede al manager i dati del cliente corrispondenti alla targa. Se la targa è presente, il manager invia tali dati sotto forma di stringa alla
@@ -56,38 +55,53 @@ transazione fallita invece, il cliente è invitato a riprovare.
 public class Cash implements Peripheral
 {
     private String id;
-    private PaymentAdapter paymentAdapter;
-    private Payment currentPayment;
-    private Driver currentDriver;
+    private PaymentAdapter paymentAdapter; //Tipo astratto per la gestione del pagamento elettronica
+    private Driver currentDriver; //Cliente che sta tentando di pagare
+    private Payment currentPayment; //Dati del tentativo di pagamento in corso
     private double extraCost;
-    private double resto;
-    private Observer obs;
-    private final LinkedBlockingQueue<String> messages;
-    private String infoBox;
-    private HashMap<String, ClientCommand> commands;
+    private double resto; //Eventuale resto da erogare
+    private Observer obs; //L'observer è l'interfaccia grafica
+    private final LinkedBlockingQueue<String> messages; //I messaggi da inviare al server
+    private String infoBox; //L'interfaccia mostra sempre il messaggio contenuto in infoBox
+    private HashMap<String, ClientCommand> commands; //I comandi da ricevere dal server
 
     public Cash(String hostName, int port)
     {
         Cash cash = this;
-        paymentAdapter = new VisaAdapter();
+        paymentAdapter = new VisaAdapter(); //In questa cassa è implementato il pagamento con carta Visa
         createCommands();
         //La GUI va chiamata prima del client se no non compare
         EventQueue.invokeLater(new Runnable()
         {
+            /*
+            L'interfaccia viene eseguita in un thread diverso dalle operazioni effettive.
+            L'interfaccia è un Observer della cassa, eventuali cambiamenti nella GUI vengono introdotti
+            tramite il metodo notifyObs().
+            */
             @Override
             public void run()
             {
                 CashGUI2 g = new CashGUI2(cash);
                 cash.setObs(g);
+                //La cassa è istanziata senza attributi, l'id le viene assegnato inizialmente dal manager
                 getIdFromMan();
             }
         });
         this.messages = new LinkedBlockingQueue<>();
+
+        /*
+        Viene creato un client che resta in ascolto di nuovi elementi nella lista messages da inviare al server,
+        e di comandi da ricevere dal server.
+        */
         new Client(hostName, port, messages, cash);
     }
 
     private void createCommands()
     {
+        /*
+        Inizializza l'attributo commands come una mappa le cui chiavi sono i nomi dei comandi
+        e i cui valori sono istanze anonime di classi che implementano ClientCommand
+        */
         commands = new HashMap<>();
         commands.put("id", (String[] args) ->
         {
@@ -147,6 +161,10 @@ public class Cash implements Peripheral
 
     }
 
+    /*Chiedo al manager l'oggetto Driver corrispondente alla targa carId
+    Se la targa è presente nel parcheggio, il manager invierà alla cassa una stringa da parsare
+    per costruire un oggetto Driver
+     */
     public void askDriver(String carId)
     {
         System.out.println("driverInfo--" + carId);
@@ -160,6 +178,13 @@ public class Cash implements Peripheral
         }
     }
 
+    /*Genero il pagamento corrente relativo al driver corrente che ho appena ricevuto dal manager:
+    distinguo i casi
+        abbonamento - ticket
+        pagato - non pagato
+        scaduto - non scaduto
+    e genero il pagamento giusto.
+     */
     public void generatePayment(){
         Driver driver = currentDriver;
         Payment payment = new Payment(0d, driver.getCarId(),false);
@@ -215,6 +240,10 @@ public class Cash implements Peripheral
         currentPayment = payment;
     }
 
+    /*
+    Incrementa il totale già pagato in currentPayment di money
+    Se non era necessario lo segnalo
+    */
     public Double receiveCashMoney(Double money)
     {
         if(!currentPayment.getCheck())
@@ -237,6 +266,8 @@ public class Cash implements Peripheral
         return currentPayment.getDovuto();
     }
 
+    //Interagisco con il paymentAdapter per effettuare la transazione elettronica
+    //Restituisce l'importo ancora dovuto
     public Double receiveElectronicPayment()
     {
         if(!currentPayment.getCheck())
@@ -282,6 +313,7 @@ public class Cash implements Peripheral
 
     }
 
+    // Erogo il resto
     public void deliverMoney(double amount){
         System.out.println("Erogati " + amount + "€.");
         /*infoBox = "Erogati " + amount + "€.";
@@ -289,6 +321,8 @@ public class Cash implements Peripheral
         resto = amount;
     }
 
+    /* La cassa notifica al manager che il cliente corrispondente alla targa carId ha pagato il ticket
+    o l'abbonamento e non è più in debito*/
     public void notifyManager(String carId)
     {
         if (currentDriver.getSub() == null)
@@ -301,6 +335,7 @@ public class Cash implements Peripheral
         }
     }
 
+    //Restituisce il numero di ore trascorse da lastPaid, arrotondate per eccesso
     public int getServiceHours (GregorianCalendar lastPaid)
     {
         GregorianCalendar nowCalendar = new GregorianCalendar();
@@ -309,13 +344,7 @@ public class Cash implements Peripheral
         return hours;
     }
 
-    public void forgetSession()
-    {
-        deliverMoney(currentPayment.amountPaid);
-        currentPayment = null;
-        currentDriver = null;
-    }
-
+    // Metodi per restituire attributi
     public PaymentAdapter getPaymentAdapter() {
         return paymentAdapter;
     }
@@ -339,13 +368,23 @@ public class Cash implements Peripheral
     public String getId() {
         return id;
     }
+    public String getInfoBox()
+    {
+        return infoBox;
+    }
+    public double getResto() {
+        return resto;
+    }
+    //
 
+    // Notifico all'interfaccia che deve aggiornarsi per mostrare le informazioni più recenti
     @Override
     public void notifyObs()
     {
         obs.update();
     }
 
+    //Notifico all'interfaccia la corretta ricezione del pagamento
     public void notifyPayOk()
     {
         ((CashGUI2)obs).payOk();
@@ -356,35 +395,27 @@ public class Cash implements Peripheral
         this.obs = obs;
     }
 
+    //Richieste per il manager
     public void getIdFromMan()
     {
         messages.add("getId--XX");
     }
-
     public void help()
     {
         messages.add("help--" + id);
     }
-
     public void getExtra()
     {
         messages.add("extra--XX");
     }
 
+    //info = id--arg
+    //Eseguo il comando "id" con argomento "arg"
     @Override
     public void receiveInfo(String info)
     {
         String split[] = info.split("--");
         commands.get(split[0]).execute(split);
-    }
-
-    public String getInfoBox()
-    {
-        return infoBox;
-    }
-
-    public double getResto() {
-        return resto;
     }
 
     public static void main(String[] args)
@@ -395,6 +426,8 @@ public class Cash implements Peripheral
             return;
         }
 
+        //args[0] = hostName, args[1] = port
+        //Esempio: java main.Peripherals.Cash 127.0.0.1 1030
         new Cash(args[0], Integer.parseInt(args[1]));
     }
 }
