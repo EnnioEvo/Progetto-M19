@@ -7,6 +7,7 @@ Altre caratteristiche sono:
 - interfacce grafiche e testuali; 
 - interfaccia di supervisione;
 - sistema distribuito.
+- gestione database.
 
 # Come avviare
 
