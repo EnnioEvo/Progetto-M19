@@ -190,7 +190,7 @@ public class Manager
             for(Driver d : toKeep)
             {
                 // Conto come ingressi solo gli abbonati che sono dentro e i ticket
-                if(d.getSub() != null && d.getInPark())
+                if(d.getSub() == null || (d.getSub() != null && d.getInPark()))
                 {
                     randomEntry();
                 }
