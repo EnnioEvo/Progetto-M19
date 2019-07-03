@@ -43,7 +43,7 @@ public class Manager
     //Aggiungo deltaTime
     private int deltaTimePaid;  //In minuti
 
-    //Costruttore parte Server, gli passiamo il numero di porta
+    //Costruttore parte server, gli passiamo il numero di porta
     public Manager(int port)
     {
         this.floorsList = new ArrayList<>();
@@ -84,7 +84,7 @@ public class Manager
 
     }
 
-    //CREO un secondo costruttore che serve solo nei test, lo creo così posso "aggirare" il lato server del manager (tolgo anche il caricamento da db)
+    //Creo un secondo costruttore che serve solo nei test, lo creo così posso "aggirare" il lato server del manager (tolgo anche il caricamento da db)
     public Manager(){
         this.floorsList = new ArrayList<>();
         this.freeSpacesTot = 0;

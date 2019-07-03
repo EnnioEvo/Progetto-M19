@@ -32,7 +32,7 @@ public abstract class Subscription
         return "--$subType=" + getClass().getName() + "$dateFinish=" + dateFinish.toZonedDateTime() + "$paySub=" + paySub + "$subPayementExpired=" + subPayementExpired + "$cost=" + cost + "$inPark=" + inPark;
     }
 
-    //get and set
+    //Get and set
 
     public void setPaySub(boolean paySub)
     {
