@@ -40,7 +40,8 @@ public class Client
 
             while (true)
             {
-                final String message = messages.take(); // does not block, returns null if none is available
+                // Attendo finche non ricevo un messaggio
+                final String message = messages.take();
                 if (message != null)
                 {
                     writer.println(message);

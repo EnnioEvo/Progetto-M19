@@ -292,7 +292,7 @@ public class Cash implements Peripheral
         {
             return 0d;
         }
-        return currentPayment.dovuto;
+        return currentPayment.getDovuto();
     }
 
     public void checkPaid(){
@@ -300,7 +300,7 @@ public class Cash implements Peripheral
         {
             //Se ho pagato il dovuto cambio lo stato di Payment
             currentPayment.setCheck(Boolean.TRUE);
-            if (currentPayment.getAmountPaid() > currentPayment.getAmount())
+            if (currentPayment.getAmountPaid() >= currentPayment.getAmount())
             {
                 //Se ho pagato più del dovuto erogo il resto
                 deliverMoney(currentPayment.getAmountPaid() - currentPayment.getAmount());
