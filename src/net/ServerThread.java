@@ -40,6 +40,7 @@ public class ServerThread extends Thread
             String split[];
             do
             {
+                // Leggo comandi dai client
                 line = reader.readLine();
                 split = line.split("--");
                 if (split.length < 2)
@@ -48,6 +49,7 @@ public class ServerThread extends Thread
                 }
                 else
                 {
+                    // Invio la risposta elaborata dal manager
                     writer.println(man.executeCommand(split));
                 }
             }while (isRunning);

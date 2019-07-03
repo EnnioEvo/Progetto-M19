@@ -38,6 +38,7 @@ public class Client
             OutputStream output = socket.getOutputStream();
             PrintWriter writer = new PrintWriter(output, true);
 
+            // Leggo messaggi provenienti dalle periferiche e li invio al manager
             while (true)
             {
                 // Attendo finche non ricevo un messaggio
@@ -87,6 +88,7 @@ class BackgroundThread extends Thread
                 BufferedReader reader = new BufferedReader(new InputStreamReader(input));
                 String line;
 
+                // Leggo messaggi provenienti dal manager e li invio alle periferiche
                 while (true)
                 {
                     while((line = reader.readLine()) != null)

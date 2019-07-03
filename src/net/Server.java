@@ -36,6 +36,7 @@ public class Server
                 socketList.add(socket);
                 System.out.println("New client connected");
 
+                // Nuovo thread per ogni connessione
                 ServerThread t = new ServerThread(socket, man);
                 t.start();
             }
@@ -48,6 +49,7 @@ public class Server
         }
     }
 
+    // Lo uso per mandare aggiornamenti alle periferiche (es tariffa)
     public void updatePeripherals(String command)
     {
         for (Socket s : socketList)
