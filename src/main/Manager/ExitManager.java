@@ -1,6 +1,7 @@
 package main.Manager;
 
 import main.Manager.DataBase.DataBaseAdapter;
+import main.Utilities.ServiceFactory;
 
 import java.util.GregorianCalendar;
 
@@ -12,18 +13,18 @@ public class ExitManager
     public ExitManager(Manager man)
     {
         this.man = man;
-        this.db = man.getDb();
+        ServiceFactory sf = ServiceFactory.getInstance();
+        this.db = sf.getDataBaseAdapter("./db.txt");
     }
-    // metodo che permette ad un driver di uscire, se quest'ultimo è munito di ticket per poter uscire deve rispettare il deltaTime
-    // e l'aver pagato il ticket, se invece il driver è munito di abbonamento deve aver effettuato il pagamento di quest'ultimo
-    // e sopratutto l'abbonamento deve essere valido
-    public String exit(String carID)   //messo boolean per recuperare il check
+    //Metodo che permette ad un driver di uscire, se quest'ultimo è munito di ticket per poter uscire deve rispettare il deltaTime
+    //e l'aver pagato il ticket, se invece il driver è munito di abbonamento deve aver effettuato il pagamento di quest'ultimo
+    //e sopratutto l'abbonamento deve essere valido
+    public String exit(String carID)
     {
         boolean check = false;
         boolean exit = false;
         String info = "";
         Driver toBeRemoved = new Driver("");
-        //Da fare: thread che ogni ora elimina abbonamneti scaduti NON presenti in quel momento nel parcheggio
         for(Driver d : man.getSubDrivers())
         {
             if(d.getCarId().equals(carID) && d.getInPark())
@@ -42,12 +43,12 @@ public class ExitManager
                     }
                     else
                     {
-                        // Se è pagato, allora è scaduto
+                        //Se è pagato, allora è scaduto
                         if(d.getPaySub())
                         {
                             info = "L'abbonamento è scaduto, si prega di tornare alle casse.";
                             d.setSubPayementExpiredOfSub(true);
-                            // Aggiorno l'entry dell'utente nel db
+                            //Aggiorno l'entry dell'utente nel db
                             db.writeData(d, true);
                         }
                         else
@@ -80,12 +81,12 @@ public class ExitManager
                 check = true;
                 if((!man.checkDeltaTime(d.getTimePaid())) || !d.isPaid())
                 {
-                    // Se è pagato, vuol dire che è scaduto
+                    //Se è pagato, vuol dire che è scaduto
                     if(d.isPaid())
                     {
                         info = "E' passato troppo tempo dal pagamento, si prega di tornare alle casse.";
                         d.setTicketPayementExpired(true);
-                        // Aggiorno l'entry dell'utente nel db
+                        //Aggiorno l'entry dell'utente nel db
                         db.writeData(d, true);
                     }
                     else
@@ -97,7 +98,6 @@ public class ExitManager
                 else
                 {
                     exit = true;
-                    //NB mai rimuovere oggetti in un foreach
                     toBeRemoved = d;
                     man.setFreeSpacesTicketNow(man.getFreeSpacesTicketNow() - 1);
                     info = "Uscita avvenuta con successo " + d.getCarId();

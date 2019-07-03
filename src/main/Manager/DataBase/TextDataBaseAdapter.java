@@ -44,7 +44,7 @@ public class TextDataBaseAdapter implements DataBaseAdapter
             while((line = br.readLine()) != null)
             {
                 Driver d = DriverParser.parseDriver(line);
-                // Uso targa e data di ingresso come chiave
+                //Uso targa e data di ingresso come chiave
                 drivers.put(d.getCarId() + "-" +d.getTimeIn().toZonedDateTime().toString(), d);
             }
         }
@@ -74,7 +74,7 @@ public class TextDataBaseAdapter implements DataBaseAdapter
     {
         HashMap<String, Driver> oldDrivers = getData();
         ArrayList<Driver> newDrivers = new ArrayList<>();
-        // Elimino record precedente relativo ai nuovi driver
+        //Elimino record precedente relativo ai nuovi driver
         if(remove)
         {
             oldDrivers.remove(driver.getCarId() + "-" + driver.getTimeIn().toZonedDateTime().toString());

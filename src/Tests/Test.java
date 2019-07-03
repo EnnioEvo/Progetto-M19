@@ -114,12 +114,12 @@ public class Test
         Driver d;
         ArrayList<String> tmp = new ArrayList<>();
         System.out.println(line);
-        // Suddivisione di primo livello
+        //Suddivisione di primo livello
         String[] split1 = line.split("--");
         // Salto il comando  che è nella prima stringa
         for(int i=1;i<split1.length;i++)
         {
-            // Suddivido in variabili il driver e controllo se esiste sub
+            //Suddivido in variabili il driver e controllo se esiste sub
             if(!split1[i].equals("0"))
             {
                 System.out.println("1" +split1[i]);
@@ -132,7 +132,7 @@ public class Test
                 }
             }
 
-            // Controllo se sub è nullo
+            //Controllo se sub è nullo
                     /*if(!split1[2].equals("0"))
                     {
                         // Suddivido in variabili
@@ -154,20 +154,20 @@ public class Test
 
         }
 
-        // Creo il driver rispettando l'ordine delle info ricevute;
+        //Creo il driver rispettando l'ordine delle info ricevute;
         d = new Driver(tmp.get(0));
-        // Parso timeIn
+        //Parso timeIn
         d.setTimeIn(parseDate(tmp.get(1)));
-        // Parso timePaid
+        //Parso timePaid
         if(!tmp.get(2).equals("0"))
         {
             System.out.println("time in");
             d.setTimeIn(parseDate(tmp.get(2)));
         }
-        // Parso i boolean
+        //Parso i boolean
         d.setPaid(Boolean.parseBoolean(tmp.get(3)));
         d.setTicketPayementExpired(Boolean.parseBoolean(tmp.get(4)));
-        // Se esiste parso l'abbonamento
+        //Se esiste parso l'abbonamento
         if(!tmp.get(5).equals("0"))
         {
             try
@@ -180,12 +180,12 @@ public class Test
             {
                 System.out.println("Tipo di abbonamento errato nel database");
             }
-            // Parso la scadenza
+            //Parso la scadenza
             d.setDateFinishOfSub(parseDate(tmp.get(6)));
-            // Parso i boolean
+            //Parso i boolean
             d.setPaidSub(Boolean.parseBoolean(tmp.get(7)));
             d.setSubPayementExpiredOfSub(Boolean.parseBoolean(tmp.get(8)));
-            // Parso il costo
+            //Parso il costo
             d.setCostOfSub(Double.parseDouble(tmp.get(9)));
         }
 

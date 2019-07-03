@@ -7,6 +7,7 @@ Altre caratteristiche sono:
 - interfacce grafiche e testuali; 
 - interfaccia di supervisione;
 - sistema distribuito.
+- gestione database.
 
 # Come avviare
 
@@ -25,7 +26,7 @@ java -cp C:\Users\NomeUtente\Documents\Progetto-M19-out main.Peripherals.Columns
 Esempio:
 Per avviare tutte le componenti dallo stesso sistema si può scrivere:
 ```
-java -cp C:\Users\NomeUtente\Documents\Progetto-M19-out java main.Manager.Manager 1030
+java -cp C:\Users\NomeUtente\Documents\Progetto-M19-out main.Manager.Manager 1030
 
 java -cp C:\Users\NomeUtente\Documents\Progetto-M19-out main.Peripherals.Cash.Cash 127.0.0.1 1030
 
@@ -33,5 +34,6 @@ java -cp C:\Users\NomeUtente\Documents\Progetto-M19-out main.Peripherals.Columns
 
 java -cp C:\Users\NomeUtente\Documents\Progetto-M19-out main.Peripherals.Columns.EntryColumn 127.0.0.1 1030
 ```
-Alternativamente si possono inserire i parametri nel file Parcheggio-M19.bat e avviarlo.
+Da windows, è possibile inserire i parametri desiderati nel file ```Parcheggio-M19.bat``` e avviarlo.
 
+Al primo avvio viene creato un file di testo db nella cartella da cui è stato chiamato il codice compilato, agli avvii successivi sono caricati nel parcheggio gli abbonati e gli utenti ancora dentro. Per ignorare i dati registrati è sufficiente rimuovere dalla cartella il file db.

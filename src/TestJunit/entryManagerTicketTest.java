@@ -11,7 +11,7 @@ public class entryManagerTicketTest {
    splitString split = new splitString();
 
     @Test
-    // test targa non valida
+    //Test targa non valida
     public void entryTicketTest(){
         m.makeFloors(1,200);
         m.setSpacesSubdivision(100);
@@ -19,35 +19,35 @@ public class entryManagerTicketTest {
     }
 
     @Test
-    //targa valida
+    //Targa valida
     public void invalidCarID(){
         String s="", st;
         m.makeFloors(1,200);
         m.setSpacesSubdivision(100);
-        // sono costretto a far lo split della stringa che mi conferma l'ingresso perchè i millisecondi della data non
-        // davano la possibilita di convalidare il tes
+        //Sono costretto a far lo split della stringa che mi conferma l'ingresso perchè i millisecondi della data non
+        //Davano la possibilita di convalidare il tes
         s = split.split(em.entryTicket("0000000"));
         assertEquals("entryOk", s);
     }
     @Test
-    //posti finiti
+    //Posti finiti
     public void finishedticketSpace(){
         m.makeFloors(1,1);
         m.setSpacesSubdivision(0);
-        //creo un ingresso valido
+        //Creo un ingresso valido
         em.entryTicket("0000000");
         //secondo ingresso che genera errore
         assertEquals("entryNo--Posti ticket finiti.", em.entryTicket("1111111"));
     }
 
     @Test
-    //targa in ingresso uguale
+    //Targa in ingresso uguale
     public void sameCarID(){
         m.makeFloors(1,200);
         m.setSpacesSubdivision(100);
-        //creo un ingresso valido
+        //Creo un ingresso valido
         em.entryTicket("0000000");
-        //secondo ingresso con stessa targa
+        //Secondo ingresso con stessa targa
         assertEquals("entryNo--Ingresso fallito: targa: 0000000 già presente all'interno del parcheggio.",
                 em.entryTicket("0000000"));
     }

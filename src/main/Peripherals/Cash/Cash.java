@@ -10,9 +10,8 @@ import main.Peripherals.ClientCommand;
 import main.Utilities.Observer;
 import main.Peripherals.Peripheral;
 import main.Utilities.DriverParser;
+import main.Utilities.ServiceFactory;
 import net.Client;
-
-
 
 public class Cash implements Peripheral
 {
@@ -30,7 +29,11 @@ public class Cash implements Peripheral
     public Cash(String hostName, int port)
     {
         Cash cash = this;
-        paymentAdapter = new VisaAdapter(); //In questa cassa è implementato il pagamento con carta Visa
+
+        //In questa cassa è implementato il pagamento con carta Visa
+        System.setProperty("payement.class.name", "main.Peripherals.Cash.VisaAdapter");
+        ServiceFactory sf = ServiceFactory.getInstance();
+        paymentAdapter = sf.getPaymentAdapter();
         createCommands();
         //La GUI va chiamata prima del client se no non compare
         EventQueue.invokeLater(new Runnable()
@@ -254,7 +257,7 @@ public class Cash implements Peripheral
         {
             return 0d;
         }
-        return currentPayment.dovuto;
+        return currentPayment.getDovuto();
     }
 
     public void checkPaid(){
@@ -262,7 +265,7 @@ public class Cash implements Peripheral
         {
             //Se ho pagato il dovuto cambio lo stato di Payment
             currentPayment.setCheck(Boolean.TRUE);
-            if (currentPayment.getAmountPaid() > currentPayment.getAmount())
+            if (currentPayment.getAmountPaid() >= currentPayment.getAmount())
             {
                 //Se ho pagato più del dovuto erogo il resto
                 deliverMoney(currentPayment.getAmountPaid() - currentPayment.getAmount());

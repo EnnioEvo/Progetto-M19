@@ -24,7 +24,7 @@ public class Driver
         this.timeIn = new GregorianCalendar();
         this.paid = false;
         this.ticketPayementExpired = false;
-        // Per testing
+        //Per testing
         if (carId.equals("test0001"))
         {
             timePaid = new GregorianCalendar();
@@ -34,7 +34,7 @@ public class Driver
 
     public void makeSub()
     {
-        // Per testing
+        //Per testing
         sub = new MonthlySubscription(80.0);
         if (carId.equals("test0002"))
         {
@@ -42,7 +42,7 @@ public class Driver
         }
     }
 
-    // Aggiunto per il database
+    //Aggiunto per il database
     public void setSub(Subscription s)
     {
         sub = s;
@@ -154,7 +154,7 @@ public class Driver
 
     public boolean isPaid() { return paid;  }
 
-    // get and set ''inpark''
+    //Get and set "inpark"
     public boolean getInPark(){return sub.getInPark();}
 
     public void setInPark(boolean inPark) {sub.setInPark(inPark);}
