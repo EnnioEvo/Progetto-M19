@@ -2,11 +2,12 @@ package main.Peripherals;
 
 public interface Peripheral
 {
-    //Riceve informazioni dal client e individua il comando associato alla HashMap
-    // e lo esegue utilizzando come argomenti quelli passati dal client
+    //Permette il passaggio di informazioni tra il Manager e la colonnina, in modo da
+    //aggironare la GUI
     public void receiveInfo(String info);
 
-    //Richiede all'observer di aggiornare lo stato delle variabili sull'interfaccia grafica
+    //Viene utilizzato per eseguire il metodo update() nell'observer, ogni volta che
+    //il contenuto di variabili presenti nella GUI cambia
     public void notifyObs();
 
     //Ottiene l'ID

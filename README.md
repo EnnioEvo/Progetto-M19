@@ -10,12 +10,14 @@ Altre caratteristiche sono:
 - gestione database.
 
 # Come avviare
+1. Compilare Manager, Cassa, EntryColumn ed ExitColumn.
 
-Per prima cosa avviare il manager inserendo come argomenti la porta desiderata per la connessione:
+2. Avviare il manager inserendo come argomenti la porta desiderata per la connessione:
 ```
 java -cp C:\Users\NomeUtente\Documents\Progetto-M19-out java main.Manager.Manager port
 ```
-In seguito avviare, in terminali diversi e nell'ordine preferito, le tre periferiche colonnina d'entrata, d'uscita e la cassa, per ognuna sono richiesti due argomenti: l'indirizzo di host del manager e la porta in cui è stata aperta la connessione:
+
+3. Avviare, in terminali diversi e nell'ordine preferito, le tre periferiche colonnina d'entrata, d'uscita e la cassa, per ognuna sono richiesti due argomenti: l'indirizzo di host del manager e la porta in cui è stata aperta la connessione:
 ```
 java -cp C:\Users\NomeUtente\Documents\Progetto-M19-out main.Peripherals.Cash.Cash hostAddress port
 
@@ -26,7 +28,7 @@ java -cp C:\Users\NomeUtente\Documents\Progetto-M19-out main.Peripherals.Columns
 Esempio:
 Per avviare tutte le componenti dallo stesso sistema si può scrivere:
 ```
-java -cp C:\Users\NomeUtente\Documents\Progetto-M19-out java main.Manager.Manager 1030
+java -cp C:\Users\NomeUtente\Documents\Progetto-M19-out main.Manager.Manager 1030
 
 java -cp C:\Users\NomeUtente\Documents\Progetto-M19-out main.Peripherals.Cash.Cash 127.0.0.1 1030
 
@@ -34,6 +36,6 @@ java -cp C:\Users\NomeUtente\Documents\Progetto-M19-out main.Peripherals.Columns
 
 java -cp C:\Users\NomeUtente\Documents\Progetto-M19-out main.Peripherals.Columns.EntryColumn 127.0.0.1 1030
 ```
-Alternativamente si possono inserire i parametri nel file ```Parcheggio-M19.bat``` e avviarlo.
+Da windows, è possibile inserire i parametri desiderati nel file ```Parcheggio-M19.bat``` e avviarlo.
 
 Al primo avvio viene creato un file di testo db nella cartella da cui è stato chiamato il codice compilato, agli avvii successivi sono caricati nel parcheggio gli abbonati e gli utenti ancora dentro. Per ignorare i dati registrati è sufficiente rimuovere dalla cartella il file db.

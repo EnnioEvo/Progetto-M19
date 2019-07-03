@@ -16,7 +16,7 @@ import net.Client;
 public class Cash implements Peripheral
 {
     private String id;
-    private PaymentAdapter paymentAdapter; //Tipo astratto per la gestione del pagamento elettronica
+    private PaymentAdapter paymentAdapter; //Tipo astratto per la gestione del pagamento elettronico
     private Driver currentDriver; //Cliente che sta tentando di pagare
     private Payment currentPayment; //Dati del tentativo di pagamento in corso
     private double extraCost;
@@ -156,7 +156,7 @@ public class Cash implements Peripheral
         currentPayment = payment;
 
         if (driver.getSub() != null){
-            // il cliente possiede un abbonamento
+            // Il cliente possiede un abbonamento
 
             if (driver.getSub().getDateFinish().compareTo(GregorianCalendar.getInstance())==-1)
             {
@@ -167,37 +167,37 @@ public class Cash implements Peripheral
             }
             else
                 {
-                // l'abbonamento non è scaduto
+                //L'abbonamento non è scaduto
 
                 if (driver.getPaySub()){
                     // l'abbonamento è stato già pagato
                     payment.setCheck(Boolean.TRUE);
                 }
                 else {
-                    // l'abbonamento non è stato pagato
+                    // L'abbonamento non è stato pagato
                     payment.setAmount(driver.getSubCost());
                 }
 
             }
         }
         else{
-            // il cliente non possiede un abbonamento
+            // Il cliente non possiede un abbonamento
 
             if (driver.isTicketPayementExpired()){
-                // il ticket pagato è scaduto
+                // Il ticket pagato è scaduto
                 payment.setAmount(getServiceHours(driver.getTimePaid())*driver.getTariff());
                 System.out.println("exp tick" + currentPayment.getAmount());
 
             }
             else {
                 if (!driver.isPaid()){
-                    //se il ticket non è stato pagato
+                    //Se il ticket non è stato pagato
 
                     payment.setAmount(getServiceHours(driver.getTimeIn())*driver.getTariff());
                     System.out.println("payement tick" + currentPayment.getAmount() );
                 }
                 else {
-                    //se il ticket è stato pagato
+                    //Se il ticket è stato pagato
                     payment.setCheck(Boolean.TRUE);
                 }
             }
@@ -391,7 +391,7 @@ public class Cash implements Peripheral
             return;
         }
 
-        //args[0] = hostName, args[1] = port
+        //Gli argomenti sono args[0] = hostName, args[1] = port
         //Esempio: java main.Peripherals.Cash 127.0.0.1 1030
         new Cash(args[0], Integer.parseInt(args[1]));
     }
