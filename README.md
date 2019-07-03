@@ -10,12 +10,14 @@ Altre caratteristiche sono:
 - gestione database.
 
 # Come avviare
+1. Compilare Manager, Cassa, EntryColumn ed ExitColumn.
 
-Per prima cosa avviare il manager inserendo come argomenti la porta desiderata per la connessione:
+2. Avviare il manager inserendo come argomenti la porta desiderata per la connessione:
 ```
 java -cp C:\Users\NomeUtente\Documents\Progetto-M19-out java main.Manager.Manager port
 ```
-In seguito avviare, in terminali diversi e nell'ordine preferito, le tre periferiche colonnina d'entrata, d'uscita e la cassa, per ognuna sono richiesti due argomenti: l'indirizzo di host del manager e la porta in cui è stata aperta la connessione:
+
+3. Avviare, in terminali diversi e nell'ordine preferito, le tre periferiche colonnina d'entrata, d'uscita e la cassa, per ognuna sono richiesti due argomenti: l'indirizzo di host del manager e la porta in cui è stata aperta la connessione:
 ```
 java -cp C:\Users\NomeUtente\Documents\Progetto-M19-out main.Peripherals.Cash.Cash hostAddress port
 
