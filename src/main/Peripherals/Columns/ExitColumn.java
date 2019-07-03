@@ -38,7 +38,8 @@ public class ExitColumn extends Column {
         new Client(hostName, port, messages, col);
     }
 
-    //Collega il nome del comando con i rispettivi metodi che eseguono le operazioni volute dal server
+    //Associa un identificativo ad ogni comando eseguito dal Manager che viene trassmesso mediante il
+    //collegamento server-client tramite il metodo reciveInfo()
     private void createCommands()
     {
         commands = new HashMap<>();
@@ -69,7 +70,7 @@ public class ExitColumn extends Column {
         commands.put("getTariff", (String[] args) -> System.out.println("getTariff"));
     }
 
-    //I seguenti metodi hanno origine dall'interfaccia grafica e vengono mandati al client
+    //I seguenti metodi hanno origine dall'interfaccia grafica, arrivano alla colonnina e vengono mandati al client
     //Ottiene l'ID
     public void getIdFromMan()
     {
@@ -96,7 +97,7 @@ public class ExitColumn extends Column {
     }
 
     @Override
-    //Riceve informazioni dal client
+    //Riceve informazioni dal Manager e le passa alla Hashmap
     public void receiveInfo(String info)
     {
         String split[] = info.split("--");

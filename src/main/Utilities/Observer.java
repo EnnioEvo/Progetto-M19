@@ -2,7 +2,7 @@ package main.Utilities;
 
 public interface Observer
 {
-    //Chiama i metodi dell'interfaccia grafica che  permettono di aggiornare le variabili della colonnina
-    //che hanno subito una modifica
+    //Consente l'aggiornamento delle variabili della GUI dopo l'esecuzione di un comando che ne ha modificato
+    //il contenuto
     public void update();
 }
