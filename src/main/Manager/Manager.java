@@ -34,7 +34,7 @@ public class Manager
     private int freeSpacesSubNow, freeSpacesTicketNow;
     private double tariff;
     private ArrayList<Driver> drivers, subDrivers;
-    // paymantAnalytics variables
+    //PaymantAnalytics variables
     private int entryToT;
     private double DAYS=365, MONTH=12;
     private HashMap<String, Command> commands;
@@ -42,10 +42,10 @@ public class Manager
     private String infoBox;
 
 
-    //aggiungo deltaTime
+    //Aggiungo deltaTime
     private int deltaTimePaid;  //In minuti
 
-    // costruttore parte Server, gli passiamo il numero di porta
+    //Costruttore parte Server, gli passiamo il numero di porta
     public Manager(int port)
     {
         this.floorsList = new ArrayList<>();
@@ -111,7 +111,7 @@ public class Manager
         new Manager(Integer.parseInt(args[0]));
     }
 
-    //creo l'hashmap e aggiungo al suo intero i comandi principali che posso ricevere dalle varie periferiche
+    //Creo l'Hashmap e aggiungo al suo intero i comandi principali che posso ricevere dalle varie periferiche
     public void createCommands()
     {
         commands = new HashMap<>();
@@ -135,7 +135,7 @@ public class Manager
         commands.put("extra", (String[] args) -> "extra--" + extraCost);
     }
 
-    // metodo che mi esegue il comando ricevuto da una delle periferiche
+    //Metodo che mi esegue il comando ricevuto da una delle periferiche
     public String executeCommand(String[] args)
     {
         String s = "";
@@ -151,7 +151,7 @@ public class Manager
         return s;
     }
 
-    // Riprendo utenti dal db
+    //Riprendo utenti dal db
     private void getDriversFromDb()
     {
         ArrayList<Driver> totDrivers = new ArrayList<>();
@@ -182,14 +182,14 @@ public class Manager
 
         }
 
-        // Creo piano fittizio.
+        //Creo piano fittizio.
         if(toKeep.size() > 0)
         {
             makeFloors(1, toKeep.size());
             setSpacesSubdivision(nSub);
             for(Driver d : toKeep)
             {
-                // Conto come ingressi solo gli abbonati che sono dentro e i ticket
+                //Conto come ingressi solo gli abbonati che sono dentro e i ticket
                 if(d.getSub() == null || (d.getSub() != null && d.getInPark()))
                 {
                     randomEntry();
@@ -198,7 +198,7 @@ public class Manager
         }
     }
 
-    // creo i piani: posso creare il parcheggio scegliendo il numero di  piani (numFloors) e la loro capienza (numSpaces)
+    //Creo i piani: posso creare il parcheggio scegliendo il numero di  piani (numFloors) e la loro capienza (numSpaces)
     public void makeFloors(int numFloors, int numSpaces)
     {
         for(int i=0; i<numFloors; i++)
@@ -209,7 +209,7 @@ public class Manager
         setFreeSpacesTot();
     }
 
-    // rimuove un piano: per eventuali modifiche del parcheggio , posso scegliere di eliminare un piano dal software che controlla la struttura
+    //Rimuove un piano: per eventuali modifiche del parcheggio , posso scegliere di eliminare un piano dal software che controlla la struttura
     public void removeFloor(int rm)
     {
         Floor toBeRemoved = new Floor(-1, -1);
@@ -229,8 +229,8 @@ public class Manager
         setFreeSpacesTot();
     }
 
-    // controlla il deltaTime, cioè il minutaggio massimo che può trascorrere dal momento che si paga il ticket all'uscita,
-    // se il delta è rispettato l'uscita avviene senza problemi, in caso contrario il driver deve tornare alla cassa
+    //Controlla il deltaTime, cioè il minutaggio massimo che può trascorrere dal momento che si paga il ticket all'uscita,
+    //se il delta è rispettato l'uscita avviene senza problemi, in caso contrario il driver deve tornare alla cassa
     boolean checkDeltaTime(GregorianCalendar dataDriverPaid)
     {
         GregorianCalendar dataNow = new GregorianCalendar();
@@ -242,7 +242,7 @@ public class Manager
 
     }
 
-    // determina il numero di  posti riservati agli abbonamenti
+    //Determina il numero di  posti riservati agli abbonamenti
     public void setSpacesSubdivision(int sub)
     {
         if(sub <= freeSpacesTot)
@@ -262,7 +262,7 @@ public class Manager
             throw new SubdivisionException("Non ci sono abbastanza posti");
         }
     }
-    // determina il numero di posti riservati ai Ticket
+    //Determina il numero di posti riservati ai Ticket
     private void setFreeSpacesTot()
     {
         int i = 0;
@@ -280,7 +280,7 @@ public class Manager
         }
     }
 
-    // dopo aver eliminato uno o più piani, con questo metodo sistemo gli indici restanti
+    //Dopo aver eliminato uno o più piani, con questo metodo sistemo gli indici restanti
     private void changeFloorId()
     {
         for(int i=0;i<floorsList.size();i++)
@@ -289,7 +289,7 @@ public class Manager
         }
     }
 
-    // analisi ingressi e incassi
+    //Analisi ingressi e incassi
     public double analyticsMean(String from, String to)
     {
         return analyticsEngine.meanTicketTimeIn(from, to);
@@ -306,7 +306,7 @@ public class Manager
     }
 
 
-    // stampa le informazioni del driver in ingresso
+    //Stampa le informazioni del driver in ingresso
     String printTicket(String carId)
     {
         String s = "";
@@ -321,7 +321,7 @@ public class Manager
     }
 
     //*********************************** metodi 'check' per abbonamento****************************
-   // controlla se l'abbonamento è scaduto
+   //Controlla se l'abbonamento è scaduto
     boolean checkDateSub(String carID)
     {
         GregorianCalendar dataNow = new GregorianCalendar();
@@ -342,7 +342,7 @@ public class Manager
         }
         return  check;
     }
-    // controlla se la targa passata è presente all'interno dell'arraylist dei driver o dei sub
+    //Controlla se la targa passata è presente all'interno dell'arraylist dei driver o dei sub
     boolean checkSubOrTicket(String carID)
     {
         boolean check = checkTicket(carID);
@@ -355,7 +355,7 @@ public class Manager
         }
         return check;
     }
-    // controlla se il driver è già all'interno del parcheggio
+    //Controlla se il driver è già all'interno del parcheggio
     boolean checkInPark(String cardID)
     {
         boolean check = false;
@@ -370,7 +370,7 @@ public class Manager
         }
         return check;
     }
-    // controlla se la sintassi della targa sia corretta
+    //Controlla se la sintassi della targa sia corretta
     boolean checkCarId(String carId)
     {
         if(carId.length() == 7)
@@ -386,7 +386,7 @@ public class Manager
 
 //****************** metodo check in park per tickets *******************************
 
-    //controlla se il driver che sta tentando di far l'ingresso è già in possesso di un'altro ticket
+    //Controlla se il driver che sta tentando di far l'ingresso è già in possesso di un'altro ticket
     boolean checkTicket(String carID)
     {
         boolean check = false;
@@ -403,7 +403,7 @@ public class Manager
 
     //*******************************************
 
-    // questo metodo mi restituisce le informaizoni relative al driver o al sub
+    //Questo metodo mi restituisce le informaizoni relative al driver o al sub
     public String getDriverClientInfo(String carID)
     {
         StringBuilder sb = new StringBuilder();
@@ -435,7 +435,7 @@ public class Manager
     }
 
     //****************** fine metodo check in park per tickets *******************************
-    // rimuove dall'arraylist degl'abbonati, il Driver a cui è scaduto l'abbonamento
+    //Rimuove dall'arraylist degl'abbonati, il Driver a cui è scaduto l'abbonamento
     void removeSub(String carID)
     {
         Driver toBeRemoved = new Driver("");
@@ -469,7 +469,7 @@ public class Manager
         {
             return "logError--XX";
         }
-        // Se l'abbonamneto era scaduto aggiorno la sua validità
+        //Se l'abbonamneto era scaduto aggiorno la sua validità
         if(d.getDateFinishOfSub().before(new GregorianCalendar()))
         {
             d.setDateFinishOfSub(new GregorianCalendar());
@@ -478,24 +478,24 @@ public class Manager
         db.writeData(d, true);
         return "logOk--XX";
     }
-    // simula l'ingresso di un driver in un piano
+    //Simula l'ingresso di un driver in un piano
     void randomEntry()
     {
         Random r = new Random();
         int i;
-        // Impedisco che si superi il numero massimo di utenti per piano
+        //Impedisco che si superi il numero massimo di utenti per piano
         do
         {
             i = r.nextInt(floorsList.size());
         }while(floorsList.get(i).getCountCarIn() >= floorsList.get(i).getFreeSpace());
         floorsList.get(i).addCar();
     }
-    // simula un uscita di un driver da un piano
+    //Simula un uscita di un driver da un piano
     void randomExit()
     {
         Random r = new Random();
         int i;
-        // Impedisco che i posti occupati vadano in negativo
+        //Impedisco che i posti occupati vadano in negativo
         do
         {
             i = r.nextInt(floorsList.size());

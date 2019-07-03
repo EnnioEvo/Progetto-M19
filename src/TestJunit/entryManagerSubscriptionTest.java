@@ -32,9 +32,9 @@ public class entryManagerSubscriptionTest {
     {
         m.makeFloors(1,10);
         m.setSpacesSubdivision(1);
-        //ingresso valido con abbonamento
+        //Ingresso valido con abbonamento
         em.entrySub("0000000","Mensile");
-        //ingresso che dovebbre generare l'errore
+        //Ingresso che dovebbre generare l'errore
         assertEquals("entryNo--Abbonamenti finiti.",
                 em.entrySub("1111111","Mensile"));
     }
@@ -70,9 +70,9 @@ public class entryManagerSubscriptionTest {
     public void carInParkYetTicket(){
         m.makeFloors(1,10);
         m.setSpacesSubdivision(5);
-        //ingresso valido
+        //Ingresso valido
         em.entryTicket("0000000");
-        //ingresso che da errore
+        //Ingresso che da errore
         assertEquals("entryNo--Ingresso non riuscito, la targa risulta già all'interno con un ticket.",
                 em.entrySub("0000000","Mensile") );
     }
@@ -91,12 +91,12 @@ public class entryManagerSubscriptionTest {
     void entryBuySubYet(){
         m.makeFloors(1,10);
         m.setSpacesSubdivision(5);
-        //ingresso
+        //Ingresso
         em.entrySub("0000000","Mensile");
-        //simulo l'uscita
+        //Simulo l'uscita
         m.getDriver("0000000").setInPark(false);
         System.out.println("InPark" + m.getDriver("0000000").getInPark());
-        //rientra
+        //Rientra
         assertEquals("entryOk--Hai già un abbonamento, puoi entrare.",
                 em.entrySub("0000000","Mensile"));
     }

@@ -14,9 +14,9 @@ public class ExitManager
         this.man = man;
         this.db = man.getDb();
     }
-    // metodo che permette ad un driver di uscire, se quest'ultimo è munito di ticket per poter uscire deve rispettare il deltaTime
-    // e l'aver pagato il ticket, se invece il driver è munito di abbonamento deve aver effettuato il pagamento di quest'ultimo
-    // e sopratutto l'abbonamento deve essere valido
+    //Metodo che permette ad un driver di uscire, se quest'ultimo è munito di ticket per poter uscire deve rispettare il deltaTime
+    //e l'aver pagato il ticket, se invece il driver è munito di abbonamento deve aver effettuato il pagamento di quest'ultimo
+    //e sopratutto l'abbonamento deve essere valido
     public String exit(String carID)
     {
         boolean check = false;
@@ -41,12 +41,12 @@ public class ExitManager
                     }
                     else
                     {
-                        // Se è pagato, allora è scaduto
+                        //Se è pagato, allora è scaduto
                         if(d.getPaySub())
                         {
                             info = "L'abbonamento è scaduto, si prega di tornare alle casse.";
                             d.setSubPayementExpiredOfSub(true);
-                            // Aggiorno l'entry dell'utente nel db
+                            //Aggiorno l'entry dell'utente nel db
                             db.writeData(d, true);
                         }
                         else
@@ -79,12 +79,12 @@ public class ExitManager
                 check = true;
                 if((!man.checkDeltaTime(d.getTimePaid())) || !d.isPaid())
                 {
-                    // Se è pagato, vuol dire che è scaduto
+                    //Se è pagato, vuol dire che è scaduto
                     if(d.isPaid())
                     {
                         info = "E' passato troppo tempo dal pagamento, si prega di tornare alle casse.";
                         d.setTicketPayementExpired(true);
-                        // Aggiorno l'entry dell'utente nel db
+                        //Aggiorno l'entry dell'utente nel db
                         db.writeData(d, true);
                     }
                     else

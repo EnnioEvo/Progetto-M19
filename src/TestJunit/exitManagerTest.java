@@ -22,7 +22,7 @@ public class exitManagerTest {
     public void validExitSub() {
         makePark();
         em.entrySub("0000000", "Mensile");
-        // set paySub
+        //Set paySub
         m.getDriver("0000000").setPaidSub(true);
         System.out.println("paySub:" + m.getDriver("0000000").getPaySub());
         assertEquals("exitOk--Uscita abbonamento avvenuta con successo 0000000",
@@ -33,7 +33,7 @@ public class exitManagerTest {
     public void setInParkTest() {
         makePark();
         em.entrySub("1111111", "Mensile");
-        // set paySub
+        //Set paySub
         m.getDriver("1111111").setPaidSub(true);
         System.out.println("paySub:" + m.getDriver("1111111").getPaySub());
         ee.exit("1111111");
@@ -44,7 +44,7 @@ public class exitManagerTest {
     public void notBuySub() {
         makePark();
         em.entrySub("0000000", "Mensile");
-        // no set pay Sub
+        //No set pay Sub
         System.out.println("paySub:" + m.getDriver("0000000").getPaySub());
         assertEquals("exitNo--L'abbonamento non è pagato, si prega di tornare alle casse.",
                 ee.exit("0000000"));
@@ -54,11 +54,11 @@ public class exitManagerTest {
     public void notSubInPark() {
         makePark();
         em.entrySub("0000000", "Mensile");
-        // set pay Sub
+        //Set pay Sub
         m.getDriver("0000000").setPaidSub(true);
-        //setto l'uscita manualmente
+        //Setto l'uscita manualmente
         m.getDriver("0000000").setInPark(false);
-        //provo ad uscire con una targa che all'interno del parcheggio non c'è
+        //Provo ad uscire con una targa che all'interno del parcheggio non c'è
         assertEquals("exitNo--Uscita fallita, l'abbonato non è nel parcheggio 0000000",
                 ee.exit("0000000"));
     }

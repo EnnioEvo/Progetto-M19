@@ -14,7 +14,7 @@ public class EntryManager
         this.db = man.getDb();
     }
 
-    // metodo che prende come attributo una targa e permette al driver di entrare nel parcheggio tramite un ticket,
+    //Metodo che prende come attributo una targa e permette al driver di entrare nel parcheggio tramite un ticket,
     //il driver può entrare se e solo se ci sono posti disponibili e se la targa è sintatticamente giusta
    public String entryTicket(String carId)
     {
@@ -44,10 +44,10 @@ public class EntryManager
             Driver d = new Driver(carId);
             d.setTariff(man.getTariff());
             man.getDrivers().add(d);
-            // Nuovo ingresso, non rimuovo dal db
+            //Nuovo ingresso, non rimuovo dal db
             db.writeData(d, false);
 
-            //stampa fittizia della tessera
+            //Stampa fittizia della tessera
             info = "Ingresso riuscito, " + man.printTicket(carId);
             System.out.println(info);
             entry = true;
@@ -62,9 +62,9 @@ public class EntryManager
             return "entryNo--" + info;
         }
     }
-    // metodo che permette sia di acquistare un abbonamento sia di entrare nel parcheggio se si possiede già un sub
+    //Metodo che permette sia di acquistare un abbonamento sia di entrare nel parcheggio se si possiede già un sub
    public  String entrySub(String carId, String typeSub)
-    // codice sub MM = mensile, SM= semestrale, AN=annuale.
+    //Codice abbonamento: MM = mensile, SM = semestrale, AN = annuale.
     {
         String info;
         if(!man.checkCarId(carId))
@@ -90,7 +90,7 @@ public class EntryManager
             }
             else
             {
-                // aggiungo qui l'acquisto dell'abbonamento che va impletato nella gui
+                //Aggiungo qui l'acquisto dell'abbonamento che va impletato nella GUI
                 Driver d = new Driver(carId);
                 switch (typeSub){
                     case "Mensile":
@@ -108,7 +108,7 @@ public class EntryManager
                 System.out.println(info);
                 man.setFreeSpacesSubNow(man.getFreeSpacesSubNow() + 1);
                 man.getSubDrivers().add(d);
-                // Nuovo ingresso, non rimuovo dal db
+                //Nuovo ingresso, non rimuovo dal db
                 db.writeData(d, false);
                 d.setInPark(true);
                 entry = true;
@@ -116,7 +116,7 @@ public class EntryManager
         }
         else
         {
-            //controllo sulla validità dell'abbonamento per effettuare l'ingresso
+            //Controllo sulla validità dell'abbonamento per effettuare l'ingresso
             if (man.checkTicket(carId))
             {
                 info = "Ingresso non riuscito, la targa risulta già all'interno con un ticket.";

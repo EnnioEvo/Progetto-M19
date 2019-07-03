@@ -82,7 +82,7 @@ public class AnalyticsEngine
                 {
                     exitTime = d.getTimePaid();
                 }
-                // Uso secondi per il testing
+                //Uso secondi per il testing
                 paid += ChronoUnit.SECONDS.between(d.getTimeIn().toZonedDateTime(), exitTime.toZonedDateTime()) * d.getTariff();
             }
             else
