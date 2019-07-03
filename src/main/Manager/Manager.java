@@ -4,13 +4,11 @@ import Exceptions.NotEmptyFloorException;
 import Exceptions.SubdivisionException;
 import GUIs.ManagerGUI;
 import main.Manager.DataBase.DataBaseAdapter;
-import main.Manager.DataBase.TextDataBaseAdapter;
 import main.Utilities.Observer;
+import main.Utilities.ServiceFactory;
 import net.Server;
 
 import java.awt.*;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.util.*;
 
 
@@ -58,7 +56,9 @@ public class Manager
         this.subDrivers = new ArrayList<>();
         this.entryToT = 0;
 
-        this.db = new TextDataBaseAdapter("./db.txt");
+        System.setProperty("db.class.name", "main.Manager.DataBase.TextDataBaseAdapter");
+        ServiceFactory sf = ServiceFactory.getInstance();
+        this.db = sf.getDataBaseAdapter("./db.txt");
 
         this.analyticsEngine = new AnalyticsEngine(db);
 
@@ -84,7 +84,7 @@ public class Manager
 
     }
 
-    //CREO un secondo costruttore che serve solo nei test, lo creo così posso "aggirare" il lato server del manager (tolgo anche il db)
+    //CREO un secondo costruttore che serve solo nei test, lo creo così posso "aggirare" il lato server del manager (tolgo anche il caricamento da db)
     public Manager(){
         this.floorsList = new ArrayList<>();
         this.freeSpacesTot = 0;
@@ -95,7 +95,10 @@ public class Manager
         this.drivers = new ArrayList<>();
         this.subDrivers = new ArrayList<>();
         this.entryToT = 0;
-        this.db = new TextDataBaseAdapter("./db.txt");
+
+        System.setProperty("db.class.name", "main.Manager.DataBase.TextDataBaseAdapter");
+        ServiceFactory sf = ServiceFactory.getInstance();
+        this.db = sf.getDataBaseAdapter("./db.txt");
 
         this.analyticsEngine = new AnalyticsEngine(db);
 

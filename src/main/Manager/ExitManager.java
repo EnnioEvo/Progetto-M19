@@ -1,6 +1,7 @@
 package main.Manager;
 
 import main.Manager.DataBase.DataBaseAdapter;
+import main.Utilities.ServiceFactory;
 
 import java.util.GregorianCalendar;
 
@@ -12,7 +13,8 @@ public class ExitManager
     public ExitManager(Manager man)
     {
         this.man = man;
-        this.db = man.getDb();
+        ServiceFactory sf = ServiceFactory.getInstance();
+        this.db = sf.getDataBaseAdapter("./db.txt");
     }
     //Metodo che permette ad un driver di uscire, se quest'ultimo è munito di ticket per poter uscire deve rispettare il deltaTime
     //e l'aver pagato il ticket, se invece il driver è munito di abbonamento deve aver effettuato il pagamento di quest'ultimo

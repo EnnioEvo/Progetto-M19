@@ -1,6 +1,7 @@
 package main.Manager;
 
 import main.Manager.DataBase.DataBaseAdapter;
+import main.Utilities.ServiceFactory;
 
 @SuppressWarnings("Duplicates")
 public class EntryManager
@@ -11,7 +12,8 @@ public class EntryManager
     public EntryManager(Manager man)
     {
         this.man = man;
-        this.db = man.getDb();
+        ServiceFactory sf = ServiceFactory.getInstance();
+        this.db = sf.getDataBaseAdapter("./db.txt");
     }
 
     //Metodo che prende come attributo una targa e permette al driver di entrare nel parcheggio tramite un ticket,
@@ -108,9 +110,9 @@ public class EntryManager
                 System.out.println(info);
                 man.setFreeSpacesSubNow(man.getFreeSpacesSubNow() + 1);
                 man.getSubDrivers().add(d);
+                d.setInPark(true);
                 //Nuovo ingresso, non rimuovo dal db
                 db.writeData(d, false);
-                d.setInPark(true);
                 entry = true;
             }
         }
