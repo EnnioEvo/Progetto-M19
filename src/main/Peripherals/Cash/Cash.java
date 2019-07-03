@@ -13,46 +13,6 @@ import main.Utilities.DriverParser;
 import main.Utilities.ServiceFactory;
 import net.Client;
 
-/*CASSA DEL PARCHEGGIO M-19
-Una volta che il cliente è pronto per uscire, affinchè la colonnina di uscita si apra, è necessario che risulti nel
-manager che il cliente non abbia pagamenti in sospeso, cosa che potrebbe verificarsi nei seguenti casi:
-1. Il cliente ha scelto la modalità di ingresso "Ticket" e non lo ha ancora pagato.
-2. Il cliente ha scelto la modalità di ingresso "Ticket", lo ha pagato ma ha fatto passare troppo tempo dal pagamento.
-3. Il cliente ha scelto la modalità di ingresso "Abbonamento" e non lo ha ancora pagato.
-4. Il cliente ha scelto la modalità di intresso "Abbonamento", lo ha pagato, ma l'abbonamento è scaduto durante
-    la sosta.
-In tutti questi casi, è necessario che il cliente si rechi alla cassa per pagare l'intero prezzo della modalità
-di sosta scelta, oppure soltanto l'extra dovuto. L'extra viene pagato sempre secondo la tariffa oraria.
-
-Affinchè la cassa funzioni è necessario che il Manager sia attivo e connesso alla rete.
-Una volta avviata, la cassa stabilisce una connesione col manager all'indirizzo hostName e port specificati.
-
-Una volta arrivato alla cassa, il cliente inserisce nella schermata prncipale della cassa il numero della sua targa,
-la cassa chiede al manager i dati del cliente corrispondenti alla targa. Se la targa è presente, il manager invia tali dati sotto forma di stringa alla
-cassa, che li riassembla in un oggetto Driver e li salva nell'attributo currentDriver.
-Poi attraverso il metodo generatePayment(Driver), viene calcolato il costo del servizio usufruito non ancora
-pagato, e viene salvato in un oggetto currentPayment di tipo Payment.
-
-L'importo è mostrato nella seconda schermata dell'interfaccia. Qui il cliente può scegliere due modalità di pagamento:
-    1. Contanti: il cliente inserisce iterativamente un numero sufficiente di monete e banconote finchè l'importo
-    non è stato pagato totalmente. In questa simulazione software, gli ingressi per i contanti sono rappresentati
-    da una casella di testo e da un bottone "Inserisci contanti".
-    2. Pagamento elettronico: il cliente inserisce la carta relativa al servizio di pagamento implementato
-    in questa cassa. La cassa interagisce con un tipo astratto PaymentAdapter, che può essere implementato in
-    maniera concreta in maniera differente a seconda dell'azienda che eroga il servizio di pagamento. In questa
-    cassa viene implementato a titolo di esempio un servizio di pagamento VISA, che riesce 3 volte su 4.
-    Il cliente può decidere di pagare una parte in contanti e una parte con pagamento elettronico.
-
-Se il cliente cambia idea prima del pagamento, può tornare alla schiermata principale e riprendere l'importo
-già inserito.
-Se il cliente inserisce una moneta o una banconota non riconosciuta questa viene restituita.
-Se il cliente inserisce una quantità di contante maggiore o uguale all'importo, viene erogato il resto e viene
-notificato al manager che il cliente corrispondente alla targa ha pagato l'importo totale del servizio usufruito.
-La stessa cosa viene notificata al manager nel caso di corretta ricezione del pagamento elettronico, in caso di
-transazione fallita invece, il cliente è invitato a riprovare.
-
-*/
-
 public class Cash implements Peripheral
 {
     private String id;
