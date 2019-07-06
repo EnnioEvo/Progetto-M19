@@ -2,7 +2,8 @@ package GUIs;
 
 import Exceptions.NotEmptyFloorException;
 import Exceptions.SubdivisionException;
-import main.Manager.Manager;
+
+import main.Parking.Parking;
 import main.Utilities.Observer;
 
 import javax.swing.*;
@@ -14,7 +15,7 @@ import java.text.NumberFormat;
 @SuppressWarnings("Duplicates")
 public class ManagerGUI implements ItemListener, Observer
 {
-    private Manager man;
+    private Parking man;
     private JFrame f;
     private JPanel cards;  //Pannello che usa CardLayout
     final private static String MAKEFLOORS = "Crea piani";
@@ -29,7 +30,7 @@ public class ManagerGUI implements ItemListener, Observer
 
 
 
-    public ManagerGUI(Manager man)
+    public ManagerGUI(Parking man)
     {
         this.man = man;
         f = new JFrame();
@@ -40,7 +41,7 @@ public class ManagerGUI implements ItemListener, Observer
         int screenWidth = screenSize.width;
         f.setSize(screenWidth / 2, screenHeight / 2);
         f.setLocation(screenWidth / 4, screenHeight / 4);
-        f.setTitle("Manager");
+        f.setTitle("Parking");
 
         initComponents(f);
 

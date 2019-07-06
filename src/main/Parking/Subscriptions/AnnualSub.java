@@ -1,4 +1,4 @@
-package main.Manager.Subscriptions;
+package main.Parking.Subscriptions;
 
 import java.util.Calendar;
 import java.util.GregorianCalendar;

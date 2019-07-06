@@ -1,7 +1,8 @@
 package net;
 
 
-import main.Manager.Manager;
+
+import main.Parking.Parking;
 
 import java.io.*;
 import java.net.*;
@@ -15,10 +16,10 @@ public class ServerThread extends Thread
 {
     private Socket socket;
     private PrintWriter writer;
-    private Manager man;
+    private Parking man;
     private boolean isRunning = true;
 
-    public ServerThread(Socket socket, Manager man)
+    public ServerThread(Socket socket, Parking man)
     {
         this.socket = socket;
         this.man = man;

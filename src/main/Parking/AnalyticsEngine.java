@@ -1,6 +1,6 @@
-package main.Manager;
+package main.Parking;
 
-import main.Manager.DataBase.DataBaseAdapter;
+import main.Parking.DataBase.DataBaseAdapter;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

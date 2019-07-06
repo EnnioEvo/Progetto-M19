@@ -2,14 +2,14 @@ package TestJunit;
 
 
 import Exceptions.SubdivisionException;
-import main.Manager.*;
+import main.Parking.*;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 
-public class managerTest {
+public class parkingTest {
 
-    Manager m = new Manager();
+    Parking m = new Parking();
 
     @Test
     public void makeFloorsTest(){

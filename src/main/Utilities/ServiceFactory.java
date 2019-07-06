@@ -1,6 +1,6 @@
 package main.Utilities;
 
-import main.Manager.DataBase.DataBaseAdapter;
+import main.Parking.DataBase.DataBaseAdapter;
 import main.Peripherals.Cash.PaymentAdapter;
 
 public class ServiceFactory

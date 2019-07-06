@@ -1,9 +1,9 @@
-package main.Manager;
+package main.Parking;
 
-import main.Manager.Subscriptions.AnnualSub;
-import main.Manager.Subscriptions.MonthlySubscription;
-import main.Manager.Subscriptions.SemestralSub;
-import main.Manager.Subscriptions.Subscription;
+import main.Parking.Subscriptions.AnnualSub;
+import main.Parking.Subscriptions.MonthlySubscription;
+import main.Parking.Subscriptions.SemestralSub;
+import main.Parking.Subscriptions.Subscription;
 
 import java.util.GregorianCalendar;
 

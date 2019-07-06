@@ -1,16 +1,17 @@
 package TestJunit;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import main.Manager.ExitManager;
-import main.Manager.Manager;
-import main.Manager.EntryManager;
+import main.Parking.Exit;
+
+import main.Parking.Entrance;
+import main.Parking.Parking;
 import org.junit.jupiter.api.Test;
 
-public class exitManagerTest {
+public class exitTest {
 
-    Manager m = new Manager();
-    EntryManager em = new EntryManager(m);
-    ExitManager ee = new ExitManager(m);
+    Parking m = new Parking();
+    Entrance em = new Entrance(m);
+    Exit ee = new Exit(m);
     splitString split = new splitString();
 
     public void makePark() {

@@ -14,7 +14,7 @@ Altre caratteristiche sono:
 
 2. Avviare il manager inserendo come argomenti la porta desiderata per la connessione:
 ```
-java -cp C:\Users\NomeUtente\Documents\Progetto-M19-out java main.Manager.Manager port
+java -cp C:\Users\NomeUtente\Documents\Progetto-M19-out java main.Parking.Manager port
 ```
 
 3. Avviare, in terminali diversi e nell'ordine preferito, le tre periferiche colonnina d'entrata, d'uscita e la cassa, per ognuna sono richiesti due argomenti: l'indirizzo di host del manager e la porta in cui è stata aperta la connessione:
@@ -28,7 +28,7 @@ java -cp C:\Users\NomeUtente\Documents\Progetto-M19-out main.Peripherals.Columns
 Esempio:
 Per avviare tutte le componenti dallo stesso sistema si può scrivere:
 ```
-java -cp C:\Users\NomeUtente\Documents\Progetto-M19-out main.Manager.Manager 1030
+java -cp C:\Users\NomeUtente\Documents\Progetto-M19-out main.Parking.Manager 1030
 
 java -cp C:\Users\NomeUtente\Documents\Progetto-M19-out main.Peripherals.Cash.Cash 127.0.0.1 1030
 

@@ -1,7 +1,7 @@
 package Tests;
 
-import main.Manager.Driver;
-import main.Manager.Subscriptions.Subscription;
+import main.Parking.Driver;
+import main.Parking.Subscriptions.Subscription;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -14,7 +14,7 @@ public class Test
     {
 
         /*int posti[] = new int[10];
-        Manager m = new Manager();
+        Parking m = new Parking();
         m.makeFloors(7, 50);
         m.setTariff(5);
         m.setSpacesSubdivision(50);
@@ -75,7 +75,7 @@ public class Test
         Test.parseDriver(s);*/
 
         /*try {
-            Constructor c = Class.forName("main.Manager.Subscriptions.MonthlySubscription").getDeclaredConstructor(Double.class);
+            Constructor c = Class.forName("main.Parking.Subscriptions.MonthlySubscription").getDeclaredConstructor(Double.class);
         }
         catch (Exception ex)
         {

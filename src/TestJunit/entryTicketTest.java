@@ -1,13 +1,13 @@
 package TestJunit;
-import main.Manager.*;
+import main.Parking.*;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class entryManagerTicketTest {
+public class entryTicketTest {
 
-    Manager m = new Manager();
-    EntryManager em = new EntryManager(m);
+    Parking m = new Parking();
+    Entrance em = new Entrance(m);
    splitString split = new splitString();
 
     @Test

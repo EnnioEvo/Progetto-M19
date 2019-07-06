@@ -1,9 +1,9 @@
-package main.Manager;
+package main.Parking;
 
 import Exceptions.NotEmptyFloorException;
 import Exceptions.SubdivisionException;
 import GUIs.ManagerGUI;
-import main.Manager.DataBase.DataBaseAdapter;
+import main.Parking.DataBase.DataBaseAdapter;
 import main.Utilities.Observer;
 import main.Utilities.ServiceFactory;
 import net.Server;
@@ -12,7 +12,7 @@ import java.awt.*;
 import java.util.*;
 
 
-public class Manager
+public class Parking
 {
     private double monthlyCost=1, semestralCost, annualCost, extraCost;
 
@@ -24,8 +24,8 @@ public class Manager
 
     private AnalyticsEngine analyticsEngine;
 
-    private EntryManager entryMan;
-    private ExitManager exitMan;
+    private Entrance entryMan;
+    private Exit exitMan;
 
     private ArrayList<Floor> floorsList;
     private int freeSpacesTot, freeSpacesSubTot, freeSpacesTicketTot;
@@ -44,7 +44,8 @@ public class Manager
     private int deltaTimePaid;  //In minuti
 
     //Costruttore parte server, gli passiamo il numero di porta
-    public Manager(int port)
+    public Parking(int port)
+
     {
         this.floorsList = new ArrayList<>();
         this.freeSpacesTot = 0;
@@ -56,19 +57,19 @@ public class Manager
         this.subDrivers = new ArrayList<>();
         this.entryToT = 0;
 
-        System.setProperty("db.class.name", "main.Manager.DataBase.TextDataBaseAdapter");
+        System.setProperty("db.class.name", "main.Parking.DataBase.TextDataBaseAdapter");
         ServiceFactory sf = ServiceFactory.getInstance();
         this.db = sf.getDataBaseAdapter("./db.txt");
 
         this.analyticsEngine = new AnalyticsEngine(db);
 
-        this.entryMan = new EntryManager(this);
-        this.exitMan = new ExitManager(this);
+        this.entryMan = new Entrance(this);
+        this.exitMan = new Exit(this);
 
         createCommands();
         getDriversFromDb();
 
-        Manager m = this;
+        Parking m = this;
         EventQueue.invokeLater(new Runnable()
         {
             @Override
@@ -85,7 +86,7 @@ public class Manager
     }
 
     //Creo un secondo costruttore che serve solo nei test, lo creo così posso "aggirare" il lato server del manager (tolgo anche il caricamento da db)
-    public Manager(){
+    public Parking(){
         this.floorsList = new ArrayList<>();
         this.freeSpacesTot = 0;
         this.freeSpacesSubTot = 0;
@@ -96,14 +97,14 @@ public class Manager
         this.subDrivers = new ArrayList<>();
         this.entryToT = 0;
 
-        System.setProperty("db.class.name", "main.Manager.DataBase.TextDataBaseAdapter");
+        System.setProperty("db.class.name", "main.Parking.DataBase.TextDataBaseAdapter");
         ServiceFactory sf = ServiceFactory.getInstance();
         this.db = sf.getDataBaseAdapter("./db.txt");
 
         this.analyticsEngine = new AnalyticsEngine(db);
 
-        this.entryMan = new EntryManager(this);
-        this.exitMan = new ExitManager(this);
+        this.entryMan = new Entrance(this);
+        this.exitMan = new Exit(this);
 
         createCommands();
     }
@@ -111,7 +112,7 @@ public class Manager
     public static void main(String[] args)
     {
         if (args.length < 1) return;
-        new Manager(Integer.parseInt(args[0]));
+        new Parking(Integer.parseInt(args[0]));
     }
 
     //Creo l'Hashmap e aggiungo al suo intero i comandi principali che posso ricevere dalle varie periferiche

@@ -1,6 +1,7 @@
 package net;
 
-import main.Manager.Manager;
+import main.Parking.Parking;
+
 
 import java.io.*;
 import java.net.*;
@@ -14,10 +15,10 @@ import java.util.ArrayList;
 public class Server
 {
     private int port;
-    private Manager man;
+    private Parking man;
     private ArrayList<Socket> socketList;
 
-    public Server(int port, Manager man)
+    public Server(int port, Parking man)
     {
         this.port = port;
         this.man = man;

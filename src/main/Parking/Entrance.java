@@ -1,15 +1,15 @@
-package main.Manager;
+package main.Parking;
 
-import main.Manager.DataBase.DataBaseAdapter;
+import main.Parking.DataBase.DataBaseAdapter;
 import main.Utilities.ServiceFactory;
 
 @SuppressWarnings("Duplicates")
-public class EntryManager
+public class Entrance
 {
-    private Manager man;
+    private Parking man;
     private DataBaseAdapter db;
 
-    public EntryManager(Manager man)
+    public Entrance(Parking man)
     {
         this.man = man;
         ServiceFactory sf = ServiceFactory.getInstance();
@@ -113,6 +113,7 @@ public class EntryManager
                 d.setInPark(true);
                 //Nuovo ingresso, non rimuovo dal db
                 db.writeData(d, false);
+
                 entry = true;
             }
         }

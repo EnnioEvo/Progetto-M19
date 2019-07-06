@@ -1,4 +1,4 @@
-package main.Manager;
+package main.Parking;
 
 public class Floor {
 

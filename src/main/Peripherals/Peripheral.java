@@ -2,7 +2,7 @@ package main.Peripherals;
 
 public interface Peripheral
 {
-    //Permette il passaggio di informazioni tra il Manager e la colonnina, in modo da
+    //Permette il passaggio di informazioni tra il Parking e la colonnina, in modo da
     //aggironare la GUI
     public void receiveInfo(String info);
 

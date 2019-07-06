@@ -1,7 +1,7 @@
 package main.Utilities;
 
-import main.Manager.Driver;
-import main.Manager.Subscriptions.Subscription;
+import main.Parking.Driver;
+import main.Parking.Subscriptions.Subscription;
 
 import java.lang.reflect.Constructor;
 import java.text.ParseException;

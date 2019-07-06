@@ -10,7 +10,7 @@ public abstract class Column implements Peripheral
     {
     }
 
-    //Permette il passaggio di informazioni tra il Manager e la colonnina, in modo da
+    //Permette il passaggio di informazioni tra il Parking e la colonnina, in modo da
     //aggironare la GUI
     public abstract void receiveInfo(String info);
 

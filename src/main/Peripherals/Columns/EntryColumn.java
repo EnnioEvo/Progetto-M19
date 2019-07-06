@@ -43,7 +43,7 @@ public class EntryColumn extends Column
         new Client(hostName, port, messages, col);
     }
 
-    //Associa un identificativo ad ogni comando eseguito dal Manager che viene trassmesso mediante il
+    //Associa un identificativo ad ogni comando eseguito dal Parking che viene trassmesso mediante il
     //collegamento server-client tramite il metodo reciveInfo()
     private void createCommands()
     {
@@ -139,7 +139,7 @@ public class EntryColumn extends Column
     }
 
     @Override
-    //Riceve informazioni dal Manager e le passa alla Hashmap
+    //Riceve informazioni dal Parking e le passa alla Hashmap
     public void receiveInfo(String info)
     {
         String split[] = info.split("--");

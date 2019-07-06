@@ -1,16 +1,16 @@
-package main.Manager;
+package main.Parking;
 
-import main.Manager.DataBase.DataBaseAdapter;
+import main.Parking.DataBase.DataBaseAdapter;
 import main.Utilities.ServiceFactory;
 
 import java.util.GregorianCalendar;
 
-public class ExitManager
+public class Exit
 {
-    private Manager man;
+    private Parking man;
     private DataBaseAdapter db;
 
-    public ExitManager(Manager man)
+    public Exit(Parking man)
     {
         this.man = man;
         ServiceFactory sf = ServiceFactory.getInstance();

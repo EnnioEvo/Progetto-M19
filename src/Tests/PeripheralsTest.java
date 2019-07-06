@@ -12,7 +12,7 @@ public class PeripheralsTest {
             }
         });*/
 
-        //Manager man = new Manager();
+        //Parking man = new Parking();
         /*EntryColumn entry = new EntryColumn("IT1224LK", man);
         EventQueue.invokeLater(new Runnable()
         {
